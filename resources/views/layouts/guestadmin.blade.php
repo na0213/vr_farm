@@ -12,7 +12,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css','resources/css/swiper.min.css','resources/js/app.js'])
+        @vite(['resources/css/app.css','resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-900 antialiased">
             @if (Route::has('login'))
@@ -22,16 +22,16 @@
                     @else
                         <a href="{{ route('admin.login') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
 
-                        @if (Route::has('register'))
+                        {{-- @if (Route::has('register'))
                             <a href="{{ route('admin.register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
                         
-                        @endif
+                        @endif --}}
                     @endauth
                 </div>
             @endif
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
             <div>
-                <p>Admin Page</p>
+                <p>管理者</p>
             </div>
 
             <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
@@ -39,7 +39,5 @@
             </div>
         </div>
 
-        @vite(['resources/js/swiper-bundle.min.js'])
-        @vite(['resources/js/swiper.js'])
     </body>
 </html>
