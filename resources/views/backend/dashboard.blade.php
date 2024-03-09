@@ -1,7 +1,7 @@
 <x-admin-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            管理者{{ __('Dashboard') }}
+            管理者画面
         </h2>
     </x-slot>
 
