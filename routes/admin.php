@@ -11,6 +11,9 @@ use App\Http\Controllers\Auth\Admin\PasswordResetLinkController;
 use App\Http\Controllers\Auth\Admin\RegisteredUserController;
 use App\Http\Controllers\Auth\Admin\VerifyEmailController;
 use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\KindController;
+use App\Http\Controllers\Backend\KeywordController;
+use App\Http\Controllers\Backend\OwnerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,9 +55,6 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth:admins')->group(function () {
-   Route::get('/dashboard', function(){
-	   return view('admin.dashboard');
-   })->middleware('verified')->name('dashboard');
 
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
@@ -79,5 +79,32 @@ Route::middleware('auth:admins')->group(function () {
         
     Route::controller(AdminController::class)->group(function () {
         Route::get('/dashboard', 'index')->middleware('verified')->name('dashboard');
+        });
+    
+    Route::controller(KindController::class)->group(function () {
+        Route::get('/kinds', 'index')->name('backend.kinds.index');
+        Route::get('/kinds/create', 'create')->name('backend.kinds.create');
+        Route::post('/kinds', 'store')->name('backend.kinds.store');
+        Route::get('/kinds/{id}/edit', 'edit')->name('backend.kinds.edit');
+        Route::put('/kinds/{id}', 'update')->name('backend.kinds.update');
+        Route::delete('/kinds/{id}', 'destroy')->name('backend.kinds.destroy');
+        });
+
+    Route::controller(KeywordController::class)->group(function () {
+        Route::get('/keywords', 'index')->name('backend.keywords.index');
+        Route::get('/keywords/create', 'create')->name('backend.keywords.create');
+        Route::post('/keywords', 'store')->name('backend.keywords.store');
+        Route::get('/keywords/{id}/edit', 'edit')->name('backend.keywords.edit');
+        Route::put('/keywords/{id}', 'update')->name('backend.keywords.update');
+        Route::delete('/keywords/{id}', 'destroy')->name('backend.keywords.destroy');
+        });
+
+    Route::controller(OwnerController::class)->group(function () {
+        Route::get('/owners', 'index')->name('backend.owners.index');
+        Route::get('/owners/create', 'create')->name('backend.owners.create');
+        Route::post('/owners', 'store')->name('backend.owners.store');
+        Route::get('/owners/{id}/edit', 'edit')->name('backend.owners.edit');
+        Route::put('/owners/{id}', 'update')->name('backend.owners.update');
+        Route::delete('/owners/{id}', 'destroy')->name('backend.owners.destroy');
         });
 });
