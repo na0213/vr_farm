@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Admin;
+use App\Models\Owner;
 
 class OwnerController extends Controller
 {
@@ -12,23 +15,26 @@ class OwnerController extends Controller
      */
     public function index()
     {
-        //
+        $admin = Admin::find(Auth::guard('admins')->id());
+        $owners = Owner::all();
+
+        return view('backend.owners.index', compact('admin', 'owners'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('backend.owners.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $owner = new Owner();
+        $owner->owner = $request->name;
+        $owner->save();
+
+        session()->flash('message', '種類が正常に登録されました。');
+
+        return redirect()->route('admin.backend.owners.index');
     }
 
     /**
