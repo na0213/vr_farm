@@ -1,0 +1,302 @@
+body {
+    color: #261A1A;
+}
+
+/* TOP 画像 */
+.swiper {
+    overflow: hidden;
+    border-radius: 5%;
+}
+
+.swiper-wrapper {
+    border-radius: 5%;
+}
+
+.slide-title {
+    position: absolute;
+    top: 90px; /* スライダーの上端からのオフセット */
+    left: 10px; /* スライダーの右端からのオフセット */
+    width: 30%;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    box-sizing: border-box;
+    z-index: 10; /* スライダーの上に表示させる */
+    color: #502200;
+    font-weight: bold;
+    font-size: 25px;
+}
+.swiper-slide {
+    width: 100%; /* Swiperスライドの幅を親要素の幅いっぱいに設定 */
+    display: flex; /* Flexboxを使用してアイテムを右寄せに */
+    justify-content: flex-end; /* Flexboxアイテムをコンテナの終端（右端）に配置 */
+    overflow: hidden; /* 子要素がborder-radiusの範囲外に出た時に隠す */
+    border-radius: 5%;
+}
+.swiper-img-wrapper {
+    width: 80%; /* 画像の幅（コンテナの幅）を調整 */
+    height: auto; /* 画像の高さを自動で調整 */
+    overflow: hidden; /* コンテナ内のはみ出しを防ぐ */
+    border-radius: 5%; /* コンテナに丸みを加える */
+    display: flex; /* Flexboxを使用して配置を調整 */
+    justify-content: flex-end; /* コンテナ内のアイテム（画像）を右に寄せる */
+}
+.swiper-img {
+    width: 100%; /* コンテナいっぱいに画像を広げる */
+    height: auto; /* 画像の縦横比を保持 */
+    transition: transform 7s linear; /* ズームアップアニメーションの適用 */
+}
+.swiper-slide img {
+    width: 100%; /* img要素はswiper-imgコンテナいっぱいに広がるように設定 */
+    height: auto; /* 画像の縦横比を維持 */
+}
+@keyframes zoomUp {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.15);
+    }
+  }
+  .swiper-slide-active .swiper-img,
+  .swiper-slide-duplicate-active .swiper-img,
+  .swiper-slide-prev .swiper-img {
+    transform: scale(1.15); /* アクティブなスライドでのみズームアップ */
+}
+
+/* ウェーブ */
+.wave {
+	position: relative;
+	overflow: hidden;
+	/* box-shadow: 0 4px 20px rgba(0,0,0,.2); */
+	margin: 20px auto;
+	height: 700px;
+	border-radius: 5%;
+	background-color: rgba(255,255,255,.1);
+}
+.wave::before {
+	position: absolute;
+	bottom: -150%;
+	left: -50%;
+	border-radius: 50% 50% / 50% 70%;
+	width: 200%;
+	height: 200%;
+	content: "";
+	background-image: linear-gradient(80deg, #ede4cd 0%, #f8f4e6 50%, #fff 100%);
+	animation: wave-anime linear 10s infinite;
+}
+@keyframes wave-anime {
+	from {
+		transform: rotate(0);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+.wave:hover::before {
+	animation: wave-move 10s forwards;
+}
+@keyframes wave-move {
+	from {
+		transform: translateY(0) rotate(0);
+	}
+	to {
+		transform: translateY(-50%) rotate(360deg);
+			}
+}
+
+/* story */
+.story {
+    position: relative; /* 追加: 相対位置指定 */
+    z-index: 1; /* 追加: スタック順序を最上面に */
+    text-align: center;
+    margin-top: 20px;
+    color: #502200;
+    font-weight: bold;
+    font-size: 45px;
+    line-height: 50px;
+}
+.story_text {
+    padding: 50px;
+    font-size: 22px;
+}
+
+/* 牛のアイコン */
+.fuwafuwa {
+    animation: fuwafuwa 3s ease-in-out infinite alternate;
+    background: url(../../public/storage/cow.PNG) no-repeat center center / 90px auto;
+    display: inline-block;
+    transition: 1.5s ease-in-out;
+    width: 80px;
+    height: 100px;
+    margin: 50px;
+}
+.farm_link {
+    padding: -50px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #502200;
+    text-align: center;
+}
+@keyframes fuwafuwa {
+    0% {
+        transform:translate(0, 0) rotate(-7deg);
+    }
+    50% {
+        transform:translate(0, -7px) rotate(0deg);
+    }
+    100% {
+        transform:translate(0, 0) rotate(7deg);
+    }
+}
+
+/* concept */
+.box {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 40px;
+  }
+h3 {
+    font-size: 21px;
+    margin: 0;
+}
+.pict {
+    width: 30%;
+    margin-left: 3%;
+}
+.pict img {
+    width: 100%;
+    height:auto;
+}
+.box:nth-child(even) {
+    flex-direction: row-reverse;
+}
+.box:nth-child(even) .text {
+    text-align: right;
+}
+.box:nth-child(even) .pict {
+    margin-left: 0;
+    margin-right: 3%;
+}
+  
+/* map */
+.map-container {
+    position: relative;
+    width: 800px; /* 地図画像の幅に合わせる */
+    height: 800px; /* 地図画像の高さに合わせる */
+}
+.map-container img {
+    width: 100%;
+    height: auto;
+}
+.overlay {
+    position: absolute;
+    top: 190px;
+    right: 95px;
+    width: 80%;
+    height: 45%;
+}
+
+@media (max-width:768px) {
+    .box {
+        flex-direction: column;
+    }
+    .box:nth-child(even) {
+        flex-direction: column;
+    }
+    .text {
+        text-align: center;
+    }
+    .box:nth-child(even) .text {
+        text-align: center;
+    }
+    .pict {
+        width:100%;
+        margin-left: 0;
+        text-align: center;
+    }
+    .box:nth-child(even) .pict {
+        margin-left: 0;
+        margin-right: 0%;
+    }
+    .pict img {
+        width:50%;
+        height:auto;
+    }
+    /* map */
+    .map-container {
+        position: relative;
+        width: 350px; /* 地図画像の幅に合わせる */
+        height: 350px; /* 地図画像の高さに合わせる */
+    }
+    .map-container img {
+        width: 100%;
+        height: auto;
+    }
+    .overlay {
+        position: absolute;
+        top: 75px;
+        right: 40px;
+        width: 80%;
+        height: 45%;
+    }
+}
+
+
+/* レスポンシブ */
+@media screen and (max-width: 479px) { /*ウィンドウ幅が最大479pxまでの場合に適用*/
+    
+    .slide-title {
+        position: absolute;
+        top: 80px; /* スライダーの上端からのオフセット */
+        left: 5px; /* スライダーの右端からのオフセット */
+        width: auto;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.8);
+        color: #fff;
+        text-align: center;
+        box-sizing: border-box;
+        z-index: 10; /* スライダーの上に表示させる */
+        color: #502200;
+        font-weight: bold;
+        font-size: 15px;
+        border-radius: 5%;
+    }
+    /* 牛のアイコン */
+    .fuwafuwa {
+        animation: fuwafuwa 3s ease-in-out infinite alternate;
+        background: url(../../public/storage/cow.PNG) no-repeat center center / 90px auto;
+        display: inline-block;
+        transition: 1.5s ease-in-out;
+        width: 70px;
+        height: 100px;
+        margin: 30px;
+    }
+    .farm_link {
+        padding: -50px;
+        font-size: 10px;
+        font-weight: bold;
+        color: #502200;
+        text-align: center;
+    }
+    /* ウェーブ */
+    .wave {
+        position: relative;
+        overflow: hidden;
+        /* box-shadow: 0 4px 20px rgba(0,0,0,.2); */
+        margin: 0 auto;
+        height: 450px;
+        border-radius: 5%;
+        background-color: rgba(255,255,255,.1);
+    }
+    .story {
+        font-size: 30px;
+    }
+    .story_text {
+        padding-top: 20px;
+        text-align: center;
+        font-size: 15px;
+        line-height: 30px;
+    }
+}
