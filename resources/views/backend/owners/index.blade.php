@@ -28,6 +28,9 @@
                   <th scope="col" class="px-6 py-2 whitespace-nowrap">
                     編集
                   </th>
+                  <th scope="col" class="px-6 py-2 whitespace-nowrap">
+                    詳細
+                  </th>
               </tr>
           </thead>
           <tbody>
@@ -37,11 +40,14 @@
                     {{ $owner->id }}
                   </td>
                   <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {{ $owner->owner }}
+                    {{ $owner->name }}
                   </td>
                   <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                       <a href="{{ route('admin.backend.owners.edit', $owner->id) }}" class="px-3 py-2 text-black bg-detail text-md hover:bg-yellow-500">編集</a>
                   </td>
+                  <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <a href="{{ route('admin.backend.owners.show', $owner->id) }}" class="px-3 py-2 text-black bg-detail text-md hover:bg-yellow-500">詳細</a>
+                </td>
               </tr>
               @empty
               <p class="p-5">まだ登録されていません。</p>

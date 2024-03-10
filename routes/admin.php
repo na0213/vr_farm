@@ -103,6 +103,7 @@ Route::middleware('auth:admins')->group(function () {
         Route::get('/owners', 'index')->name('backend.owners.index');
         Route::get('/owners/create', 'create')->name('backend.owners.create');
         Route::post('/owners', 'store')->name('backend.owners.store');
+        Route::get('/owners/{id}/show', 'show')->name('backend.owners.show');
         Route::get('/owners/{id}/edit', 'edit')->name('backend.owners.edit');
         Route::put('/owners/{id}', 'update')->name('backend.owners.update');
         Route::delete('/owners/{id}', 'destroy')->name('backend.owners.destroy');

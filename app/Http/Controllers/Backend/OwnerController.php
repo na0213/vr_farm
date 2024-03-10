@@ -29,7 +29,9 @@ class OwnerController extends Controller
     public function store(Request $request)
     {
         $owner = new Owner();
-        $owner->owner = $request->name;
+        $owner->name = $request->name;
+        $owner->email = $request->email;
+        $owner->password = $request->password;
         $owner->save();
 
         session()->flash('message', '種類が正常に登録されました。');
@@ -37,35 +39,32 @@ class OwnerController extends Controller
         return redirect()->route('admin.backend.owners.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $owner = Owner::findOrFail($id);
+        return view('backend.owners.show', compact('owner'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $owner = Owner::findOrFail($id);
+        return view('backend.owners.edit', compact('owner'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $owner = Owner::findOrFail($id);
+        $owner->name = $request->name;
+        $owner->email = $request->email;
+        $owner->save();
+
+        return redirect()->route('admin.backend.owners.index')->with('message', '種類が更新されました');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $owner = Owner::findOrFail($id);
+        $owner->delete();
+        return redirect()->route('admin.backend.owners.index')->with('message', '種類が削除されました');
     }
 }
