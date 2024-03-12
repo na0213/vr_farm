@@ -19,7 +19,6 @@ return new class extends Migration
             ->onDelete('cascade');
             $table->string('product_name')->nullable();
             $table->string('product_info')->nullable();
-            $table->string('product_image')->nullable();
             $table->datetime('created_at');
             $table->datetime('updated_at');
         });

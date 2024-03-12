@@ -20,7 +20,7 @@ Route::get('/', function () {
 });
 
 Route::get('/farm/map', [GuestController::class, 'index'])->name('farm.index');
-
+Route::get('/farm/{id}', [GuestController::class, 'show'])->name('farm.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

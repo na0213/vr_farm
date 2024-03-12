@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Farm;
 
 class GuestController extends Controller
 {
@@ -11,7 +12,9 @@ class GuestController extends Controller
      */
     public function index()
     {
-        return view('farm.map');
+        $farms = Farm::where('is_published', 1)->get();
+
+        return view('farm.map', compact('farms'));
     }
 
     /**
@@ -30,12 +33,10 @@ class GuestController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $farm = Farm::findOrFail($id);
+        return view('farm.show', compact('farm'));
     }
 
     /**

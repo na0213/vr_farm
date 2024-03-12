@@ -25,6 +25,7 @@ body {
     color: #502200;
     font-weight: bold;
     font-size: 25px;
+    border-radius: 50%;
 }
 .swiper-slide {
     width: 100%; /* Swiperスライドの幅を親要素の幅いっぱいに設定 */
@@ -198,6 +199,39 @@ h3 {
     height: 45%;
 }
 
+.appearance {
+    display: flex;
+    align-items: center;
+  }
+  .checkbox {
+    appearance: none;
+    height: 24px;
+    width: 24px;
+    margin: 4px;
+    border: 1px solid #8b98a5;
+    border-radius: 4px;
+  }
+  .checkbox:checked {
+    border: 1px solid #8b98a5;
+    background-color: #AFD9AD;
+  }
+  .checkbox:checked::before {
+    content: "";
+    display: block;
+    position: relative;
+    left: 7.4px;
+    top: 1px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+  }
+  .checkbox:focus-visible {
+    outline: 2px solid #AFD9AD;
+    outline-offset: 2px;
+  }
+
 @media (max-width:768px) {
     .box {
         flex-direction: column;
@@ -245,8 +279,7 @@ h3 {
 
 
 /* レスポンシブ */
-@media screen and (max-width: 479px) { /*ウィンドウ幅が最大479pxまでの場合に適用*/
-    
+@media screen and (max-width: 479px) { /*ウィンドウ幅が最大479pxまでの場合に適用*/   
     .slide-title {
         position: absolute;
         top: 80px; /* スライダーの上端からのオフセット */

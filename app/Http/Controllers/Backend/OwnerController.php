@@ -41,8 +41,9 @@ class OwnerController extends Controller
 
     public function show($id)
     {
-        $owner = Owner::findOrFail($id);
-        return view('backend.owners.show', compact('owner'));
+        $owner = Owner::with('farm')->findOrFail($id);
+        $farm = $owner->farm; // オーナーに紐づく牧場を取得
+        return view('backend.owners.show', compact('owner', 'farm'));
     }
 
     public function edit($id)

@@ -14,6 +14,10 @@ use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\KindController;
 use App\Http\Controllers\Backend\KeywordController;
 use App\Http\Controllers\Backend\OwnerController;
+use App\Http\Controllers\Backend\FarmController;
+use App\Http\Controllers\Backend\AnimalController;
+use App\Http\Controllers\Backend\StoreController;
+use App\Models\Animal;
 
 /*
 |--------------------------------------------------------------------------
@@ -107,5 +111,35 @@ Route::middleware('auth:admins')->group(function () {
         Route::get('/owners/{id}/edit', 'edit')->name('backend.owners.edit');
         Route::put('/owners/{id}', 'update')->name('backend.owners.update');
         Route::delete('/owners/{id}', 'destroy')->name('backend.owners.destroy');
+        });
+
+    Route::controller(FarmController::class)->group(function () {
+        Route::get('/farms', 'index')->name('backend.farms.index');
+        Route::get('/farms/create/{owner}', 'create')->name('backend.farms.create');
+        Route::post('/farms/{owner}', 'store')->name('backend.farms.store');
+        Route::get('/farms/{id}/show', 'show')->name('backend.farms.show');
+        Route::get('/farms/{id}/edit', 'edit')->name('backend.farms.edit');
+        Route::put('/farms/{id}', 'update')->name('backend.farms.update');
+        Route::delete('/farms/{id}', 'destroy')->name('backend.farms.destroy');
+        });
+
+    Route::controller(AnimalController::class)->group(function () {
+        Route::get('/animals', 'index')->name('backend.animals.index');
+        Route::get('/animals/create', 'create')->name('backend.animals.create');
+        Route::post('/animals', 'store')->name('backend.animals.store');
+        Route::get('/animals/{id}/show', 'show')->name('backend.animals.show');
+        Route::get('/animals/{id}/edit', 'edit')->name('backend.animals.edit');
+        Route::put('/animals/{id}', 'update')->name('backend.animals.update');
+        Route::delete('/animals/{id}', 'destroy')->name('backend.animals.destroy');
+        });
+
+    Route::controller(StoreController::class)->group(function () {
+        Route::get('/stores', 'index')->name('backend.stores.index');
+        Route::get('/stores/create', 'create')->name('backend.stores.create');
+        Route::post('/stores', 'store')->name('backend.stores.store');
+        Route::get('/stores/{id}/show', 'show')->name('backend.stores.show');
+        Route::get('/stores/{id}/edit', 'edit')->name('backend.stores.edit');
+        Route::put('/stores/{id}', 'update')->name('backend.stores.update');
+        Route::delete('/stores/{id}', 'destroy')->name('backend.stores.destroy');
         });
 });
