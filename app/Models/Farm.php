@@ -5,7 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Owner;
+use App\Models\FarmStore;
+use App\Models\FarmImage;
+use App\Models\StoreImage;
 use App\Models\Keyword;
+use App\Models\Kind;
 
 class Farm extends Model
 {
@@ -17,23 +21,31 @@ class Farm extends Model
         'vr',
         'prefecture',
         'address',
-        'kind_id',
-        'keyword_id',
         'farm_info',
-        'url',
     ];
 
     public function Owner()
     {
         return $this->belongsTo(Owner::class);
     }
-    public function Kind()
+    public function stores()
     {
-        return $this->belongsTo(Kind::class, 'kind_id');
+        return $this->hasMany(FarmStore::class);
     }
-    public function Keyword()
+    public function kinds()
     {
-        return $this->belongsTo(Keyword::class, 'keyword_id');
+        return $this->belongsToMany(Kind::class, 'farm_kind');
     }
-
+    public function keywords()
+    {
+        return $this->belongsToMany(Keyword::class, 'farm_keyword');
+    }
+    public function images()
+    {
+        return $this->hasMany(FarmImage::class);
+    }
+    public function storeimages()
+    {
+        return $this->hasMany(StoreImage::class);
+    }
 }

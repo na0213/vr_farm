@@ -18,19 +18,11 @@ return new class extends Migration
             ->onUpdate('cascade')
             ->onDelete('cascade');
             $table->string('farm_name');
-            $table->string('vr')->nullable();
+            $table->text('vr')->nullable();
             $table->string('prefecture');
             $table->string('address');
-            $table->foreignId('kind_id')
-            ->constrained('kinds', 'id')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
-            $table->foreignId('keyword_id')
-            ->constrained('keywords', 'id')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
-            $table->text('farm_info')->nullable();
-            $table->text('url')->nullable();
+            $table->longText('farm_info')->nullable();
+            $table->boolean('is_published')->default(true);
             $table->datetime('created_at');
             $table->datetime('updated_at');
             $table->softDeletes();

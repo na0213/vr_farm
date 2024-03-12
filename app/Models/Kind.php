@@ -14,8 +14,8 @@ class Kind extends Model
         'kind',
     ];
 
-    public function farm()
+    public function farms()
     {
-        return $this->hasOne(Farm::class);
+        return $this->belongsToMany(Farm::class, 'farm_kind');
     }
 }

@@ -14,8 +14,8 @@ class Keyword extends Model
         'keyword',
     ];
 
-    public function farm()
+    public function farms()
     {
-        return $this->hasOne(Farm::class);
+        return $this->belongsToMany(Farm::class, 'farm_keyword');
     }
 }

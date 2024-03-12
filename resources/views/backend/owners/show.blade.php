@@ -27,9 +27,10 @@
                 </div>
             </div>
 
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <div class="relative mt-5 overflow-x-auto shadow-md sm:rounded-lg">
                 <table class="w-11/12 mx-auto mb-10 text-sm text-left text-gray-500 dark:text-gray-400">
                   <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <div class="p-2">牧場管理</div>
                       <tr>
                           <th scope="col" class="px-6 py-2 whitespace-nowrap">
                             ID
@@ -45,31 +46,43 @@
                       </tr>
                   </thead>
                   <tbody>
-                    {{-- @forelse ($owners as $owner) --}}
+                    @if($farm)
+                      <div class="flex justify-between">
+                        <p class="p-5">牧場</p>
+                        <a href="{{ route('admin.backend.farms.create', ['owner' => $owner->id]) }}">
+                            <p class="p-5">新規登録</p>
+                        </a>
+                      </div>
                       <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                           <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{-- {{ $owner->id }} --}}
+                            {{ $farm->id }}
                           </td>
                           <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{-- {{ $owner->name }} --}}
+                            {{ $farm->farm_name }}
                           </td>
                           <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                              {{-- <a href="{{ route('admin.backend.owners.edit', $owner->id) }}" class="px-3 py-2 text-black bg-detail text-md hover:bg-yellow-500">編集</a> --}}
+                              <a href="{{ route('admin.backend.farms.edit', $farm->id) }}" class="px-3 py-2 text-black bg-detail text-md hover:bg-yellow-500">編集</a>
                           </td>
                           <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{-- <a href="{{ route('admin.backend.owners.show', $owner->id) }}" class="px-3 py-2 text-black bg-detail text-md hover:bg-yellow-500">詳細</a> --}}
-                        </td>
+                            <a href="{{ route('admin.backend.farms.show', ['id' => $farm->id]) }}" class="px-3 py-2 text-black bg-detail text-md hover:bg-yellow-500">詳細</a>
+                          </td>
                       </tr>
-                      {{-- @empty --}}
-                      <p class="p-5">まだ登録されていません。</p>
-                  {{-- @endforelse --}}
+                      @else
+                      <div class="flex justify-between">
+                        <p class="p-5">まだ登録されていません。</p>
+                        <a href="{{ route('admin.backend.farms.create', ['owner' => $owner->id]) }}">
+                            <p class="p-5">新規登録</p>
+                        </a>
+                      </div>
+                    @endif
                   </tbody>
                 </table>
             </div>
 
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <div class="relative mt-5 overflow-x-auto shadow-md sm:rounded-lg">
                 <table class="w-11/12 mx-auto mb-10 text-sm text-left text-gray-500 dark:text-gray-400">
                   <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <div class="p-2">動物管理</div>
                       <tr>
                           <th scope="col" class="px-6 py-2 whitespace-nowrap">
                             ID
@@ -101,15 +114,19 @@
                         </td>
                       </tr>
                       {{-- @empty --}}
-                      <p class="p-5">まだ登録されていません。</p>
+                      <div class="flex justify-between">
+                        <p class="p-5">まだ登録されていません。</p>
+                        <p class="p-5">新規登録</p>
+                      </div>
                   {{-- @endforelse --}}
                   </tbody>
                 </table>
             </div>
 
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <div class="relative mt-5 overflow-x-auto shadow-md sm:rounded-lg">
                 <table class="w-11/12 mx-auto mb-10 text-sm text-left text-gray-500 dark:text-gray-400">
                   <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <div class="p-2">店舗・商品管理</div>
                       <tr>
                           <th scope="col" class="px-6 py-2 whitespace-nowrap">
                             ID
@@ -141,7 +158,10 @@
                         </td>
                       </tr>
                       {{-- @empty --}}
-                      <p class="p-5">まだ登録されていません。</p>
+                      <div class="flex justify-between">
+                        <p class="p-5">まだ登録されていません。</p>
+                        <p class="p-5">新規登録</p>
+                      </div>
                   {{-- @endforelse --}}
                   </tbody>
                 </table>
