@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Farm;
+use App\Models\Kind;
+use App\Models\Keyword;
 
 class GuestController extends Controller
 {
@@ -12,7 +14,7 @@ class GuestController extends Controller
      */
     public function index()
     {
-        $farms = Farm::where('is_published', 1)->get();
+        $farms = Farm::where('is_published', 1)->with('keywords')->get();
 
         return view('farm.map', compact('farms'));
     }

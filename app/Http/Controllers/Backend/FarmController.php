@@ -6,11 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Owner;
 use App\Models\Farm;
+use App\Models\FarmImage;
 use App\Models\Kind;
 use App\Models\Keyword;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic as Image;
+// use App;
+// use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class FarmController extends Controller
 {
@@ -87,11 +91,12 @@ class FarmController extends Controller
 
     public function show($id)
     {
+        $owner = Owner::with('farm')->findOrFail($id);
         $farm = Farm::findOrFail($id);
         $kinds = Kind::all();
         $keywords = Keyword::all();
     
-        return view('backend.farms.show', compact('farm', 'kinds', 'keywords'));
+        return view('backend.farms.show', compact('owner', 'farm', 'kinds', 'keywords'));
     }
 
     public function edit(string $id)
@@ -148,7 +153,33 @@ class FarmController extends Controller
         }
     }
     
+    // image
+    public function images($id)
+    {
+        $owner = Owner::with('farm')->findOrFail($id);
+        $farm = Farm::findOrFail($id);
+        return view('backend.farms.image', compact('owner', 'farm'));
+    }
 
+    public function storeImages(Request $request, $id)
+    {
+     $farm = Farm::findOrFail($id);
+    //  dd($request->all());
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $index => $image) {
+            $path = $image->storePublicly('farms', ['disk' => 's3', 'visibility' => 'public']);
+            $url = Storage::disk('s3')->url($path);
+
+            FarmImage::create([
+                'farm_id' => $farm->id,
+                'image_path' => $url,
+                'image_order' => $index + 1,
+            ]);
+        }
+    }
+
+        return redirect()->route('admin.backend.farms.images', $farm->id)->with('success', '画像が正常にアップロードされました。');
+    }
     /**
      * Remove the specified resource from storage.
      */

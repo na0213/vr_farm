@@ -18,9 +18,10 @@ return new class extends Migration
             ->onUpdate('cascade')
             ->onDelete('cascade');
             $table->string('farm_name');
+            $table->string('catchcopy')->nullable();
             $table->text('vr')->nullable();
             $table->string('prefecture');
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->longText('farm_info')->nullable();
             $table->boolean('is_published')->default(true);
             $table->datetime('created_at');

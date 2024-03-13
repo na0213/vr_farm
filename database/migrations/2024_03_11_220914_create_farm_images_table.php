@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('farm_id')->constrained()->onDelete('cascade');
             $table->string('image_path');
+            $table->unsignedSmallInteger('image_order')->nullable();
             $table->datetime('created_at')->nullable();
             $table->datetime('updated_at')->nullable();
         });

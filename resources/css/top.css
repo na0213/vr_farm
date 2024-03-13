@@ -1,15 +1,15 @@
 body {
-    color: #261A1A;
+    color: #333333;
 }
 
 /* TOP 画像 */
 .swiper {
     overflow: hidden;
-    border-radius: 5%;
+    /* border-radius: 5%; */
 }
 
 .swiper-wrapper {
-    border-radius: 5%;
+    /* border-radius: 5%; */
 }
 
 .slide-title {
@@ -18,27 +18,26 @@ body {
     left: 10px; /* スライダーの右端からのオフセット */
     width: 30%;
     padding: 30px;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(252, 250, 250, 0.8);
     text-align: center;
     box-sizing: border-box;
     z-index: 10; /* スライダーの上に表示させる */
-    color: #502200;
-    font-weight: bold;
+    /* color: #502200; */
+    /* font-weight: bold; */
     font-size: 25px;
-    border-radius: 50%;
+    /* border-radius: 50%; */
 }
 .swiper-slide {
     width: 100%; /* Swiperスライドの幅を親要素の幅いっぱいに設定 */
     display: flex; /* Flexboxを使用してアイテムを右寄せに */
     justify-content: flex-end; /* Flexboxアイテムをコンテナの終端（右端）に配置 */
     overflow: hidden; /* 子要素がborder-radiusの範囲外に出た時に隠す */
-    border-radius: 5%;
+    /* border-radius: 5%; */
 }
 .swiper-img-wrapper {
     width: 80%; /* 画像の幅（コンテナの幅）を調整 */
     height: auto; /* 画像の高さを自動で調整 */
     overflow: hidden; /* コンテナ内のはみ出しを防ぐ */
-    border-radius: 5%; /* コンテナに丸みを加える */
     display: flex; /* Flexboxを使用して配置を調整 */
     justify-content: flex-end; /* コンテナ内のアイテム（画像）を右に寄せる */
 }
@@ -83,7 +82,7 @@ body {
 	width: 200%;
 	height: 200%;
 	content: "";
-	background-image: linear-gradient(80deg, #ede4cd 0%, #f8f4e6 50%, #fff 100%);
+	background-image: linear-gradient(80deg, #efe9dc 0%, #f8f4e6 50%, #fff 100%);
 	animation: wave-anime linear 10s infinite;
 }
 @keyframes wave-anime {
@@ -112,14 +111,15 @@ body {
     z-index: 1; /* 追加: スタック順序を最上面に */
     text-align: center;
     margin-top: 20px;
-    color: #502200;
-    font-weight: bold;
+    color: #333333;
+    /* font-weight: bold; */
     font-size: 45px;
     line-height: 50px;
+    letter-spacing: 0.1em;
 }
 .story_text {
     padding: 50px;
-    font-size: 22px;
+    font-size: 20px;
 }
 
 /* 牛のアイコン */
@@ -232,6 +232,37 @@ h3 {
     outline-offset: 2px;
   }
 
+  .animal {
+    width: 10%;
+    margin-right: 0;
+    margin-left: auto;
+    display: flex;
+  }
+
+  .line {
+    text-decoration: underline;
+    text-decoration-color: orange; /* 下線の色を赤に設定 */
+  }
+
+/* image */
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.image-preview, .image-input {
+    flex: 1; /* フレックスアイテムの幅を均等に */
+    text-align: center; /* 中央揃え */
+    margin: 0 10px; /* 余白設定 */
+}
+.image-preview img {
+    width: auto;
+    height: 100px; /* 高さを指定してアスペクト比を保つ */
+    object-fit: cover; /* 画像のアスペクト比を保ちつつ、コンテナに合わせてサイズ調整 */
+}
+
+/*  */
 @media (max-width:768px) {
     .box {
         flex-direction: column;
@@ -275,6 +306,38 @@ h3 {
         width: 80%;
         height: 45%;
     }
+
+    /* farm */
+    .top-title {
+        position: absolute;
+        top: 14%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      
+      .top-content {
+        color: #777;
+        text-transform: uppercase;
+      }
+      
+      .farm-name {
+        display: block;
+        font-size: 1.7rem;
+        font-weight: 130;
+        letter-spacing: 20px;
+        animation: moveInLeft 1s ease-out;
+      }
+      
+      .farm-address {
+        font-family: sans-serif;
+        display: block;
+        font-size: 1.1rem;
+        font-weight: bold;
+        text-align: center;
+        letter-spacing: 31px;
+        color: hotpink;
+        animation: moveInRight 1s ease-out;
+      }
 }
 
 

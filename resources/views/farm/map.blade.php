@@ -6,17 +6,35 @@
         @foreach ($farms as $farm)
         <a href="{{ route('farm.show', ['id' => $farm->id]) }}">
             <div class="max-w-sm rounded overflow-hidden shadow-lg">
-                <img class="w-full" src="../img/a1.JPG" alt="Sunset in the mountains">
-                <div class="px-6 py-4">
+                <img class="w-full" src="../storage/top1.jpg" alt="Sunset in the mountains">
+                <div class="px-8 py-4">
+                    <div class="flex animal">
+                        @foreach ($farm->kinds as $kind)
+                            @switch($kind->id)
+                                @case(1)
+                                    <img src="../storage/cow.png" alt="Cow">
+                                    @break
+                                @case(2)
+                                    <img src="../storage/ushi.png" alt="Ushi">
+                                    @break
+                                @case(3)
+                                    <img src="../storage/bird.png" alt="Bird">
+                                    @break
+                                @case(4)
+                                    <img src="../storage/pig.png" alt="Pig">
+                                    @break
+                            @endswitch
+                        @endforeach
+                    </div>
                 <div class="font-bold text-xl mb-2">{{ $farm->farm_name }}</div>
                 <p class="text-gray-700 text-base">
                     {{ $farm->prefecture }}
                 </p>
                 </div>
                 <div class="px-6 pt-4 pb-2">
-                <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
-                <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
-                <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
+                    @foreach ($farm->keywords as $keyword)
+                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{{ $keyword->keyword }}</span>
+                    @endforeach
                 </div>
             </div>
         </a>

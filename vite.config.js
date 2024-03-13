@@ -7,6 +7,7 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/css/top.css',
+                'resources/css/farm.css',
                 'resources/js/app.js',
                 'resources/js/swiper.js',
             ],

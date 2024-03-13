@@ -18,6 +18,7 @@ class Farm extends Model
     protected $fillable = [
         'owner_id',
         'farm_name',
+        'catchcopy',
         'vr',
         'prefecture',
         'address',
@@ -34,11 +35,11 @@ class Farm extends Model
     }
     public function kinds()
     {
-        return $this->belongsToMany(Kind::class, 'farm_kind');
+        return $this->belongsToMany(Kind::class, 'farm_kind', 'farm_id', 'kind_id');
     }
     public function keywords()
     {
-        return $this->belongsToMany(Keyword::class, 'farm_keyword');
+        return $this->belongsToMany(Keyword::class, 'farm_keyword', 'farm_id', 'keyword_id');
     }
     public function images()
     {

@@ -121,6 +121,9 @@ Route::middleware('auth:admins')->group(function () {
         Route::get('/farms/{id}/edit', 'edit')->name('backend.farms.edit');
         Route::put('/farms/{id}', 'update')->name('backend.farms.update');
         Route::delete('/farms/{id}', 'destroy')->name('backend.farms.destroy');
+        Route::get('/farms/{id}/images', 'images')->name('backend.farms.images');
+        Route::post('/farms/{id}/images', 'storeImages')->name('backend.farms.storeImages');
+
         });
 
     Route::controller(AnimalController::class)->group(function () {
