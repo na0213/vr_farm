@@ -2,13 +2,23 @@
     <x-slot name="header">
         <div class="flex">
             <a href="{{ route('admin.backend.owners.show', $owner->id) }}">
-                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    オーナー
+                <h2 class="text-xl text-gray-600 dark:text-gray-200 leading-tight">
+                    オーナー詳細
                 </h2>
             </a>
-            <h2 class="pl-10 font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                牧場登録
+            <h2 class="line pl-10 text-xl text-gray-900 dark:text-gray-200 leading-tight">
+                牧場編集
             </h2>
+            <a href="{{ route('admin.backend.farms.images', ['id' => $farm->id]) }}">
+                <h2 class="pl-10 text-xl text-gray-600 dark:text-gray-200 leading-tight">
+                    画像登録
+                </h2>
+            </a>
+            <a href="{{ route('admin.backend.farms.show', ['id' => $farm->id]) }}">
+                <h2 class="pl-10 text-xl text-gray-600 dark:text-gray-200 leading-tight">
+                    プレビュー
+                </h2>
+            </a>
         </div>
     </x-slot>
 
@@ -38,10 +48,11 @@
                     <div class="p-2 w-4/5 mx-auto">
                         <div class="relative">
                         <label for="kind" class="leading-7 text-sm text-gray-600">動物種類</label>
-                        <div class="flex ">
+                        <div class="flex">
                             @foreach($kinds as $kind)
                                 <div class='appearance'>
                                     <input type='checkbox' id='kind{{ $kind->id }}' name='kinds[]' value="{{ $kind->id }}" class='checkbox' {{ in_array($kind->id, $selected_kinds) ? 'checked' : '' }}>
+                                    {{ $kind->kind }}
                                 </div>
                             @endforeach
                         </div>
@@ -52,10 +63,11 @@
                     <div class="p-2 w-4/5 mx-auto">
                         <div class="relative">
                         <label for="kind" class="leading-7 text-sm text-gray-600">牧場の特徴</label>
-                        <div class="flex ">
+                        <div class="flex">
                             @foreach($keywords as $keyword)
                                 <div class='appearance'>
                                     <input type='checkbox' id='kind{{ $keyword->id }}' name='keywords[]' value="{{ $keyword->id }}" class='checkbox' {{ in_array($keyword->id, $selected_keywords) ? 'checked' : '' }}>
+                                    {{ $keyword->keyword }}
                                 </div>
                             @endforeach
                         </div>
@@ -83,7 +95,6 @@
                         <div class="relative">
                         <label for="address" class="leading-7 text-sm text-gray-600">所在地：市町村以下</label>
                         <input type="text" id="address" name="address" value="{{ $farm->address }}" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                        {{ $farm->address }}
                         </div>
                     </div>
                 </div>

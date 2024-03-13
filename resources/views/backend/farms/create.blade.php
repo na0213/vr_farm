@@ -52,7 +52,7 @@
                     <div class="p-2 w-4/5 mx-auto">
                         <div class="relative">
                         <label for="kind" class="leading-7 text-sm text-gray-600">牧場の特徴</label>
-                        <div class="flex ">
+                        <div class="flex">
                             @foreach($keywords as $keyword)
                                 <div class='appearance'>
                                     <input type='checkbox' id='kind{{ $keyword->id }}' name='keywords[]' value="{{ $keyword->id }}" class='checkbox' @if(is_array(old('keywords')) && in_array($keyword->id, old('keywords'))) checked @endif>

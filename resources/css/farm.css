@@ -1,0 +1,271 @@
+body {
+    color: #333333;
+}
+
+/* farm */
+.top-title {
+    position: absolute;
+      top: 13%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+  }
+  
+  .top-content {
+    color: #333333;
+    text-transform: uppercase;
+  }
+  
+  .farm-name {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 130;
+    letter-spacing: 20px;
+    animation: moveInLeft 1s ease-out;
+  }
+  
+  .farm-address {
+    font-family: sans-serif;
+    display: block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 31px;
+    color: #777;
+    animation: moveInRight 1s ease-out;
+  }
+
+  .farm-info {
+    color: #333333;
+  }
+  
+  /* rfarm */
+  .rtop-title {
+    position: absolute;
+    top: 14%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .rtop-content {
+    color: #333333;
+    text-transform: uppercase;
+  }
+  
+  .rfarm-name {
+    display: block;
+    font-size: 1.7rem;
+    font-weight: 130;
+    letter-spacing: 20px;
+    animation: moveInLeft 1s ease-out;
+  }
+  
+  .rfarm-address {
+    font-family: sans-serif;
+    display: block;
+    font-size: 1.1rem;
+    /* font-weight: bold; */
+    text-align: center;
+    letter-spacing: 31px;
+    color: #777;
+    animation: moveInRight 1s ease-out;
+  }
+  
+  @keyframes moveInLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(-100px);
+    }
+    
+    80% {
+      transform: translateX(10px);
+    }
+    
+    100% {
+      opacity: 1;
+      transform: translate(0);
+    }
+  }
+  
+  @keyframes moveInRight {
+    0% {
+      opacity: 0;
+      transform: translateX(100px);
+    }
+    
+    80% {
+      transform: translateX(-10px);
+    }
+    
+    100% {
+      opacity: 1;
+      transform: translate(0);
+    }
+  }
+
+
+/*  */
+@media (max-width:768px) {
+    .box {
+        flex-direction: column;
+    }
+    .box:nth-child(even) {
+        flex-direction: column;
+    }
+    .text {
+        text-align: center;
+    }
+    .box:nth-child(even) .text {
+        text-align: center;
+    }
+    .pict {
+        width:100%;
+        margin-left: 0;
+        text-align: center;
+    }
+    .box:nth-child(even) .pict {
+        margin-left: 0;
+        margin-right: 0%;
+    }
+    .pict img {
+        width:50%;
+        height:auto;
+    }
+    /* map */
+    .map-container {
+        position: relative;
+        width: 350px; /* 地図画像の幅に合わせる */
+        height: 350px; /* 地図画像の高さに合わせる */
+    }
+    .map-container img {
+        width: 100%;
+        height: auto;
+    }
+    .overlay {
+        position: absolute;
+        top: 75px;
+        right: 40px;
+        width: 80%;
+        height: 45%;
+    }
+
+    /* farm */
+    .top-title {
+        position: absolute;
+        top: 14%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      
+      .top-content {
+        color: #333333;
+        text-transform: uppercase;
+      }
+      
+      .farm-name {
+        display: block;
+        font-size: 1.7rem;
+        font-weight: 130;
+        letter-spacing: 20px;
+        animation: moveInLeft 1s ease-out;
+      }
+      
+      .farm-address {
+        font-family: sans-serif;
+        display: block;
+        font-size: 1.1rem;
+        /* font-weight: bold; */
+        text-align: center;
+        letter-spacing: 31px;
+        color: #777;
+        animation: moveInRight 1s ease-out;
+      }
+
+      /* rfarm */
+      .rtop-title {
+        position: absolute;
+        top: 15%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      
+      .rtop-content {
+        color: #333333;
+        text-transform: uppercase;
+      }
+      
+      .rfarm-name {
+        display: block;
+        font-size: 1.3rem;
+        font-weight: 130;
+        letter-spacing: 20px;
+        animation: moveInLeft 1s ease-out;
+      }
+      
+      .rfarm-address {
+        font-family: sans-serif;
+        display: block;
+        font-size: 0.9rem;
+        /* font-weight: bold; */
+        text-align: center;
+        letter-spacing: 20px;
+        color: #777;
+        animation: moveInRight 1s ease-out;
+      }
+}
+
+
+/* レスポンシブ */
+@media screen and (max-width: 479px) { /*ウィンドウ幅が最大479pxまでの場合に適用*/   
+    .slide-title {
+        position: absolute;
+        top: 80px; /* スライダーの上端からのオフセット */
+        left: 5px; /* スライダーの右端からのオフセット */
+        width: auto;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.8);
+        color: #fff;
+        text-align: center;
+        box-sizing: border-box;
+        z-index: 10; /* スライダーの上に表示させる */
+        color: #502200;
+        font-weight: bold;
+        font-size: 15px;
+        border-radius: 5%;
+    }
+    /* 牛のアイコン */
+    .fuwafuwa {
+        animation: fuwafuwa 3s ease-in-out infinite alternate;
+        background: url(../../public/storage/cow.PNG) no-repeat center center / 90px auto;
+        display: inline-block;
+        transition: 1.5s ease-in-out;
+        width: 70px;
+        height: 100px;
+        margin: 30px;
+    }
+    .farm_link {
+        padding: -50px;
+        font-size: 10px;
+        font-weight: bold;
+        color: #502200;
+        text-align: center;
+    }
+    /* ウェーブ */
+    .wave {
+        position: relative;
+        overflow: hidden;
+        /* box-shadow: 0 4px 20px rgba(0,0,0,.2); */
+        margin: 0 auto;
+        height: 450px;
+        border-radius: 5%;
+        background-color: rgba(255,255,255,.1);
+    }
+    .story {
+        font-size: 30px;
+    }
+    .story_text {
+        padding-top: 20px;
+        text-align: center;
+        font-size: 15px;
+        line-height: 30px;
+    }
+}

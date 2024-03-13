@@ -13,9 +13,9 @@ class ImageServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(ImageManager::class, function () {
-            return new ImageManager(new Driver());
-        });
+        // $this->app->singleton(ImageManager::class, function () {
+        //     return new ImageManager(new Driver());
+        // });
     }
 
     /**
