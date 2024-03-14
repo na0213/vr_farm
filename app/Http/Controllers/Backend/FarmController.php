@@ -12,7 +12,9 @@ use App\Models\Keyword;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManagerStatic as Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+use Illuminate\Support\Str;
 // use App;
 // use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -163,26 +165,45 @@ class FarmController extends Controller
 
     public function storeImages(Request $request, $id)
     {
-     $farm = Farm::findOrFail($id);
-    //  dd($request->all());
-    if ($request->hasFile('images')) {
-        foreach ($request->file('images') as $index => $image) {
-            $path = $image->storePublicly('farms', ['disk' => 's3', 'visibility' => 'public']);
-            $url = Storage::disk('s3')->url($path);
+        $farm = Farm::findOrFail($id);
+        //  dd($request->all());
+        $driver = new Driver();
+        $manager = new ImageManager($driver);
 
-            FarmImage::create([
-                'farm_id' => $farm->id,
-                'image_path' => $url,
-                'image_order' => $index + 1,
-            ]);
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $imageFile) {
+                // ファイルシステムから画像を読み込み
+                $image = $manager->read($imageFile->getRealPath());
+    
+                // ここで画像をリサイズ
+                $image->scale(width: 600);
+
+                // JPEG形式に変換し、品質を60に設定
+                // $image->toJpeg(60);
+            
+                // 一時ファイルへリサイズした画像を保存
+                $tempPath = tempnam(sys_get_temp_dir(), 'tempImage') . '.' . 'jpg';
+                $image->save($tempPath);
+    
+                // 一時ファイルをS3にアップロード
+                $fileName = 'farms/' . Str::uuid()->toString() . '.' . 'jpg';
+                Storage::disk('s3')->putFileAs('', new \Illuminate\Http\File($tempPath), $fileName, 'public');
+                $url = Storage::disk('s3')->url($fileName);
+    
+                // データベースに画像の情報を登録
+                FarmImage::create([
+                    'farm_id' => $farm->id,
+                    'image_path' => $url,
+                    'image_order' => $index + 1,
+                ]);
+    
+                // 一時ファイルを削除
+                @unlink($tempPath);
+            }
         }
-    }
-
         return redirect()->route('admin.backend.farms.images', $farm->id)->with('success', '画像が正常にアップロードされました。');
     }
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(string $id)
     {
         //
