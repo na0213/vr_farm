@@ -11,7 +11,7 @@
             </h2>
             <a href="{{ route('admin.backend.farms.images', ['id' => $farm->id]) }}">
                 <h2 class="pl-10 text-xl text-gray-600 dark:text-gray-200 leading-tight">
-                    画像登録
+                    画像編集
                 </h2>
             </a>
             <a href="{{ route('admin.backend.farms.show', ['id' => $farm->id]) }}">

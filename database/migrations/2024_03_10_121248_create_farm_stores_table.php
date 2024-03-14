@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('store_name')->nullable();
             $table->string('product_name')->nullable();
             $table->string('store_url')->nullable();
+            $table->string('info')->nullable();
             $table->datetime('created_at')->nullable();
             $table->datetime('updated_at')->nullable();
         });

@@ -2,14 +2,24 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <div class="flex justify-around m-5">
-        @foreach ($farms as $farm)
-        <a href="{{ route('farm.show', ['id' => $farm->id]) }}">
-            <div class="max-w-sm rounded overflow-hidden shadow-lg">
-                <img class="w-full" src="../storage/top1.jpg" alt="Sunset in the mountains">
-                <div class="px-8 py-4">
-                    <div class="flex animal">
-                        @foreach ($farm->kinds as $kind)
+    <div class="flex">
+        <div class="wrap">
+            <ul class="grid ">
+                @foreach ($farms as $farm)
+                    <li class="card rounded overflow-hidden shadow-lg">
+                    <a href="{{ route('farm.show', ['id' => $farm->id]) }}">
+                        @if($farm->farmImages->isNotEmpty())
+                            <figure class="farmimg">
+                                <img src="{{ $farm->farmImages->first()->image_path }}">
+                            </figure>
+                        @else
+                            <figure class="farmimg">
+                                <img src="../storage/noimage.jpg">
+                            </figure>
+                        @endif
+                        <p class="ttl">{{ $farm->farm_name }}</p>
+                        <p class="icon">
+                            @foreach ($farm->kinds as $kind)
                             @switch($kind->id)
                                 @case(1)
                                     <img src="../storage/cow.png" alt="Cow">
@@ -24,21 +34,21 @@
                                     <img src="../storage/pig.png" alt="Pig">
                                     @break
                             @endswitch
-                        @endforeach
-                    </div>
-                <div class="font-bold text-xl mb-2">{{ $farm->farm_name }}</div>
-                <p class="text-gray-700 text-base">
-                    {{ $farm->prefecture }}
-                </p>
-                </div>
-                <div class="px-6 pt-4 pb-2">
-                    @foreach ($farm->keywords as $keyword)
-                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{{ $keyword->keyword }}</span>
-                    @endforeach
-                </div>
-            </div>
-        </a>
-        @endforeach
+                            @endforeach
+                        </p>
+                        @if (!empty($farm->catchcopy))
+                            <p class="txt">{{ $farm->catchcop }}</p>
+                        @endif
+                        <p class="txt">
+                            @foreach ($farm->keywords as $keyword)
+                                <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{{ $keyword->keyword }}</span>
+                            @endforeach
+                        </p>
+                    </a>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
     </div>
     <div class="map-container">
         <div class="overlay" style="background: url('{{ asset('../storage/comingsoon.png') }}') no-repeat center center; background-size: cover; opacity: 0.9;"></div>

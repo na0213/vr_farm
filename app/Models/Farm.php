@@ -41,7 +41,7 @@ class Farm extends Model
     {
         return $this->belongsToMany(Keyword::class, 'farm_keyword', 'farm_id', 'keyword_id');
     }
-    public function images()
+    public function farmImages()
     {
         return $this->hasMany(FarmImage::class);
     }

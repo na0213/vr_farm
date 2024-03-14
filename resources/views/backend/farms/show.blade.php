@@ -6,7 +6,7 @@
                 オーナー詳細
             </h2>
         </a>
-        <a href="{{ route('admin.backend.farms.edit', $farm->id) }}">
+        {{-- <a href="{{ route('admin.backend.farms.edit', $farm->id) }}">
           <h2 class="pl-10 text-xl text-gray-900 dark:text-gray-200 leading-tight">
               牧場登録
           </h2>
@@ -20,7 +20,7 @@
             <h2 class="pl-10 text-xl text-gray-600 dark:text-gray-200 leading-tight">
                 プレビュー
             </h2>
-        </a>
+        </a> --}}
     </div>
   </x-slot>
 
