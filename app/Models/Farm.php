@@ -21,6 +21,7 @@ class Farm extends Model
         'farm_name',
         'catchcopy',
         'vr',
+        'theme',
         'prefecture',
         'address',
         'farm_info',

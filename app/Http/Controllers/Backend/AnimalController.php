@@ -76,35 +76,82 @@ class AnimalController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-    
     public function edit($id)
     {
-        $animal = Animal::findOrFail($id);
+        $animal = Animal::with('farm.owner')->findOrFail($id);
+        $owner = optional($animal->farm)->owner;
     
-        // 必要に応じて他のデータも取得してビューに渡す
-        return view('backend.animals.edit', compact('animal'));
+        return view('backend.animals.edit', compact('animal', 'owner'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'animal_name' => 'required|string|max:255',
+            'animal_info' => 'required|string',
+            'animal_image' => 'nullable|image|max:1024', //1MBまで
+        ]);
+    
+        $manager = new ImageManager(new Driver());
+
+        try {
+            DB::beginTransaction();
+    
+            $animal = Animal::findOrFail($id);
+            $animal->animal_name = $validated['animal_name'];
+            $animal->animal_info = $validated['animal_info'];
+
+            if ($request->hasFile('animal_image')) {
+                // 既存の画像をS3から削除
+                if ($animal->animal_image) {
+                    $existingImagePath = parse_url($animal->animal_image, PHP_URL_PATH);
+                    Storage::disk('s3')->delete($existingImagePath);
+                }
+    
+                // 新しい画像を処理
+                $image = $manager->read($request->file('animal_image')->getPathName());
+                $image->scale(width: 300);
+                $tempPath = tempnam(sys_get_temp_dir(), 'animalImage') . '.jpg';
+                $image->toPng()->save($tempPath);
+    
+                // S3にアップロード
+                $fileName = 'animal_images/' . uniqid() . '.jpg';
+                Storage::disk('s3')->put($fileName, file_get_contents($tempPath), 'public');
+                $url = Storage::disk('s3')->url($fileName);
+    
+                // 一時ファイルを削除
+                @unlink($tempPath);
+    
+                // データベースを更新
+                $animal->animal_image = $url;
+            }
+
+            $animal->save();
+    
+    
+            DB::commit();
+    
+            return redirect()->route('admin.backend.animals.create', ['farm' => $animal->farm->id])
+                ->with('message', '情報が更新されました');
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error($e->getMessage());
+            return back()->withInput()->withErrors(['error' => '更新に失敗しました。']);
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        $animal = Animal::findOrFail($id);
+        $owner = $animal->farm->owner; // $farmに紐づく$ownerを取得
+        // S3から画像を削除
+        if ($animal->animal_image) {
+            Storage::disk('s3')->delete(parse_url($animal->animal_image, PHP_URL_PATH));
+        }
+    
+        // データベースから削除
+        $animal->delete();
+    
+        return redirect()->route('admin.backend.owners.show', ['id' => $owner->id])->with('success', '動物が削除されました。');
     }
 }

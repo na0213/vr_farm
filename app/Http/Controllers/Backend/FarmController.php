@@ -77,7 +77,7 @@ class FarmController extends Controller
             // トランザクションコミット
             DB::commit();
     
-            return redirect()->route('admin.backend.farms.show', ['id' => $farm->id])
+            return redirect()->route('admin.backend.owners.show', ['id' => $ownerId])
                 ->with('message', '牧場が登録されました');
         } catch (\Exception $e) {
             // エラーが発生した場合はロールバック
@@ -114,9 +114,11 @@ class FarmController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'catchcopy' => 'nullable|string|max:500',
             'prefecture' => 'required|string|max:255',
             'address' => 'nullable|string',
             'vr' => 'nullable|string',
+            'theme' => 'nullable|string|max:255',
             'kinds' => 'nullable|array',
             'kinds.*' => 'exists:kinds,id',
             'keywords' => 'nullable|array',
@@ -130,9 +132,11 @@ class FarmController extends Controller
     
             $farm = Farm::findOrFail($id);
             $farm->farm_name = $validated['name'];
+            $farm->catchcopy = $validated['catchcopy'];
             $farm->prefecture = $validated['prefecture'];
             $farm->address = $validated['address'];
             $farm->vr = $validated['vr'];
+            $farm->theme = $validated['theme'];
             $farm->farm_info = $request->input('editor1'); // CKEditor からの入力
             $farm->is_published = $validated['is_published'];
             $farm->save();
@@ -143,7 +147,7 @@ class FarmController extends Controller
     
             DB::commit();
     
-            return redirect()->route('admin.backend.farms.show', ['id' => $farm->id])
+            return redirect()->route('admin.backend.owners.show', ['id' => $farm->owner_id])
                 ->with('message', '牧場の情報が更新されました');
         } catch (\Exception $e) {
             DB::rollback();
@@ -242,7 +246,7 @@ class FarmController extends Controller
             // 一時ファイルを削除
             @unlink($tempPath);
     
-            return redirect()->route('admin.backend.farms.images', $farmId)->with('success', '画像が更新されました。');
+            return redirect()->route('admin.admin.backend.farms.editImages', ['farmId' => $farmId])->with('success', '画像が更新されました。');
         }
     }
     
@@ -250,11 +254,22 @@ class FarmController extends Controller
     {
         $image = FarmImage::findOrFail($imageId);
         
-        // ここで画像の削除処理を行う
-        // 例えば、ファイルをストレージから削除し、データベースからもレコードを削除
+        Storage::disk('s3')->delete(parse_url($image->image_path, PHP_URL_PATH));
+
+        // データベースから削除前に image_order を取得
+        $deletedOrder = $image->image_order;
+
+        // データベースから削除
+        $image->delete();
+
+        // 削除された画像より後の画像の順序を更新
+        FarmImage::where('farm_id', $farmId)
+                ->where('image_order', '>', $deletedOrder)
+                ->decrement('image_order');
     
-        return redirect()->route('backend.farms.images', $farmId)->with('success', '画像が削除されました。');
+        return redirect()->route('admin.admin.backend.farms.editImages', ['farmId' => $farmId])->with('success', '画像が削除されました。');
     }
+
     public function destroy(string $id)
     {
         //

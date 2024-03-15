@@ -9,16 +9,6 @@
             <h2 class="line pl-10 text-xl text-gray-900 dark:text-gray-200 leading-tight">
                 牧場編集
             </h2>
-            {{-- <a href="{{ route('admin.admin.backend.farms.editImages', ['farmId' => $farm->id]) }}">
-                <h2 class="pl-10 text-xl text-gray-600 dark:text-gray-200 leading-tight">
-                    画像編集
-                </h2>
-            </a>
-            <a href="{{ route('admin.backend.farms.show', ['id' => $farm->id]) }}">
-                <h2 class="pl-10 text-xl text-gray-600 dark:text-gray-200 leading-tight">
-                    プレビュー
-                </h2>
-            </a> --}}
         </div>
     </x-slot>
 
@@ -41,6 +31,14 @@
                         <div class="relative">
                         <label for="name" class="leading-7 text-sm text-gray-600">牧場名</label>
                         <input type="text" id="name" name="name" value="{{ $farm->farm_name }}" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                        </div>
+                    </div>
+                </div>
+                <div class="-m-2">
+                    <div class="p-2 w-4/5 mx-auto">
+                        <div class="relative">
+                        <label for="catchcopy" class="leading-7 text-sm text-gray-600">キャッチコピー</label>
+                        <input type="text" id="catchcopy" name="catchcopy" value="{{ $farm->catchcopy }}" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                         </div>
                     </div>
                 </div>
@@ -79,6 +77,14 @@
                         <div class="relative">
                         <label for="vr" class="leading-7 text-sm text-gray-600">VR</label>
                         <input type="text" id="vr" name="vr" value="{{ $farm->vr }}" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                        </div>
+                    </div>
+                </div>
+                <div class="-m-2">
+                    <div class="p-2 w-4/5 mx-auto">
+                        <div class="relative">
+                        <label for="theme" class="leading-7 text-sm text-gray-600">ツアーテーマ</label>
+                        <input type="text" id="theme" name="theme" value="{{ $farm->theme }}" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                         </div>
                     </div>
                 </div>
