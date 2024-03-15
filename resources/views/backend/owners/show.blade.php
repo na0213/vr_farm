@@ -30,7 +30,6 @@
             <div class="relative mt-5 overflow-x-auto shadow-md sm:rounded-lg">
                 <table class="w-11/12 mx-auto mb-10 text-sm text-left text-gray-500 dark:text-gray-400">
                   <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <div class="p-2">牧場管理</div>
                       <tr>
                           <th scope="col" class="px-6 py-2 whitespace-nowrap">
                             ID
@@ -38,22 +37,25 @@
                           <th scope="col" class="px-6 py-2 whitespace-nowrap">
                             牧場名</th>
                           <th scope="col" class="px-6 py-2 whitespace-nowrap">
-                            編集
+                            情報編集
                           </th>
                           <th scope="col" class="px-6 py-2 whitespace-nowrap">
-                            詳細
+                            画像編集
+                          </th>
+                          <th scope="col" class="px-6 py-2 whitespace-nowrap">
+                            プレビュー
                           </th>
                       </tr>
                   </thead>
                   <tbody>
                     @if($farm)
                       <div class="flex justify-between">
-                        <p class="p-5">牧場</p>
+                        <p class="p-5">【牧場管理】</p>
                         <a href="{{ route('admin.backend.farms.create', ['owner' => $owner->id]) }}">
                             <p class="p-5">新規登録</p>
                         </a>
                         <a href="{{ route('admin.backend.farms.images', ['id' => $farm->id]) }}">
-                          <p class="p-5">画像登録</p>
+                          <p class="p-5">新規画像登録</p>
                         </a>
                       </div>
                       <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -65,6 +67,9 @@
                           </td>
                           <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                               <a href="{{ route('admin.backend.farms.edit', $farm->id) }}" class="px-3 py-2 text-black bg-detail text-md hover:bg-yellow-500">編集</a>
+                          </td>
+                          <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <a href="{{ route('admin.admin.backend.farms.editImages', ['farmId' => $farm->id]) }}" class="px-3 py-2 text-black bg-detail text-md hover:bg-yellow-500">編集</a>
                           </td>
                           <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <a href="{{ route('admin.backend.farms.show', ['id' => $farm->id]) }}" class="px-3 py-2 text-black bg-detail text-md hover:bg-yellow-500">詳細</a>
@@ -85,33 +90,52 @@
             <div class="relative mt-5 overflow-x-auto shadow-md sm:rounded-lg">
                 <table class="w-11/12 mx-auto mb-10 text-sm text-left text-gray-500 dark:text-gray-400">
                   <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <div class="p-2">飼育管理</div>
                       <tr>
                           <th scope="col" class="px-6 py-2 whitespace-nowrap">
-                            情報編集
+                            ID
                           </th>
                           <th scope="col" class="px-6 py-2 whitespace-nowrap">
-                            画像編集
+                            タイトル
                           </th>
                           <th scope="col" class="px-6 py-2 whitespace-nowrap">
-                            詳細
+                            編集
                           </th>
                       </tr>
                   </thead>
                   <tbody>
-                      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        </td>
-                        <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        </td>
-                        <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        </td>
-                      </tr>
-                      <div class="flex justify-between">
-                        <p class="p-5">まだ登録されていません。</p>
+                    @if($farm)
+                    <div class="flex justify-between">
+                      <p class="p-5">【飼育管理】</p>
+                      <a href="{{ route('admin.backend.animals.create', ['farm' => $farm->id]) }}">
                         <p class="p-5">新規登録</p>
-                        <p class="p-5">画像登録</p>
-                      </div>
+                      </a>
+                    </div>
+                    @endif
+                    @if ($farm && $farm->animals->count() > 0)
+                      @foreach ($farm->animals as $animal)
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                          <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                              {{ $animal->id }}
+                          </td>
+                          <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                              {{ $animal->animal_name }}
+                          </td>
+                          <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <a href="{{ route('admin.backend.animals.edit', ['id' => $animal->id]) }}">編集</a>
+                          </td>
+                        </tr>
+                      @endforeach
+                    @else
+                    <tr>
+                      <td colspan="3" class="text-center py-4">
+                          @if ($farm)
+                              <a href="{{ route('admin.backend.animals.create', ['farm' => $farm->id]) }}">新規登録</a>
+                          @else
+                              Farmを登録してください。
+                          @endif
+                      </td>
+                  </tr>
+              @endif
                   </tbody>
                 </table>
             </div>
@@ -119,7 +143,7 @@
             <div class="relative mt-5 overflow-x-auto shadow-md sm:rounded-lg">
                 <table class="w-11/12 mx-auto mb-10 text-sm text-left text-gray-500 dark:text-gray-400">
                   <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <div class="p-2">店舗・商品管理</div>
+                    <div class="p-2">【店舗・商品管理】</div>
                       <tr>
                           <th scope="col" class="px-6 py-2 whitespace-nowrap">
                             ID
@@ -127,10 +151,10 @@
                           <th scope="col" class="px-6 py-2 whitespace-nowrap">
                             商品名</th>
                           <th scope="col" class="px-6 py-2 whitespace-nowrap">
-                            編集
+                            情報編集
                           </th>
                           <th scope="col" class="px-6 py-2 whitespace-nowrap">
-                            詳細
+                            画像編集
                           </th>
                       </tr>
                   </thead>
@@ -154,6 +178,7 @@
                       <div class="flex justify-between">
                         <p class="p-5">まだ登録されていません。</p>
                         <p class="p-5">新規登録</p>
+                        <p class="p-5">新規画像登録</p>
                       </div>
                   {{-- @endforelse --}}
                   </tbody>

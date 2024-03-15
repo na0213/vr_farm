@@ -9,7 +9,7 @@
             <h2 class="line pl-10 text-xl text-gray-900 dark:text-gray-200 leading-tight">
                 牧場編集
             </h2>
-            {{-- <a href="{{ route('admin.admin.backend.farms.editImages', ['farmId' => $farm->id]) }}">
+            <a href="{{ route('admin.admin.backend.farms.editImages', ['farmId' => $farm->id]) }}">
                 <h2 class="pl-10 text-xl text-gray-600 dark:text-gray-200 leading-tight">
                     画像編集
                 </h2>
@@ -18,7 +18,7 @@
                 <h2 class="pl-10 text-xl text-gray-600 dark:text-gray-200 leading-tight">
                     プレビュー
                 </h2>
-            </a> --}}
+            </a>
         </div>
     </x-slot>
 

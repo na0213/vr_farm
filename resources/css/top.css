@@ -253,9 +253,12 @@ h3 {
 
 /* gridのスタイル */
 .grid {
-  display: grid;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+  /* display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 15px 2%;
+  gap: 15px 2%; */
 }
 .grid li {
   padding: 10px;
@@ -272,7 +275,7 @@ h3 {
 .farmimg {
     display: block;
     width: 100%; /* コンテナの幅に合わせて調整 */
-    height: 200px; /* 画像の高さを固定 */
+    height: 300px; /* 画像の高さを固定 */
     overflow: hidden; /* はみ出した画像は非表示 */
   }
   

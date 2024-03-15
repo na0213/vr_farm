@@ -20,14 +20,6 @@ use Illuminate\Support\Str;
 
 class FarmController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
     public function create($ownerId)
     {
         $owner = Owner::findOrFail($ownerId);
@@ -41,9 +33,11 @@ class FarmController extends Controller
         // バリデーション
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'catchcopy' => 'nullable|string|max:500',
             'prefecture' => 'required|string|max:255',
             'address' => 'nullable|string',
             'vr' => 'nullable|string',
+            'theme' => 'nullable|string|max:255',
             'kinds' => 'nullable|array',
             'kinds.*' => 'exists:kinds,id',
             'keywords' => 'nullable|array',
@@ -60,9 +54,11 @@ class FarmController extends Controller
             $farm = new Farm();
             $farm->owner_id = $owner->id;
             $farm->farm_name = $validated['name'];
+            $farm->catchcopy = $validated['catchcopy'];
             $farm->prefecture = $validated['prefecture'];
             $farm->address = $validated['address'];
             $farm->vr = $validated['vr'];
+            $farm->theme = $validated['theme'];
             $farm->farm_info = $request->input('editor1'); // CKEditor からの入力を直接取得
             $farm->is_published = $validated['is_published'];
 
@@ -105,12 +101,13 @@ class FarmController extends Controller
     {
         $owner = Owner::with('farm')->findOrFail($id);
         $farm = Farm::with(['kinds', 'keywords'])->findOrFail($id);
+        $images = $farm->iamges;
         $selected_kinds = $farm->kinds->pluck('id')->toArray();
         $selected_keywords = $farm->keywords->pluck('id')->toArray();
         $kinds = Kind::all();
         $keywords = Keyword::all();
 
-        return view('backend.farms.edit', compact('owner', 'farm', 'kinds', 'keywords', 'selected_kinds', 'selected_keywords'));
+        return view('backend.farms.edit', compact('owner', 'farm', 'images', 'kinds', 'keywords', 'selected_kinds', 'selected_keywords'));
     }
 
     public function update(Request $request, $id)
@@ -177,9 +174,6 @@ class FarmController extends Controller
     
                 // ここで画像をリサイズ
                 $image->scale(width: 600);
-
-                // JPEG形式に変換し、品質を60に設定
-                // $image->toJpeg(60);
             
                 // 一時ファイルへリサイズした画像を保存
                 $tempPath = tempnam(sys_get_temp_dir(), 'tempImage') . '.' . 'jpg';
@@ -204,6 +198,63 @@ class FarmController extends Controller
         return redirect()->route('admin.backend.farms.images', $farm->id)->with('success', '画像が正常にアップロードされました。');
     }
 
+    public function editImages($farmId)
+    {
+        // 'owner'リレーションを含めて$farmを取得
+        $farm = Farm::with('farmImages', 'owner')->findOrFail($farmId);
+        $owner = $farm->owner; // $farmに紐づく$ownerを取得
+        return view('backend.farms.edit-image', compact('farm', 'owner'));
+    }
+    
+    public function updateImage(Request $request, $farmId, $imageId)
+    {
+        $farm = Farm::findOrFail($farmId);
+        $image = FarmImage::findOrFail($imageId);
+        
+        // ファイルがアップロードされたか確認
+        if ($request->hasFile('image')) {
+            $imageFile = $request->file('image');
+
+            // 既存の画像をS3から削除
+            $existingImagePath = parse_url($image->image_path, PHP_URL_PATH);
+            Storage::disk('s3')->delete($existingImagePath);
+
+            // 新しい画像の処理
+            $driver = new Driver();
+            $manager = new ImageManager($driver);
+            $newImage = $manager->read($imageFile->getRealPath());
+            $newImage->scale(width: 600);
+
+            // 一時ファイルへリサイズした画像を保存
+            $tempPath = tempnam(sys_get_temp_dir(), 'tempImage') . '.' . 'jpg';
+            $newImage->save($tempPath);
+
+            // 一時ファイルをS3にアップロード
+            $fileName = 'farms/' . Str::uuid()->toString() . '.' . 'jpg';
+            Storage::disk('s3')->putFileAs('', new \Illuminate\Http\File($tempPath), $fileName, 'public');
+            $url = Storage::disk('s3')->url($fileName);
+
+            // データベースレコードを更新
+            $image->update([
+                'image_path' => $url,
+            ]);
+
+            // 一時ファイルを削除
+            @unlink($tempPath);
+    
+            return redirect()->route('admin.backend.farms.images', $farmId)->with('success', '画像が更新されました。');
+        }
+    }
+    
+    public function deleteImage($farmId, $imageId)
+    {
+        $image = FarmImage::findOrFail($imageId);
+        
+        // ここで画像の削除処理を行う
+        // 例えば、ファイルをストレージから削除し、データベースからもレコードを削除
+    
+        return redirect()->route('backend.farms.images', $farmId)->with('success', '画像が削除されました。');
+    }
     public function destroy(string $id)
     {
         //

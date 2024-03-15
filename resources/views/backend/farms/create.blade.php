@@ -36,6 +36,14 @@
                 <div class="-m-2">
                     <div class="p-2 w-4/5 mx-auto">
                         <div class="relative">
+                        <label for="catchcopy" class="leading-7 text-sm text-gray-600">キャッチコピー</label>
+                        <input type="text" id="catchcopy" name="catchcopy" value="{{ old('catchcopy')}}" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                        </div>
+                    </div>
+                </div>
+                <div class="-m-2">
+                    <div class="p-2 w-4/5 mx-auto">
+                        <div class="relative">
                         <label for="kind" class="leading-7 text-sm text-gray-600">動物種類</label>
                         <div class="flex ">
                             @foreach($kinds as $kind)
@@ -68,6 +76,14 @@
                         <div class="relative">
                         <label for="vr" class="leading-7 text-sm text-gray-600">VR</label>
                         <input type="text" id="vr" name="vr" value="{{ old('vr')}}" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                        </div>
+                    </div>
+                </div>
+                <div class="-m-2">
+                    <div class="p-2 w-4/5 mx-auto">
+                        <div class="relative">
+                        <label for="theme" class="leading-7 text-sm text-gray-600">ツアーテーマ</label>
+                        <input type="text" id="theme" name="theme" value="{{ old('theme')}}" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                         </div>
                     </div>
                 </div>
