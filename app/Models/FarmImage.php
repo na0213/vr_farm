@@ -13,6 +13,7 @@ class FarmImage extends Model
     protected $fillable = [
         'farm_id',
         'image_path',
+        'image_order',
     ];
 
     public function farm()

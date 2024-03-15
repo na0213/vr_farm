@@ -123,26 +123,54 @@ Route::middleware('auth:admins')->group(function () {
         Route::delete('/farms/{id}', 'destroy')->name('backend.farms.destroy');
         Route::get('/farms/{id}/images', 'images')->name('backend.farms.images');
         Route::post('/farms/{id}/images', 'storeImages')->name('backend.farms.storeImages');
+        Route::get('/farms/{farmId}/edit-images', 'editImages')->name('admin.backend.farms.editImages');
+        // Route::get('/farms/{farmId}/edit-image/{imageId}', 'editImage')->name('backend.farms.editImage');
+        Route::post('/farms/{farmId}/update-image/{imageId}', 'updateImage')->name('backend.farms.updateImage');
+        Route::delete('/farms/{farmId}/delete-image/{imageId}', 'deleteImage')->name('backend.farms.deleteImage');
 
         });
 
     Route::controller(AnimalController::class)->group(function () {
-        Route::get('/animals', 'index')->name('backend.animals.index');
-        Route::get('/animals/create', 'create')->name('backend.animals.create');
-        Route::post('/animals', 'store')->name('backend.animals.store');
+        Route::get('/animals/create/{farm}', 'create')->name('backend.animals.create');
+        Route::post('/animals/{farm}', 'store')->name('backend.animals.store');
         Route::get('/animals/{id}/show', 'show')->name('backend.animals.show');
         Route::get('/animals/{id}/edit', 'edit')->name('backend.animals.edit');
         Route::put('/animals/{id}', 'update')->name('backend.animals.update');
         Route::delete('/animals/{id}', 'destroy')->name('backend.animals.destroy');
+        Route::get('/animals/{id}/images', 'images')->name('backend.animals.images');
+        Route::post('/animals/{id}/images', 'Images')->name('backend.animals.Images');
+        Route::get('/animals/{animalId}/edit-images', 'editImages')->name('admin.backend.animals.editImages');
+        Route::post('/animals/{animalId}/update-image/{imageId}', 'updateImage')->name('backend.animals.updateImage');
+        Route::delete('/animals/{animalId}/delete-image/{imageId}', 'deleteImage')->name('backend.animals.deleteImage');
+
+        // Route::get('/animals', 'index')->name('backend.animals.index');
+        // Route::get('/animals/create', 'create')->name('backend.animals.create');
+        // Route::post('/animals', 'store')->name('backend.animals.store');
+        // Route::get('/animals/{id}/show', 'show')->name('backend.animals.show');
+        // Route::get('/animals/{id}/edit', 'edit')->name('backend.animals.edit');
+        // Route::put('/animals/{id}', 'update')->name('backend.animals.update');
+        // Route::delete('/animals/{id}', 'destroy')->name('backend.animals.destroy');
         });
 
     Route::controller(StoreController::class)->group(function () {
-        Route::get('/stores', 'index')->name('backend.stores.index');
-        Route::get('/stores/create', 'create')->name('backend.stores.create');
-        Route::post('/stores', 'store')->name('backend.stores.store');
+        Route::get('/stores/create/{owner}', 'create')->name('backend.stores.create');
+        Route::post('/stores/{owner}', 'store')->name('backend.stores.store');
         Route::get('/stores/{id}/show', 'show')->name('backend.stores.show');
         Route::get('/stores/{id}/edit', 'edit')->name('backend.stores.edit');
         Route::put('/stores/{id}', 'update')->name('backend.stores.update');
         Route::delete('/stores/{id}', 'destroy')->name('backend.stores.destroy');
+        Route::get('/stores/{id}/images', 'images')->name('backend.stores.images');
+        Route::post('/stores/{id}/images', 'Images')->name('backend.stores.Images');
+        Route::get('/stores/{storeId}/edit-images', 'editImages')->name('admin.backend.stores.editImages');
+        Route::post('/stores/{storeId}/update-image/{imageId}', 'updateImage')->name('backend.stores.updateImage');
+        Route::delete('/stores/{storeId}/delete-image/{imageId}', 'deleteImage')->name('backend.stores.deleteImage');
+
+        // Route::get('/stores', 'index')->name('backend.stores.index');
+        // Route::get('/stores/create', 'create')->name('backend.stores.create');
+        // Route::post('/stores', 'store')->name('backend.stores.store');
+        // Route::get('/stores/{id}/show', 'show')->name('backend.stores.show');
+        // Route::get('/stores/{id}/edit', 'edit')->name('backend.stores.edit');
+        // Route::put('/stores/{id}', 'update')->name('backend.stores.update');
+        // Route::delete('/stores/{id}', 'destroy')->name('backend.stores.destroy');
         });
 });

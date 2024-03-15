@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('farm_name');
             $table->string('catchcopy')->nullable();
             $table->text('vr')->nullable();
+            $table->text('theme')->nullable();
             $table->string('prefecture');
             $table->string('address')->nullable();
             $table->longText('farm_info')->nullable();

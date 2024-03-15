@@ -58,7 +58,7 @@
     </div>
 
     <script>
-    function previewImage(input, previewId) {
+            function previewImage(input, previewId) {
         const maxFileSize = 1 * 1024 * 1024; // 1MBをバイト単位で定義
 
         if (input.files && input.files[0]) {

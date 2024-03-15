@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Owner;
 use App\Models\FarmStore;
+use App\Models\Animal;
 use App\Models\FarmImage;
 use App\Models\StoreImage;
 use App\Models\Keyword;
@@ -32,6 +33,10 @@ class Farm extends Model
     public function stores()
     {
         return $this->hasMany(FarmStore::class);
+    }
+    public function animals()
+    {
+        return $this->hasMany(Animal::class);
     }
     public function kinds()
     {

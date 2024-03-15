@@ -37,7 +37,7 @@ class GuestController extends Controller
 
     public function show($id)
     {
-        $farm = Farm::findOrFail($id);
+        $farm = Farm::with('animals')->findOrFail($id);
         return view('farm.show', compact('farm'));
     }
 

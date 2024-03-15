@@ -2,7 +2,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <div class="flex">
+    {{-- <div class="flex"> --}}
         <div class="wrap">
             <ul class="grid ">
                 @foreach ($farms as $farm)
@@ -49,8 +49,8 @@
                 @endforeach
             </ul>
         </div>
-    </div>
-    <div class="map-container">
+    {{-- </div> --}}
+    {{-- <div class="map-container">
         <div class="overlay" style="background: url('{{ asset('../storage/comingsoon.png') }}') no-repeat center center; background-size: cover; opacity: 0.9;"></div>
 
         <img src="{{ asset('../storage/japanmap.jpg') }}" usemap="#ImageMap" alt="" />
@@ -197,7 +197,7 @@
                 <area shape="rect" coords="125,1027,217,1097" alt="" />
             </div>
         </map>
-    </div>
+    </div> --}}
 
 
 </x-top-layout>

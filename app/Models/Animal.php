@@ -21,4 +21,8 @@ class Animal extends Model
     {
         return $this->hasOne(Farm::class);
     }
+    public function links()
+    {
+        return $this->hasMany(AnimalLink::class);
+    }
 }
