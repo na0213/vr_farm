@@ -19,7 +19,7 @@ class Animal extends Model
 
     public function farm()
     {
-        return $this->hasOne(Farm::class);
+        return $this->belongsTo(Farm::class);
     }
     public function links()
     {

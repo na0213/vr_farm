@@ -9,25 +9,29 @@
         </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="m-5 py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @foreach ($farm->farmImages as $index => $image)
-            <form action="{{ route('admin.backend.farms.updateImage', ['farmId' => $farm->id, 'imageId' => $image->id]) }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('POST')
+            @foreach ($farm->farmImages->sortBy('image_order') as $index => $image)
                 <div class="flex-container mb-4">
                     <div class="image-input">
-                        <label for="upload_image{{ $index + 1 }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">画像 {{ $index + 1 }}<span class="text-red-600">（1MB以下）</span></label>
-                        <input type="file" name="image" id="upload_image{{ $index + 1 }}" accept="image/*" onchange="previewImage(this, 'preview_image{{ $index + 1 }}')" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
-                        <div class="image-preview mt-2" id="preview_image{{ $index + 1 }}">
+                        <label for="upload_image{{ $image->image_order }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">画像 {{ $image->image_order }}</label>
+                        <input type="file" name="image" id="upload_image{{ $image->image_order }}" accept="image/*" onchange="previewImage(this, 'preview_image{{ $image->image_order }}')" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
+                        <div class="image-preview mt-2" id="preview_image{{ $image->image_order }}">
                             <img src="{{ $image->image_path }}" alt="Image preview" style="width: 200px; height: auto;">
                         </div>
                     </div>
+                    <div class="p-2 w-full flex justify-around mt-4">
+                        <button type="submit" class="text-white bg-yellow-500 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-600 rounded text-lg">更新</button>
+                    </div>
                 </div>
+                {{-- 削除ボタン --}}
                 <div class="p-2 w-full flex justify-around mt-4">
-                    <button type="submit" class="text-white bg-yellow-500 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-600 rounded text-lg">更新</button>
+                    <form action="{{ route('admin.backend.farms.deleteImage', ['farmId' => $farm->id, 'imageId' => $image->id]) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" onclick="return confirm('本当に削除してよろしいですか？');" class="text-white bg-red-500 border-0 py-2 px-4 focus:outline-none hover:bg-red-600 rounded text-lg">削除</button>
+                    </form>
                 </div>
-            </form>
             @endforeach
 
             {{-- ここから新規登録 --}}

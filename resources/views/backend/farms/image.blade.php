@@ -6,21 +6,6 @@
                     オーナー詳細
                 </h2>
             </a>
-            {{-- <a href="{{ route('admin.backend.farms.edit', $farm->id) }}">
-                <h2 class="pl-10 text-xl text-gray-900 dark:text-gray-200 leading-tight">
-                    牧場登録
-                </h2>
-              </a>
-              <a href="{{ route('admin.backend.farms.images', ['id' => $farm->id]) }}">
-                <h2 class="pl-10 text-xl text-gray-600 dark:text-gray-200 leading-tight">
-                    画像
-                </h2>
-              </a>
-              <a href="{{ route('admin.backend.farms.show', ['id' => $farm->id]) }}">
-                  <h2 class="pl-10 text-xl text-gray-600 dark:text-gray-200 leading-tight">
-                      プレビュー
-                  </h2>
-              </a> --}}
         </div>
     </x-slot>
 
@@ -79,16 +64,5 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
-        // function previewImage(input, previewId) {
-        //     if (input.files && input.files[0]) {
-        //         var reader = new FileReader();
-        
-        //         reader.onload = function(e) {
-        //             document.getElementById(previewId).innerHTML = '<img src="' + e.target.result + '" alt="Image preview" style="width: 200px; height: auto;">';
-        //         };
-        
-        //         reader.readAsDataURL(input.files[0]);
-        //     }
-        // }
     </script>
 </x-admin-layout>
