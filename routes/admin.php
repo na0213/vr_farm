@@ -139,16 +139,24 @@ Route::middleware('auth:admins')->group(function () {
         });
 
     Route::controller(StoreController::class)->group(function () {
-        Route::get('/stores/create/{owner}', 'create')->name('backend.stores.create');
-        Route::post('/stores/{owner}', 'store')->name('backend.stores.store');
+        Route::get('/stores/create/{farm}', 'create')->name('backend.stores.create');
+        Route::post('/stores/{farm}', 'store')->name('backend.stores.store');
         Route::get('/stores/{id}/show', 'show')->name('backend.stores.show');
         Route::get('/stores/{id}/edit', 'edit')->name('backend.stores.edit');
         Route::put('/stores/{id}', 'update')->name('backend.stores.update');
         Route::delete('/stores/{id}', 'destroy')->name('backend.stores.destroy');
-        Route::get('/stores/{id}/images', 'images')->name('backend.stores.images');
-        Route::post('/stores/{id}/images', 'Images')->name('backend.stores.Images');
-        Route::get('/stores/{storeId}/edit-images', 'editImages')->name('admin.backend.stores.editImages');
-        Route::post('/stores/{storeId}/update-image/{imageId}', 'updateImage')->name('backend.stores.updateImage');
-        Route::delete('/stores/{storeId}/delete-image/{imageId}', 'deleteImage')->name('backend.stores.deleteImage');
         });
+    // Route::controller(StoreController::class)->group(function () {
+    //     Route::get('/stores/create/{owner}', 'create')->name('backend.stores.create');
+    //     Route::post('/stores/{owner}', 'store')->name('backend.stores.store');
+    //     Route::get('/stores/{id}/show', 'show')->name('backend.stores.show');
+    //     Route::get('/stores/{id}/edit', 'edit')->name('backend.stores.edit');
+    //     Route::put('/stores/{id}', 'update')->name('backend.stores.update');
+    //     Route::delete('/stores/{id}', 'destroy')->name('backend.stores.destroy');
+    //     Route::get('/stores/{id}/images', 'images')->name('backend.stores.images');
+    //     Route::post('/stores/{id}/images', 'Images')->name('backend.stores.Images');
+    //     Route::get('/stores/{storeId}/edit-images', 'editImages')->name('admin.backend.stores.editImages');
+    //     Route::post('/stores/{storeId}/update-image/{imageId}', 'updateImage')->name('backend.stores.updateImage');
+    //     Route::delete('/stores/{storeId}/delete-image/{imageId}', 'deleteImage')->name('backend.stores.deleteImage');
+    //     });
 });

@@ -11,18 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stores', function (Blueprint $table) {
+        Schema::create('masters', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('farm_id')
-            ->constrained('owners')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
-            $table->string('product_name');
-            $table->string('product_info')->nullable();
-            $table->string('product_link')->nullable();
-            $table->string('product_image')->nullable();
+            $table->string('name')->nullable();
+            $table->string('email')->nullable();
+            $table->string('password');
+            $table->rememberToken();
             $table->datetime('created_at');
             $table->datetime('updated_at');
+            $table->softDeletes();
         });
     }
 
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stores');
+        Schema::dropIfExists('masters');
     }
 };

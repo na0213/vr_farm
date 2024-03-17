@@ -3,9 +3,12 @@
         <div class="flex">
             <a href="{{ route('admin.backend.owners.show', $owner->id) }}">
                 <h2 class="text-xl text-gray-600 dark:text-gray-200 leading-tight">
-                    オーナー詳細
+                    戻る
                 </h2>
             </a>
+            <h2 class="pl-10 font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                画像編集
+            </h2>
         </div>
     </x-slot>
 

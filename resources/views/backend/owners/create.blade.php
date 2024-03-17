@@ -1,11 +1,6 @@
 <x-admin-layout>
     <x-slot name="header">
         <div class="flex">
-            <a href="{{ route('admin.backend.owners.index') }}">
-                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    一覧
-                </h2>
-            </a>
             <h2 class="pl-10 font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 オーナー登録
             </h2>
@@ -44,6 +39,11 @@
                     <button type="submit" class="text-white bg-yellow-500 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-600 rounded text-lg">登録</button>
                 </div>
             </form>
+            <div class="p-2 w-full flex justify-around mt-4">
+                <a href="{{ route('admin.backend.owners.index') }}">
+                <button type="button" class="text-white bg-gray-500 border-0 py-2 px-8 focus:outline-none hover:bg-gray-600 rounded text-lg">戻る</button>
+                </a>
+            </div>
         </div>
     </div>
 

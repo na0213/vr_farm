@@ -14,11 +14,12 @@ class Store extends Model
         'farm_id',
         'product_name',
         'product_info',
+        'product_link',
         'product_image',
     ];
 
     public function farm()
     {
-        return $this->hasOne(Farm::class);
+        return $this->belongsTo(Farm::class);
     }
 }
