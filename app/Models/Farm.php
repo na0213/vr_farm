@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Owner;
-use App\Models\FarmStore;
+use App\Models\Store;
 use App\Models\Animal;
 use App\Models\FarmImage;
 use App\Models\StoreImage;
@@ -33,7 +33,7 @@ class Farm extends Model
     }
     public function stores()
     {
-        return $this->hasMany(FarmStore::class);
+        return $this->hasMany(Store::class);
     }
     public function animals()
     {
