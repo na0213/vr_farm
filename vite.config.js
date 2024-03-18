@@ -8,6 +8,7 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/css/top.css',
                 'resources/css/farm.css',
+                'resources/css/owner.css',
                 'resources/js/app.js',
                 'resources/js/swiper.js',
             ],

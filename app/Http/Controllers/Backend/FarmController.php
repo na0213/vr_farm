@@ -90,7 +90,8 @@ class FarmController extends Controller
     public function show($id)
     {
         $owner = Owner::with('farm')->findOrFail($id);
-        $farm = Farm::findOrFail($id);
+        // $farm = $owner->farm;
+        // $farm = Farm::findOrFail($id);
         $kinds = Kind::all();
         $keywords = Keyword::all();
     
@@ -99,15 +100,24 @@ class FarmController extends Controller
 
     public function edit(string $id)
     {
-        $owner = Owner::with('farm')->findOrFail($id);
         $farm = Farm::with(['kinds', 'keywords'])->findOrFail($id);
-        $images = $farm->iamges;
+        $owner = $farm->owner; // 仮定すると、Farmモデルにはownerというリレーションが定義されている必要があります
+        $images = $farm->images; // タイプミスの修正: 'iamges' -> 'images'
         $selected_kinds = $farm->kinds->pluck('id')->toArray();
         $selected_keywords = $farm->keywords->pluck('id')->toArray();
         $kinds = Kind::all();
         $keywords = Keyword::all();
-
+    
         return view('backend.farms.edit', compact('owner', 'farm', 'images', 'kinds', 'keywords', 'selected_kinds', 'selected_keywords'));
+        // $owner = Owner::with('farm')->findOrFail($id);
+        // $farm = Farm::with(['kinds', 'keywords'])->findOrFail($id);
+        // $images = $farm->iamges;
+        // $selected_kinds = $farm->kinds->pluck('id')->toArray();
+        // $selected_keywords = $farm->keywords->pluck('id')->toArray();
+        // $kinds = Kind::all();
+        // $keywords = Keyword::all();
+
+        // return view('backend.farms.edit', compact('owner', 'farm', 'images', 'kinds', 'keywords', 'selected_kinds', 'selected_keywords'));
     }
 
     public function update(Request $request, $id)

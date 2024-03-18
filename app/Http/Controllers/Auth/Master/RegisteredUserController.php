@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Auth\Owner;
+namespace App\Http\Controllers\Auth\Master;
 
 use App\Http\Controllers\Controller;
-use App\Models\Owner;
+use App\Models\Master;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -20,7 +20,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.owner.register');
+        return view('auth.master.register');
     }
 
     /**
@@ -32,11 +32,11 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.Owner::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.Master::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = Owner::create([
+        $user = Master::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -46,6 +46,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::OWNER_HOME);
+        return redirect(RouteServiceProvider::MASTER_HOME);
     }
 }
