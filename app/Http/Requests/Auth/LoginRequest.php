@@ -44,8 +44,11 @@ class LoginRequest extends FormRequest
         //追加
         if ($this->routeIs('admin.*')) {
             $guard = 'admins';
+        } elseif ($this->routeIs('owner.*')) {
+            $guard = 'owners';
         } else {
-            $guard = 'users';
+            $guard = 'web';
+            // $guard = 'users';
         }
 
         if (! Auth::guard($guard)->attempt($this->only('email', 'password'), $this->boolean('remember'))) {

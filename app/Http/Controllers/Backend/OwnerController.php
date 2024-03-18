@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Admin;
@@ -31,7 +32,7 @@ class OwnerController extends Controller
         $owner = new Owner();
         $owner->name = $request->name;
         $owner->email = $request->email;
-        $owner->password = $request->password;
+        $owner->password = Hash::make($request->password);
         $owner->save();
 
         session()->flash('message', '種類が正常に登録されました。');

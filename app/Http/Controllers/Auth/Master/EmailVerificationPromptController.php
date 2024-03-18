@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth\Owner;
+namespace App\Http\Controllers\Auth\Master;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
@@ -16,7 +16,7 @@ class EmailVerificationPromptController extends Controller
     public function __invoke(Request $request): RedirectResponse|View
     {
         return $request->user()->hasVerifiedEmail()
-                    ? redirect()->intended(RouteServiceProvider::OWNER_HOME)
-                    : view('auth.owner.verify-email');
+                    ? redirect()->intended(RouteServiceProvider::MASTER_HOME)
+                    : view('auth.master.verify-email');
     }
 }

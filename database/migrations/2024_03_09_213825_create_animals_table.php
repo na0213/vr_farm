@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('animals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('farm_id')
-            ->constrained('owners')
+            ->constrained('farms')
             ->onUpdate('cascade')
             ->onDelete('cascade');
             $table->string('animal_name')->nullable();

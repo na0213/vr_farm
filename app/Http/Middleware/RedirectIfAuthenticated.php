@@ -24,6 +24,9 @@ class RedirectIfAuthenticated
                 if (($guard === 'admins') && $request->routeIs('admin.*')) {
                     return redirect(RouteServiceProvider::ADMIN_HOME);
                 }
+                if (($guard === 'owners') && $request->routeIs('owner.*')) {
+                    return redirect(RouteServiceProvider::OWNER_HOME);
+                }
 
                 return redirect(RouteServiceProvider::HOME);
             }
