@@ -11,25 +11,32 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <!-- Scripts -->
-        @vite(['resources/css/appfarm.css','resources/css/farm.css','resources/js/app.js'])
+        @vite(['resources/css/appfarm.css','resources/css/top.css','resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-900 antialiased">
             @if (Route::has('login'))
-                <div class="p-6 text-right z-10">
-                    <a href="/" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Home</a>
-
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="font-semibold text-gray-600 hover:text-gra
-                        y-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Dashboard</a>
-                    @else
+                {{-- <div class="p-6 text-right z-10"> --}}
+                    {{-- <a href="/dashboard" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Home</a> --}}
+                    @include('layouts.navigation')
+                    @if (isset($header))
+                    <header class="bg-white shadow">
+                        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                            {{ $header }}
+                        </div>
+                    </header>
+                @endif
+                    {{-- @auth --}}
+                        {{-- <a href="{{ url('/dashboard') }}" class="font-semibold text-gray-600 hover:text-gra
+                        y-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Dashboard</a> --}}
+                    {{-- @else
                         <a href="{{ route('login') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
 
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
                         
                         @endif
-                    @endauth
-                </div>
+                    @endauth --}}
+                {{-- </div> --}}
             @endif
 
                 {{ $slot }}

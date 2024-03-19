@@ -95,7 +95,7 @@ class FarmController extends Controller
         $kinds = Kind::all();
         $keywords = Keyword::all();
     
-        return view('backend.farms.show', compact('owner', 'farm', 'kinds', 'keywords'));
+        return view('backend.farms.show', compact('owner', 'kinds', 'keywords'));
     }
 
     public function edit(string $id)

@@ -1,4 +1,4 @@
-<x-top-layout>
+<x-app-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -7,7 +7,7 @@
             <ul class="grid ">
                 @foreach ($farms as $farm)
                     <li class="card rounded overflow-hidden shadow-lg">
-                    <a href="{{ route('farm.show', ['id' => $farm->id]) }}">
+                    <a href="{{ route('user.farm.show', ['id' => $farm->id]) }}">
                         @if($farm->farmImages->isNotEmpty())
                             <figure class="farmimg">
                                 <img src="{{ $farm->farmImages->first()->image_path }}">
@@ -50,4 +50,4 @@
             </ul>
         </div>
 
-</x-top-layout>
+</x-app-layout>

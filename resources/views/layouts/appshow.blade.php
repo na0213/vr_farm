@@ -12,7 +12,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
         <!-- Scripts -->
-        @vite(['resources/css/app.css','resources/css/top.css', 'resources/js/app.js'])
+        @vite(['resources/css/appfarm.css','resources/css/topshow.css', 'resources/js/app.js'])
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-rwdImageMaps/1.6/jquery.rwdImageMaps.js" integrity="sha256-MV/L2nrfaNYQUtnDja7Ok3sF1D5Rpviw/MUs76PX9nE=" crossorigin="anonymous"></script>
 
@@ -37,9 +37,6 @@
         {{-- </div> --}}
 
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-        @vite(['resources/js/swiper.js'])
-        <script>
-            $('img[usemap]').rwdImageMaps();
-        </script>
+        @vite(['resources/js/swipershow.js'])
     </body>
 </html>
