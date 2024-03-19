@@ -1,71 +1,65 @@
 body {
     color: #333333;
 }
-div {
-    cursor:pointer
-  }
-/* TOP 画像 */
-.swiper {
-    overflow: hidden;
-    /* border-radius: 5%; */
+.card-bg {
+  background-color: rgba(252, 250, 250);
 }
-
+.bg {
+  background-color: rgba(252, 250, 250);
+}
 .swiper-wrapper {
-    /* border-radius: 5%; */
+  width: 100%;
+  height: auto; /* 画像の高さに合わせて自動調整する */
 }
 
-.slide-title {
-    position: absolute;
-    top: 90px; /* スライダーの上端からのオフセット */
-    left: 10px; /* スライダーの右端からのオフセット */
-    width: 30%;
-    padding: 30px;
-    background-color: rgba(252, 250, 250, 0.8);
-    text-align: center;
-    box-sizing: border-box;
-    z-index: 10; /* スライダーの上に表示させる */
-    /* color: #502200; */
-    /* font-weight: bold; */
-    font-size: 25px;
-    /* border-radius: 50%; */
-}
 .swiper-slide {
-    width: 100%; /* Swiperスライドの幅を親要素の幅いっぱいに設定 */
-    display: flex; /* Flexboxを使用してアイテムを右寄せに */
-    justify-content: flex-end; /* Flexboxアイテムをコンテナの終端（右端）に配置 */
-    overflow: hidden; /* 子要素がborder-radiusの範囲外に出た時に隠す */
-    /* border-radius: 5%; */
-}
-.swiper-img-wrapper {
-    width: 80%; /* 画像の幅（コンテナの幅）を調整 */
-    height: auto; /* 画像の高さを自動で調整 */
-    overflow: hidden; /* コンテナ内のはみ出しを防ぐ */
-    display: flex; /* Flexboxを使用して配置を調整 */
-    justify-content: flex-end; /* コンテナ内のアイテム（画像）を右に寄せる */
-}
-.swiper-img {
-    width: 100%; /* コンテナいっぱいに画像を広げる */
-    height: auto; /* 画像の縦横比を保持 */
-    transition: transform 7s linear; /* ズームアップアニメーションの適用 */
-}
-.swiper-slide img {
-    width: 100%; /* img要素はswiper-imgコンテナいっぱいに広がるように設定 */
-    height: auto; /* 画像の縦横比を維持 */
-}
-@keyframes zoomUp {
-    0% {
-      transform: scale(1);
-    }
-    100% {
-      transform: scale(1.15);
-    }
-  }
-  .swiper-slide-active .swiper-img,
-  .swiper-slide-duplicate-active .swiper-img,
-  .swiper-slide-prev .swiper-img {
-    transform: scale(1.15); /* アクティブなスライドでのみズームアップ */
+  color: #333333;
+  width: 100%;
+  height: auto; /* スライドの高さを内容に合わせて自動調整 */
+  display: flex; /* Flexboxを使用してコンテンツを整理 */
+  flex-direction: column; /* 子要素を縦に並べる */
+  align-items: center; /* 中央揃え */
 }
 
+.swiper-slide img {
+  width: 100%; /* スライドの幅に合わせる */
+  height: 250px; /* 画像の高さを固定 */
+  object-fit: cover; /* 画像の比率を保ちつつ、指定された領域に合わせてサイズ調整 */
+  border-radius: 3%;
+}
+
+.slide-content {
+  margin-top: 10px; /* 画像との間隔を設定 */
+}
+.slide-name{
+  text-align: center;
+  justify-content: center;
+}
+.slide-info {
+  font-size: 13px;
+}
+.swiper-pagination-bullets {
+  width: 100px;
+}
+
+.swiper-pagination-bullet {
+  width: 12px !important;
+  height: 12px !important;
+  margin: 0 0 0 10px !important;
+  background: #1c1c1c;
+}
+
+.swiper-pagination-bullet:first-child {
+  margin: 0 !important;
+}
+.swiper-button-prev {
+  color: #4c4b4b;
+  width: 2%;
+}
+.swiper-button-next {
+  color: #4c4b4b;
+  width: 2%;
+}
 /* ウェーブ */
 .wave {
 	position: relative;
@@ -84,7 +78,7 @@ div {
 	width: 200%;
 	height: 200%;
 	content: "";
-	background-image: linear-gradient(80deg, #fcfafa 0%, #fcfafa 50%, #fff 100%);
+	background-image: linear-gradient(80deg, #efe9dc 0%, #f8f4e6 50%, #fff 100%);
 	animation: wave-anime linear 10s infinite;
 }
 @keyframes wave-anime {
@@ -122,11 +116,6 @@ div {
 .story_text {
     padding: 50px;
     font-size: 20px;
-}
-.con_text {
-  line-height: 40px;
-  padding: 50px;
-  font-size: 18px;
 }
 
 /* 牛のアイコン */
@@ -451,6 +440,10 @@ h3 {
     padding-bottom: 200px; /* 閉じるボタンのbottomからの位置 */
     transition: all 0.5s;
   }
+  .sub-title {
+    font-size: 30px;
+    letter-spacing: 10px;
+  }
 /*  */
 @media (max-width:768px) {
     .box {
@@ -555,7 +548,7 @@ h3 {
         letter-spacing: 20px;
         color: #777;
         animation: moveInRight 1s ease-out;
-    }     
+    }  
 }
 
 
@@ -573,7 +566,6 @@ h3 {
         box-sizing: border-box;
         z-index: 10; /* スライダーの上に表示させる */
         color: #333333;
-        /* font-weight: bold; */
         font-size: 15px;
         border-radius: 5%;
     }
@@ -612,10 +604,5 @@ h3 {
         text-align: center;
         font-size: 15px;
         line-height: 30px;
-    }
-    .con_text {
-      padding-top: 20px;
-      line-height: 25px;
-      font-size: 12px;
     }
 }

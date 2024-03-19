@@ -6,15 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Farm;
 
-class Store extends Model
+class Product extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'farm_id',
-        'store_name',
-        'store_address',
-        'store_link',
+        'product_name',
+        'product_info',
+        'product_link',
+        'product_image',
     ];
 
     public function farm()

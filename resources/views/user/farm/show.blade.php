@@ -1,6 +1,8 @@
-<x-topshow-layout>
+{{-- <x-farm-layout> --}}
+<x-appshow-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
+
     <div class="top-title">
         <h1 class="top-content">
           <span class="farm-name">{{ $farm->farm_name }}</span>
@@ -111,6 +113,6 @@
             </table>
         </div>  
     </div>
-   
 
-</x-topshow-layout>
+
+</x-appshow-layout>
