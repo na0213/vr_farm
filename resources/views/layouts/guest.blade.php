@@ -12,7 +12,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css','resources/css/swiper.min.css','resources/js/app.js'])
+        @vite(['resources/css/app.css','resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-900 antialiased">
             @if (Route::has('login'))
@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        @vite(['resources/js/swiper-bundle.min.js'])
+        {{-- @vite(['resources/js/swiper-bundle.min.js']) --}}
         @vite(['resources/js/swiper.js'])
     </body>
 </html>
