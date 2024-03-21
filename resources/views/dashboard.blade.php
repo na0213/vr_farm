@@ -39,8 +39,8 @@
 
     <a href="{{ route('user.farm.index') }}">
         <div class="fuwafuwa">
-            <div class="farm_link">牧場へ行く</div><br><br><br>
-            <p class="farm_link">WELCOME</p>
+            {{-- <div class="farm_link">牧場へ行く</div><br><br><br> --}}
+            {{-- <p class="farm_link">WELCOME</p> --}}
         </div>
     </a>
 
