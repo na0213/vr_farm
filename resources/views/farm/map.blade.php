@@ -22,16 +22,16 @@
                             @foreach ($farm->kinds as $kind)
                             @switch($kind->id)
                                 @case(1)
-                                    <img src="../storage/cow.PNG" alt="Cow">
+                                    <img src="../storage/cow.png" alt="Cow">
                                     @break
                                 @case(2)
                                     <img src="../storage/ushi.png" alt="Ushi">
                                     @break
                                 @case(3)
-                                    <img src="../storage/bird.PNG" alt="Bird">
+                                    <img src="../storage/bird.png" alt="Bird">
                                     @break
                                 @case(4)
-                                    <img src="../storage/pig.PNG" alt="Pig">
+                                    <img src="../storage/pig.png" alt="Pig">
                                     @break
                             @endswitch
                             @endforeach
