@@ -125,7 +125,7 @@ body {
   position: relative; /* 位置を相対的に設定 */
   z-index: 10; /* スタック順序を高く設定 */
   animation: fuwafuwa 3s ease-in-out infinite alternate;
-  background: url(../../public/storage/cow.png) no-repeat center center / 90px auto;
+  background: url(../../public/storage/cow.PNG) no-repeat center center / 90px auto;
   display: inline-block;
   transition: 1.5s ease-in-out;
   width: 80px;
@@ -578,7 +578,7 @@ h3 {
       position: relative; /* 位置を相対的に設定 */
       z-index: 10; /* スタック順序を高く設定 */
       animation: fuwafuwa 3s ease-in-out infinite alternate;
-      background: url(../../public/storage/cow.png) no-repeat center center / 90px auto;
+      background: url(../../public/storage/cow.PNG) no-repeat center center / 90px auto;
       display: inline-block;
       transition: 1.5s ease-in-out;
       width: 70px;
