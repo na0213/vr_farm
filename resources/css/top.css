@@ -120,8 +120,10 @@ div {
     letter-spacing: 0.1em;
 }
 .story_text {
-    padding: 50px;
-    font-size: 20px;
+  position: relative; /* 位置を相対的に設定 */
+  z-index: 2; /* .story より高いz-indexを設定 */
+  padding: 50px;
+  font-size: 20px;
 }
 .con_text {
   line-height: 40px;
@@ -131,13 +133,15 @@ div {
 
 /* 牛のアイコン */
 .fuwafuwa {
-    animation: fuwafuwa 3s ease-in-out infinite alternate;
-    background: url(../../public/storage/cow.PNG) no-repeat center center / 90px auto;
-    display: inline-block;
-    transition: 1.5s ease-in-out;
-    width: 80px;
-    height: 100px;
-    margin: 50px;
+  position: relative; /* 位置を相対的に設定 */
+  z-index: 10; /* スタック順序を高く設定 */
+  animation: fuwafuwa 3s ease-in-out infinite alternate;
+  background: url(../../public/storage/cow.png) no-repeat center center / 90px auto;
+  display: inline-block;
+  transition: 1.5s ease-in-out;
+  width: 80px;
+  height: 100px;
+  margin: 50px;
 }
 .farm_link {
     padding: -50px;
@@ -579,13 +583,15 @@ h3 {
     }
     /* 牛のアイコン */
     .fuwafuwa {
-        animation: fuwafuwa 3s ease-in-out infinite alternate;
-        background: url(../../public/storage/cow.PNG) no-repeat center center / 90px auto;
-        display: inline-block;
-        transition: 1.5s ease-in-out;
-        width: 70px;
-        height: 100px;
-        margin: 30px;
+      position: relative; /* 位置を相対的に設定 */
+      z-index: 10; /* スタック順序を高く設定 */
+      animation: fuwafuwa 3s ease-in-out infinite alternate;
+      background: url(../../public/storage/cow.png) no-repeat center center / 90px auto;
+      display: inline-block;
+      transition: 1.5s ease-in-out;
+      width: 70px;
+      height: 100px;
+      margin: 30px;
     }
     .farm_link {
         padding: -50px;
@@ -608,10 +614,12 @@ h3 {
         font-size: 30px;
     }
     .story_text {
-        padding-top: 20px;
-        text-align: center;
-        font-size: 15px;
-        line-height: 30px;
+      position: relative; /* 位置を相対的に設定 */
+      z-index: 2; /* .story より高いz-indexを設定 */
+      padding-top: 20px;
+      text-align: center;
+      font-size: 15px;
+      line-height: 30px;
     }
     .con_text {
       padding-top: 20px;
