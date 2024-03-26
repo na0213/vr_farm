@@ -43,16 +43,14 @@
             {{-- <p class="farm_link">WELCOME</p> --}}
         </div>
     </a>
-
     <div class="wave">
-      <div>
-        <p class="story">STORY</p>
-        <p class="story_text">いただく生命に感謝をする。<br>
+      <div class="story">
+        <p>STORY</p>
+        <p class="story_text">いただく命に感謝をする。<br>
           「いただきます」<br>
-          この言葉は日本でうまれた言葉。<br>
-          他の国にはない言葉。<br><br>
-          「いただきます」をもう一度考える。<br>
-          生命が生きている時にも関心を向けてみる。<br><br>
+          この言葉は日本でうまれた言葉。<br><br>
+          「いただきます」<br>
+          命が生きている時にも関心を向けてみる。<br><br>
           人・動物・環境が生命とともに循環する。<br>
           そのストーリーを「いただこう」
         </p>
