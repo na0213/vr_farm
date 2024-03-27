@@ -28,7 +28,7 @@ class ProductController extends Controller
             'product_name' => 'required|string|max:255',
             'product_info' => 'required|string',
             'product_link' => 'nullable|string',
-            'product_image' => 'required|image|max:1024', //1MBまで
+            'product_image' => 'required|image|max:3072', //1MBまで
         ]);
 
         $manager = new ImageManager(new Driver());
@@ -92,7 +92,7 @@ class ProductController extends Controller
             'product_name' => 'required|string|max:255',
             'product_info' => 'required|string',
             'product_link' => 'nullable|string',
-            'product_image' => 'nullable|image|max:1024', //1MBまで
+            'product_image' => 'nullable|image|max:3072', //1MBまで
         ]);
     
         $manager = new ImageManager(new Driver());

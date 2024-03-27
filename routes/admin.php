@@ -18,6 +18,7 @@ use App\Http\Controllers\Backend\FarmController;
 use App\Http\Controllers\Backend\AnimalController;
 use App\Http\Controllers\Backend\StoreController;
 use App\Http\Controllers\Backend\ProductController;
+use App\Http\Controllers\Backend\PointController;
 
 /*
 |--------------------------------------------------------------------------
@@ -155,17 +156,13 @@ Route::middleware('auth:admins')->group(function () {
         Route::put('/stores/{id}', 'update')->name('backend.stores.update');
         Route::delete('/stores/{id}', 'destroy')->name('backend.stores.destroy');
         });
-    // Route::controller(StoreController::class)->group(function () {
-    //     Route::get('/stores/create/{owner}', 'create')->name('backend.stores.create');
-    //     Route::post('/stores/{owner}', 'store')->name('backend.stores.store');
-    //     Route::get('/stores/{id}/show', 'show')->name('backend.stores.show');
-    //     Route::get('/stores/{id}/edit', 'edit')->name('backend.stores.edit');
-    //     Route::put('/stores/{id}', 'update')->name('backend.stores.update');
-    //     Route::delete('/stores/{id}', 'destroy')->name('backend.stores.destroy');
-    //     Route::get('/stores/{id}/images', 'images')->name('backend.stores.images');
-    //     Route::post('/stores/{id}/images', 'Images')->name('backend.stores.Images');
-    //     Route::get('/stores/{storeId}/edit-images', 'editImages')->name('admin.backend.stores.editImages');
-    //     Route::post('/stores/{storeId}/update-image/{imageId}', 'updateImage')->name('backend.stores.updateImage');
-    //     Route::delete('/stores/{storeId}/delete-image/{imageId}', 'deleteImage')->name('backend.stores.deleteImage');
-    //     });
+
+    Route::controller(PointController::class)->group(function () {
+        Route::get('/points/create/{farm}', 'create')->name('backend.points.create');
+        Route::post('/points/{farm}', 'store')->name('backend.points.store');
+        Route::get('/points/{id}/show', 'show')->name('backend.points.show');
+        Route::get('/points/{id}/edit', 'edit')->name('backend.points.edit');
+        Route::put('/points/{id}', 'update')->name('backend.points.update');
+        Route::delete('/points/{id}', 'destroy')->name('backend.points.destroy');
+        });
 });

@@ -10,6 +10,7 @@ use App\Models\Store;
 use App\Models\Animal;
 use App\Models\FarmImage;
 use App\Models\StoreImage;
+use App\Models\Point;
 use App\Models\Keyword;
 use App\Models\Kind;
 
@@ -43,6 +44,10 @@ class Farm extends Model
     public function animals()
     {
         return $this->hasMany(Animal::class);
+    }
+    public function points()
+    {
+        return $this->hasMany(Point::class);
     }
     public function kinds()
     {
