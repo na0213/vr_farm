@@ -27,7 +27,7 @@ class AnimalController extends Controller
         $request->validate([
             'animal_name' => 'required|string|max:255',
             'animal_info' => 'required|string',
-            'animal_image' => 'required|image|max:1024', //1MBまで
+            'animal_image' => 'required|image|max:3072', //1MBまで
         ]);
 
         $manager = new ImageManager(new Driver());
@@ -89,7 +89,7 @@ class AnimalController extends Controller
         $validated = $request->validate([
             'animal_name' => 'required|string|max:255',
             'animal_info' => 'required|string',
-            'animal_image' => 'nullable|image|max:1024', //1MBまで
+            'animal_image' => 'nullable|image|max:3072', //1MBまで
         ]);
     
         $manager = new ImageManager(new Driver());

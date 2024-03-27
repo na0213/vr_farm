@@ -233,6 +233,57 @@
                 </tbody>
               </table>
             </div>
+            {{-- SDGs --}}
+            <div class="relative mt-5 overflow-x-auto shadow-md sm:rounded-lg">
+              <table class="w-11/12 mx-auto mb-10 text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-2 whitespace-nowrap">
+                          ID
+                        </th>
+                        <th scope="col" class="px-6 py-2 whitespace-nowrap">
+                          タイトル
+                        </th>
+                        <th scope="col" class="px-6 py-2 whitespace-nowrap">
+                          編集
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                  @if($farm)
+                  <div class="flex justify-between">
+                    <p class="p-5">【SDGs管理】</p>
+                    <div class="m-3">
+                      <a href="{{ route('admin.backend.points.create', ['farm' => $farm->id]) }}">
+                        <button type="button" class="text-white bg-yellow-500 border-0 py-1 px-4 focus:outline-none hover:bg-yellow-600 rounded text-lg">登録</button>
+                      </a>
+                    </div>
+                  </div>
+                  @endif
+                  @if ($farm && $farm->points->count() > 0)
+                    @foreach ($farm->points as $point)
+                      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ $point->id }}
+                        </td>
+                        <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ $point->point_name }}
+                        </td>
+                        <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                          <a href="{{ route('admin.backend.points.edit', ['id' => $point->id]) }}">編集</a>
+                        </td>
+                      </tr>
+                    @endforeach
+                  @else
+                  <tr>
+                    <td colspan="3" class="text-center py-4">
+                      SDGsポイントを登録してください。
+                    </td>
+                  </tr>
+                  @endif
+                </tbody>
+              </table>
+            </div>
             <div class="p-2 w-full flex justify-around mt-4">
               <a href="{{ route('admin.backend.owners.index') }}">
               <button type="button" class="text-white bg-gray-500 border-0 py-2 px-8 focus:outline-none hover:bg-gray-600 rounded text-lg">戻る</button>

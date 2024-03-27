@@ -27,7 +27,7 @@
                 @for ($i = 0; $i < 4; $i++)
                 <div class="flex-container mb-4">
                     <div class="image-input">
-                        <label for="upload_image{{ $i + 1 }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">画像 {{ $i + 1 }}<span class="text-red-600">（1MB以下）</span></label>
+                        <label for="upload_image{{ $i + 1 }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">画像 {{ $i + 1 }}<span class="text-red-600">（3MB以下）</span></label>
                         <input type="file" name="images[]" id="upload_image{{ $i + 1 }}" accept="image/*" onchange="previewImage(this, 'preview_image{{ $i + 1 }}')" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
                         <div class="image-preview mt-2" id="preview_image{{ $i + 1 }}">
                             <img src="{{ asset('storage/noimage.jpg') }}" alt="No Image" class="image-preview">
@@ -44,7 +44,7 @@
 
     <script>
     function previewImage(input, previewId) {
-        const maxFileSize = 1 * 1024 * 1024; // 1MBをバイト単位で定義
+        const maxFileSize = 3 * 1024 * 1024; // 1MBをバイト単位で定義
 
         if (input.files && input.files[0]) {
             // ファイルサイズチェック
