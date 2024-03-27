@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('point_id')->constrained('points')->onDelete('cascade');
             $table->datetime('accessed_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->datetime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->datetime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

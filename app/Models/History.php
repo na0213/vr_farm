@@ -13,4 +13,9 @@ class History extends Model
         'user_id',
         'key_id',
     ];
+
+    public function point()
+    {
+        return $this->belongsTo(Point::class);
+    }
 }
