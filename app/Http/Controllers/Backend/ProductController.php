@@ -31,32 +31,41 @@ class ProductController extends Controller
             'product_image' => 'required|image|max:3072', //1MBまで
         ]);
 
-        $manager = new ImageManager(new Driver());
-
         try {
             // トランザクション開始
             DB::beginTransaction();
     
             $url = null;
             if ($request->hasFile('product_image')) {
-                // ファイルから画像を読み込み
-                $image = $manager->read($request->file('product_image')->getPathName());
-    
-                // 画像をリサイズ (ここでは幅300pxに設定)
-                $image->scale(width: 300);
-    
-                // 画像を一時的なファイルとして保存
-                $tempPath = tempnam(sys_get_temp_dir(), 'productImage') . '.jpg';
-                $image->toPng()->save($tempPath);
-    
-                // 保存した一時ファイルをS3にアップロード
+                // ファイルのパスを取得
+                $image = $request->file('product_image');
+
+                // ファイル名を生成
                 $fileName = 'product_images/' . uniqid() . '.jpg';
-                Storage::disk('s3')->put($fileName, file_get_contents($tempPath), 'public');
+
+                // S3に画像を保存
+                Storage::disk('s3')->put($fileName, file_get_contents($image), 'public');
                 $url = Storage::disk('s3')->url($fileName);
-    
-                // 一時ファイルを削除
-                @unlink($tempPath);
             }
+            // if ($request->hasFile('product_image')) {
+            //     // ファイルから画像を読み込み
+            //     $image = $manager->read($request->file('product_image')->getPathName());
+    
+            //     // 画像をリサイズ (ここでは幅300pxに設定)
+            //     $image->scale(width: 300);
+    
+            //     // 画像を一時的なファイルとして保存
+            //     $tempPath = tempnam(sys_get_temp_dir(), 'productImage') . '.jpg';
+            //     $image->toPng()->save($tempPath);
+    
+            //     // 保存した一時ファイルをS3にアップロード
+            //     $fileName = 'product_images/' . uniqid() . '.jpg';
+            //     Storage::disk('s3')->put($fileName, file_get_contents($tempPath), 'public');
+            //     $url = Storage::disk('s3')->url($fileName);
+    
+            //     // 一時ファイルを削除
+            //     @unlink($tempPath);
+            // }
     
             // Storeインスタンスの作成と保存
             $product = new Product;
@@ -113,18 +122,19 @@ class ProductController extends Controller
                 }
     
                 // 新しい画像を処理
-                $image = $manager->read($request->file('product_image')->getPathName());
-                $image->scale(width: 300);
-                $tempPath = tempnam(sys_get_temp_dir(), 'productImage') . '.jpg';
-                $image->toPng()->save($tempPath);
+                // $image = $manager->read($request->file('product_image')->getPathName());
+                // $image->scale(width: 300);
+                // $tempPath = tempnam(sys_get_temp_dir(), 'productImage') . '.jpg';
+                // $image->toPng()->save($tempPath);
     
+                $image = $request->file('product_image');
                 // S3にアップロード
                 $fileName = 'product_images/' . uniqid() . '.jpg';
-                Storage::disk('s3')->put($fileName, file_get_contents($tempPath), 'public');
+                Storage::disk('s3')->put($fileName, file_get_contents($image), 'public');
                 $url = Storage::disk('s3')->url($fileName);
     
                 // 一時ファイルを削除
-                @unlink($tempPath);
+                // @unlink($image);
     
                 // データベースを更新
                 $product->product_image = $url;

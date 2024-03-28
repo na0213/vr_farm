@@ -177,38 +177,26 @@ class FarmController extends Controller
     public function storeImages(Request $request, $id)
     {
         $farm = Farm::findOrFail($id);
-        //  dd($request->all());
-        $driver = new Driver();
-        $manager = new ImageManager($driver);
-
+    
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $index => $imageFile) {
-                // ファイルシステムから画像を読み込み
-                $image = $manager->read($imageFile->getRealPath());
+                // ファイルのアップロードが成功したか確認
+                if ($imageFile->isValid()) {
+                    // S3に直接アップロード
+                    $fileName = Str::uuid()->toString() . '.jpg'; // 'farms/' を削除
+                    Storage::disk('s3')->putFileAs('farms', $imageFile, $fileName, 'public'); // 第一引数はfarmsをそのままに
+                    $url = Storage::disk('s3')->url('farms/' . $fileName); // URL生成時にパスを指定
     
-                // ここで画像をリサイズ
-                $image->scale(width: 600);
-            
-                // 一時ファイルへリサイズした画像を保存
-                $tempPath = tempnam(sys_get_temp_dir(), 'tempImage') . '.' . 'jpg';
-                $image->save($tempPath);
-    
-                // 一時ファイルをS3にアップロード
-                $fileName = 'farms/' . Str::uuid()->toString() . '.' . 'jpg';
-                Storage::disk('s3')->putFileAs('', new \Illuminate\Http\File($tempPath), $fileName, 'public');
-                $url = Storage::disk('s3')->url($fileName);
-    
-                // データベースに画像の情報を登録
-                FarmImage::create([
-                    'farm_id' => $farm->id,
-                    'image_path' => $url,
-                    'image_order' => $index + 1,
-                ]);
-    
-                // 一時ファイルを削除
-                @unlink($tempPath);
+                    // データベースに画像の情報を登録
+                    FarmImage::create([
+                        'farm_id' => $farm->id,
+                        'image_path' => $url,
+                        'image_order' => $index + 1,
+                    ]);
+                }
             }
         }
+    
         return redirect()->route('admin.backend.farms.images', $farm->id)->with('success', '画像が正常にアップロードされました。');
     }
 
@@ -219,7 +207,7 @@ class FarmController extends Controller
         $owner = $farm->owner; // $farmに紐づく$ownerを取得
         return view('backend.farms.edit-image', compact('farm', 'owner'));
     }
-    
+
     public function updateImage(Request $request, $farmId, $imageId)
     {
         $farm = Farm::findOrFail($farmId);
@@ -233,31 +221,20 @@ class FarmController extends Controller
             $existingImagePath = parse_url($image->image_path, PHP_URL_PATH);
             Storage::disk('s3')->delete($existingImagePath);
 
-            // 新しい画像の処理
-            $driver = new Driver();
-            $manager = new ImageManager($driver);
-            $newImage = $manager->read($imageFile->getRealPath());
-            $newImage->scale(width: 600);
-
-            // 一時ファイルへリサイズした画像を保存
-            $tempPath = tempnam(sys_get_temp_dir(), 'tempImage') . '.' . 'jpg';
-            $newImage->save($tempPath);
-
-            // 一時ファイルをS3にアップロード
-            $fileName = 'farms/' . Str::uuid()->toString() . '.' . 'jpg';
-            Storage::disk('s3')->putFileAs('', new \Illuminate\Http\File($tempPath), $fileName, 'public');
-            $url = Storage::disk('s3')->url($fileName);
+            // 新しい画像をS3にアップロード
+            $fileName = Str::uuid()->toString() . '.jpg';
+            Storage::disk('s3')->putFileAs('farms', $imageFile, $fileName, 'public');
+            $url = Storage::disk('s3')->url('farms/' . $fileName); // URL生成時のパスを適切に指定
 
             // データベースレコードを更新
             $image->update([
                 'image_path' => $url,
             ]);
 
-            // 一時ファイルを削除
-            @unlink($tempPath);
-    
-            return redirect()->route('admin.admin.backend.farms.editImages', ['farmId' => $farmId])->with('success', '画像が更新されました。');
+            return redirect()->route('admin.backend.farms.editImages', ['farmId' => $farmId])->with('success', '画像が更新されました。');
         }
+
+        return back()->withInput()->withErrors(['error' => '画像の更新に失敗しました。']);
     }
     
     public function deleteImage($farmId, $imageId)
