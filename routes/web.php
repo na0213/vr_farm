@@ -42,7 +42,10 @@ Route::middleware('auth')->group(function () {
     Route::controller(UserController::class)->group(function () {
         Route::get('/users', 'index')->name('user.farm.index');
         Route::get('/users/{id}/show', 'show')->name('user.farm.show');
+        Route::post('/farms/{farm}/favorite', 'toggleFavorite')->name('farms.toggleFavorite');
+        Route::get('/favorites', 'favorites')->name('user.favorites');
     });
+
 });
 
 require __DIR__.'/auth.php';

@@ -19,8 +19,19 @@
     </div>
 
     <div class="flex items-center justify-center">
-        <h2>{{ $farm->catchcopy }}</h2>
+        {{-- <div class="flex items-center justify-center"> --}}
+            <h2>{{ $farm->catchcopy }}</h2>
+        {{-- </div> --}}
+        <div id="favorite-icon-{{ $farm->id }}" class="ml-10">
+            @if(Auth::user() && $farm->isFavoriteBy(Auth::user()))
+                <i class="fas fa-heart text-red-500"></i>
+            @else
+                <i class="far fa-heart text-red-500"></i>
+            @endif
+            <span>{{ $farm->likes->count() }}</span>
+        </div>
     </div>
+
     <div class="flex items-center justify-center">
         <div class="w-4/5 mt-20 p-5 rounded overflow-hidden shadow-lg">
             <div class="sub-title">ー Story ー</div>
@@ -113,6 +124,27 @@
             </table>
         </div>  
     </div>
+<script>
+    document.querySelectorAll('[id^="favorite-icon-"]').forEach(element => {
+    element.addEventListener('click', async () => {
+        const farmId = element.getAttribute('id').split('-')[2];
+        const response = await fetch(`/farms/${farmId}/favorite`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+        });
 
+        if (response.ok) {
+            const { isFavorite, favoritesCount } = await response.json();
+            const icon = element.querySelector('i');
+            const countSpan = element.querySelector('span');
+            icon.classList.remove('fas', 'far');
+            icon.classList.add(isFavorite ? 'fas' : 'far');
+            countSpan.textContent = favoritesCount;
+        }
+    });
+});
+</script>
 
 </x-appshow-layout>
