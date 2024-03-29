@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        @vite(['resources/js/swiper-bundle.min.js'])
+        {{-- @vite(['resources/js/swiper-bundle.min.js']) --}}
         @vite(['resources/js/swiper.js'])
     </body>
 </html>
