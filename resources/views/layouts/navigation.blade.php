@@ -25,7 +25,7 @@
                     <x-nav-link :href="route('user.favorites')" :active="request()->routeIs('user.favorites')">
                         お気に入り
                     </x-nav-link>
-                    <x-nav-link :href="route('user.history.show')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('user.mypage.show', ['mypage' => auth()->user()->mypage->id ?? null])" :active="request()->routeIs('user.mypage.show')">
                         マイページ
                     </x-nav-link>
                 </div>

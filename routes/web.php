@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\MypageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,7 @@ Route::get('/', function () {
 
 Route::get('/farm/map', [GuestController::class, 'index'])->name('farm.index');
 Route::get('/farm/{id}', [GuestController::class, 'show'])->name('farm.show');
+Route::get('/mypage/{user}', [GuestController::class, 'show'])->name('mypage.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -50,6 +52,15 @@ Route::middleware('auth')->group(function () {
     Route::controller(PostController::class)->group(function () {
         Route::get('/community/{farm}', 'index')->name('user.community.index');
         Route::post('/posts', 'store')->name('posts.store');
+    });
+
+    Route::controller(MypageController::class)->group(function () {
+        Route::get('/mypage', 'index')->name('user.mypage.index');
+        Route::get('/mypage/create', 'create')->name('user.mypage.create');
+        Route::post('/mypage', 'store')->name('user.mypage.store');
+        Route::get('/mypage/{mypage}', 'show')->name('user.mypage.show'); 
+        Route::get('/mypage/{mypage}/edit', 'edit')->name('user.mypage.edit');
+        Route::put('/mypage/{mypage}', 'update')->name('user.mypage.update');
     });
 
 });

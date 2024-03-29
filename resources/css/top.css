@@ -373,6 +373,11 @@ h3 {
   .mypage img {
     border-radius: 50%;
   }
+  .icon_pic img {
+    border-radius: 50%;
+    width: 30px;
+    margin-right: 10px;
+  }
   @keyframes moveInLeft {
     0% {
       opacity: 0;
