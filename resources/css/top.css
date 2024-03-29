@@ -369,6 +369,10 @@ h3 {
     animation: moveInRight 1s ease-out;
   }
   
+  /* mypage */
+  .mypage img {
+    border-radius: 50%;
+  }
   @keyframes moveInLeft {
     0% {
       opacity: 0;

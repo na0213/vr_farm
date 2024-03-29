@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Mypage;
+use App\Models\Farm;
 
 class Post extends Model
 {
@@ -19,5 +20,9 @@ class Post extends Model
     public function mypage()
     {
         return $this->belongsTo(Mypage::class);
+    }
+    public function farm()
+    {
+        return $this->belongsTo(Farm::class);
     }
 }

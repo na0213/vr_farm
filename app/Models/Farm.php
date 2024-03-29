@@ -13,6 +13,7 @@ use App\Models\StoreImage;
 use App\Models\Point;
 use App\Models\Keyword;
 use App\Models\Kind;
+use App\Models\Post;
 
 class Farm extends Model
 {
@@ -48,6 +49,10 @@ class Farm extends Model
     public function likes()
     {
         return $this->hasMany(Like::class);
+    }
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
     }
     public function points()
     {

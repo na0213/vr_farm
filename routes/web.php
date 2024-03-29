@@ -5,6 +5,7 @@ use App\Http\Controllers\GuestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/users/{id}/show', 'show')->name('user.farm.show');
         Route::post('/farms/{farm}/favorite', 'toggleFavorite')->name('farms.toggleFavorite');
         Route::get('/favorites', 'favorites')->name('user.favorites');
+    });
+
+    Route::controller(PostController::class)->group(function () {
+        Route::get('/community/{farm}', 'index')->name('user.community.index');
+        Route::post('/posts', 'store')->name('posts.store');
     });
 
 });

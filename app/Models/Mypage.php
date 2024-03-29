@@ -47,4 +47,5 @@ class Mypage extends Model
         return $this->hasMany(Follow::class, 'followed_id');
     }
 
+
 }
