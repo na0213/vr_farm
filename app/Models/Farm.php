@@ -45,6 +45,10 @@ class Farm extends Model
     {
         return $this->hasMany(Animal::class);
     }
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
     public function points()
     {
         return $this->hasMany(Point::class);
@@ -64,5 +68,9 @@ class Farm extends Model
     public function storeimages()
     {
         return $this->hasMany(StoreImage::class);
+    }
+    public function isFavoriteBy(User $user)
+    {
+        return $this->likes()->where('user_id', $user->id)->exists();
     }
 }

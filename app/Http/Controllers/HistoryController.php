@@ -22,7 +22,7 @@ class HistoryController extends Controller
         $point = Point::with('farm')->findOrFail($point_id);
     
         return view('user.history.index', compact('point'));
-    }    
+    }
 
     public function store(Request $request, $point_id)
     {
@@ -46,6 +46,6 @@ class HistoryController extends Controller
     
         // Farmの詳細画面にリダイレクト
         return redirect()->route('user.farm.show', ['id' => $farmId])->with('success', '履歴に登録しました。');
-    }    
+    }
 
 }
