@@ -11,11 +11,7 @@ use App\Http\Controllers\Auth\Owner\PasswordResetLinkController;
 use App\Http\Controllers\Auth\Owner\RegisteredUserController;
 use App\Http\Controllers\Auth\Owner\VerifyEmailController;
 use App\Http\Controllers\Backend\MasterController;
-use App\Http\Controllers\Backend\KindController;
-use App\Http\Controllers\Backend\KeywordController;
-use App\Http\Controllers\Backend\OwnerController;
-use App\Http\Controllers\Backend\FarmController;
-use App\Models\Animal;
+use App\Http\Controllers\Backend\OwnerpostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,49 +80,12 @@ Route::middleware('auth:owners')->group(function () {
         Route::get('/owners/{id}/show', 'show')->name('backend.masters.show');
         Route::get('/owners/{id}/edit', 'edit')->name('backend.masters.edit');
         Route::put('/owners/{id}', 'update')->name('backend.masters.update');
-        });
-    
-    // Route::controller(KindController::class)->group(function () {
-    //     Route::get('/kinds', 'index')->name('backend.kinds.index');
-    //     Route::get('/kinds/create', 'create')->name('backend.kinds.create');
-    //     Route::post('/kinds', 'store')->name('backend.kinds.store');
-    //     Route::get('/kinds/{id}/edit', 'edit')->name('backend.kinds.edit');
-    //     Route::put('/kinds/{id}', 'update')->name('backend.kinds.update');
-    //     Route::delete('/kinds/{id}', 'destroy')->name('backend.kinds.destroy');
-    //     });
+        Route::get('/owners/{id}/posts', 'posts')->name('backend.masters.posts');
+    });
 
-    // Route::controller(KeywordController::class)->group(function () {
-    //     Route::get('/keywords', 'index')->name('backend.keywords.index');
-    //     Route::get('/keywords/create', 'create')->name('backend.keywords.create');
-    //     Route::post('/keywords', 'store')->name('backend.keywords.store');
-    //     Route::get('/keywords/{id}/edit', 'edit')->name('backend.keywords.edit');
-    //     Route::put('/keywords/{id}', 'update')->name('backend.keywords.update');
-    //     Route::delete('/keywords/{id}', 'destroy')->name('backend.keywords.destroy');
-    //     });
+    Route::controller(OwnerpostController::class)->group(function () {
+        Route::post('/ownerposts/store', 'store')->name('ownerposts.store');
+        Route::delete('/ownerposts/{ownerpost}', 'destroy')->name('ownerposts.destroy');
+    });
 
-    // Route::controller(OwnerController::class)->group(function () {
-    //     Route::get('/owners', 'index')->name('backend.owners.index');
-    //     Route::get('/owners/create', 'create')->name('backend.owners.create');
-    //     Route::post('/owners', 'store')->name('backend.owners.store');
-    //     Route::get('/owners/{id}/show', 'show')->name('backend.owners.show');
-    //     Route::get('/owners/{id}/edit', 'edit')->name('backend.owners.edit');
-    //     Route::put('/owners/{id}', 'update')->name('backend.owners.update');
-    //     Route::delete('/owners/{id}', 'destroy')->name('backend.owners.destroy');
-    //     });
-
-    // Route::controller(FarmController::class)->group(function () {
-    //     Route::get('/farms', 'index')->name('backend.farms.index');
-    //     Route::get('/farms/create/{owner}', 'create')->name('backend.farms.create');
-    //     Route::post('/farms/{owner}', 'store')->name('backend.farms.store');
-    //     Route::get('/farms/{id}/show', 'show')->name('backend.farms.show');
-    //     Route::get('/farms/{id}/edit', 'edit')->name('backend.farms.edit');
-    //     Route::put('/farms/{id}', 'update')->name('backend.farms.update');
-    //     Route::delete('/farms/{id}', 'destroy')->name('backend.farms.destroy');
-    //     Route::get('/farms/{id}/images', 'images')->name('backend.farms.images');
-    //     Route::post('/farms/{id}/images', 'storeImages')->name('backend.farms.storeImages');
-    //     Route::get('/farms/{farmId}/edit-images', 'editImages')->name('admin.backend.farms.editImages');
-    //     Route::post('/farms/{farmId}/update-image/{imageId}', 'updateImage')->name('backend.farms.updateImage');
-    //     Route::delete('/farms/{farmId}/delete-image/{imageId}', 'deleteImage')->name('backend.farms.deleteImage');
-
-    //     });
 });

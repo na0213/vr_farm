@@ -14,6 +14,7 @@ use App\Models\Point;
 use App\Models\Keyword;
 use App\Models\Kind;
 use App\Models\Post;
+use App\Models\Ownerpost;
 
 class Farm extends Model
 {
@@ -53,6 +54,10 @@ class Farm extends Model
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+    public function ownerposts()
+    {
+        return $this->hasMany(Ownerpost::class);
     }
     public function points()
     {
