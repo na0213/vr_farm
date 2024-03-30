@@ -368,16 +368,27 @@ h3 {
     color: #777;
     animation: moveInRight 1s ease-out;
   }
-  
+  .custom-link {
+      color: #4a90e2; /* 通常時の色 */
+      transition: color 0.3s; /* 色の変化を滑らかにする */
+  }
+
+  .custom-link:hover {
+      color: #2a4d6e; /* ホバー時の色 */
+      font-weight: bold;
+  }
   /* mypage */
   .mypage img {
     border-radius: 50%;
+    border:1px solid;
+    width: 100%;
   }
   .icon_pic img {
     border-radius: 50%;
     width: 30px;
     margin-right: 10px;
   }
+
   @keyframes moveInLeft {
     0% {
       opacity: 0;

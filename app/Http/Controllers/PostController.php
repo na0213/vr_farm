@@ -53,6 +53,13 @@ class PostController extends Controller
         ->with('success', '投稿が成功しました。');
     }
     
-    
+    public function destroy($id)
+    {
+        $post = Post::findOrFail($id);
+        // 必要に応じて、削除前にユーザーの権限チェックなどを行う
+        $post->delete();
+
+        return redirect()->route('user.mypage.show')->with('success', '投稿が削除されました。');
+    }
     
 }

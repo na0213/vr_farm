@@ -19,13 +19,13 @@
                     {{-- <x-nav-link :href="route('user.history.show')" :active="request()->routeIs('dashboard')">
                         SDGs
                     </x-nav-link> --}}
-                    <x-nav-link :href="route('user.history.show')" :active="request()->routeIs('dashboard')">
-                        コミュニティ
+                    <x-nav-link :href="route('user.farm.index')" :active="request()->routeIs('user.farm.index')">
+                        牧場一覧
                     </x-nav-link>
                     <x-nav-link :href="route('user.favorites')" :active="request()->routeIs('user.favorites')">
                         お気に入り
                     </x-nav-link>
-                    <x-nav-link :href="route('user.mypage.show', ['mypage' => auth()->user()->mypage->id ?? null])" :active="request()->routeIs('user.mypage.show')">
+                    <x-nav-link :href="route('user.mypage.show')" :active="request()->routeIs('user.mypage.show')">
                         マイページ
                     </x-nav-link>
                 </div>
@@ -83,8 +83,8 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 Home
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                コミュニティ
+            <x-responsive-nav-link :href="route('user.farm.index')" :active="request()->routeIs('user.farm.index')">
+                牧場一覧
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('user.favorites')" :active="request()->routeIs('user.favorites')">
                 お気に入り
