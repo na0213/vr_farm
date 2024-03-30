@@ -30,7 +30,7 @@ class StoreController extends Controller
             'store_link' => 'nullable|string',
         ]);
 
-        $manager = new ImageManager(new Driver());
+        // $manager = new ImageManager(new Driver());
 
         try {
             // トランザクション開始
@@ -70,7 +70,7 @@ class StoreController extends Controller
             'store_link' => 'nullable|string',
         ]);
     
-        $manager = new ImageManager(new Driver());
+        // $manager = new ImageManager(new Driver());
 
         try {
             DB::beginTransaction();
