@@ -88,4 +88,16 @@ class MasterController extends Controller
             return back()->withInput()->withErrors(['error' => '更新に失敗しました。']);
         }
     }
+
+    public function posts($id)
+    {
+        // 生産者（owner）が所有する農場を取得
+        $farm = Farm::with(['ownerposts', 'posts'])->findOrFail($id);
+    
+        // 生産者が所有する農場に紐づく投稿を取得
+        $ownerposts = $farm->ownerposts()->get();
+        $posts = $farm->posts()->get();
+    
+        return view('backend.masters.posts', compact('ownerposts', 'posts', 'farm'));
+    }
 }
