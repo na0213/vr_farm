@@ -11,24 +11,61 @@ use Illuminate\Support\Facades\Storage;
 
 class MypageController extends Controller
 {
-    public function index()
-    {
-        $user = auth()->user();
-        $mypage = $user->mypage;
+    // public function index()
+    // {
+    //     $user = auth()->user();
+    //     $mypage = $user->mypage;
 
-        if ($mypage) {
-            // Mypageが存在する場合は編集ページへリダイレクト
-            return redirect()->route('user.mypage.edit', $mypage->id);
-        } else {
-            // Mypageが存在しない場合は新規作成ページへリダイレクト
-            return redirect()->route('user.mypage.create');
-        }
-    }
+    //     if ($mypage) {
+    //         // Mypageが存在する場合は編集ページへリダイレクト
+    //         return redirect()->route('user.mypage.edit', $mypage->id);
+    //     } else {
+    //         // Mypageが存在しない場合は新規作成ページへリダイレクト
+    //         return redirect()->route('user.mypage.create');
+    //     }
+    // }
 
     public function create()
     {
-        return view('mypage.create');
+        return view('user.mypage.create');
     }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'nickname' => 'required|string|max:255',
+            'catchphrase' => 'nullable|string',
+            'my_image' => 'nullable|image|max:3072', // 3MBまで
+            'is_published' => 'required|boolean',
+        ]);
+    
+        $mypage = new Mypage();
+        $mypage->user_id = auth()->id(); // ログイン中のユーザーIDを設定
+        $mypage->nickname = $validated['nickname'];
+        $mypage->catchphrase = $validated['catchphrase'];
+        $mypage->is_published = $validated['is_published'];
+    
+        // 画像がアップロードされた場合の処理
+        if ($request->hasFile('my_image')) {
+            $image = $request->file('my_image');
+
+            // ファイル名を生成
+            $fileName = 'my_images/' . uniqid() . '.jpg';
+
+            // S3に画像を保存
+            Storage::disk('s3')->put($fileName, file_get_contents($image), 'public');
+            $url = Storage::disk('s3')->url($fileName);
+
+            // $image = $request->file('my_image');
+            // $fileName = 'my_images/' . uniqid() . '.' . $image->extension();
+            // $path = $image->storeAs(null, $fileName, 'public');
+            $mypage->my_image = $url;
+        }
+    
+        $mypage->save();
+    
+        return redirect()->route('user.mypage.show')->with('success', 'Mypageが登録されました。');
+    }    
     
     public function edit($id)
     {
@@ -76,7 +113,7 @@ class MypageController extends Controller
     
             DB::commit();
     
-            return redirect()->route('user.mypage.index')
+            return redirect()->route('user.mypage.show')
                 ->with('message', '情報が更新されました');
         } catch (\Exception $e) {
             DB::rollback();
@@ -85,15 +122,43 @@ class MypageController extends Controller
         }
     }
     
-
-    public function show(User $user)
+    public function show()
     {
+        $user = auth()->user();
         $mypage = $user->mypage;
-
-        if (!$mypage || !$mypage->is_published) {
-            abort(404, 'ページが見つかりません。');
+    
+        if (!$mypage) {
+            // Mypageがない場合は作成画面にリダイレクト
+            return redirect()->route('user.mypage.create');
         }
+    
+        // Mypageに紐づく投稿を取得
+        $posts = $mypage->posts()->get();
+    
+        // Mypageが存在する場合は、詳細画面を表示
+        return view('user.mypage.show', compact('mypage', 'posts'));
+    }
 
-        return view('mypage.show', compact('mypage'));
+    public function destroy(string $id)
+    {
+        $mypage = Mypage::findOrFail($id);
+
+        // S3から画像を削除
+        if ($mypage->my_image) {
+            Storage::disk('s3')->delete(parse_url($mypage->my_image, PHP_URL_PATH));
+        }
+    
+        // データベースから削除
+        $mypage->delete();
+    
+        return redirect()->route('user.mypage.show')->with('success', '販売店が削除されました。');
+    }
+
+    public function publicShow($id)
+    {
+        $mypage = Mypage::where('id', $id)->where('is_published', true)->firstOrFail();
+        // Mypageに紐づく投稿を取得
+        $posts = $mypage->posts()->get();
+        return view('user.mypage.public_show', compact('mypage', 'posts'));
     }
 }

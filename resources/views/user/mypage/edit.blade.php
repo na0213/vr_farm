@@ -5,6 +5,7 @@
         <form action="{{ route('user.mypage.update', $mypage->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
+            
             <div class="flex">
                 <div class="image-preview mypage mt-10 ml-10 w-1/6" id="preview_image">
                     <img src="{{ $mypage->my_image ?? asset('storage/noimage.jpg') }}" alt="Mypage Image" class="image-preview">
@@ -39,6 +40,16 @@
                 登録する
             </button>
         </form>
+
+        <div class="m-10">
+            <form action="{{ route('user.mypage.destroy', ['mypage' => $mypage->id]) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" onclick="return confirm('本当に削除してよろしいですか？');" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    削除する
+                </button>
+            </form>
+        </div>
     </div>
     <script>
         function previewImage(input, previewId) {

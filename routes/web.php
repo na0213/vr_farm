@@ -52,15 +52,18 @@ Route::middleware('auth')->group(function () {
     Route::controller(PostController::class)->group(function () {
         Route::get('/community/{farm}', 'index')->name('user.community.index');
         Route::post('/posts', 'store')->name('posts.store');
+        Route::delete('/posts/{post}', 'destroy')->name('posts.destroy');
     });
 
     Route::controller(MypageController::class)->group(function () {
-        Route::get('/mypage', 'index')->name('user.mypage.index');
-        Route::get('/mypage/create', 'create')->name('user.mypage.create');
-        Route::post('/mypage', 'store')->name('user.mypage.store');
-        Route::get('/mypage/{mypage}', 'show')->name('user.mypage.show'); 
+        Route::get('/user/mypage/create', 'create')->name('user.mypage.create');
+        Route::post('/user/mypage/store', 'store')->name('user.mypage.store');
+        Route::get('/mypage', 'show')->name('user.mypage.show');
         Route::get('/mypage/{mypage}/edit', 'edit')->name('user.mypage.edit');
         Route::put('/mypage/{mypage}', 'update')->name('user.mypage.update');
+        Route::delete('/user/mypage/{mypage}', 'destroy')->name('user.mypage.destroy');
+        Route::get('/user/{mypage}/public_show', 'publicShow')->name('user.mypage.public_show');
+        
     });
 
 });

@@ -3,57 +3,61 @@
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="max-w-sm w-full lg:max-w-full lg:flex">
-                <a href="{{ route('user.farm.show', ['id' => $farm->id]) }}">
-                    <button class="ml-10 bg-transparent hover:bg-gray-500 text-gray-700 font-semibold hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded">
-                        {{ $farm->farm_name }}へ戻る
-                    </button>
-                </a>
-            </div>
-            @if (session('success'))
-                <div class="ml-5 alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
-            <div class="flex items-center justify-start">
-                <div class="mypage mt-10 ml-10 w-1/6">
-                    <img src="{{ $mypage->my_image ?? asset('storage/noimage.jpg') }}" alt="Mypage Image">
-                </div>
-                <p class="ml-5">{{ $mypage->nickname ?? '名無しさん' }}</p>
-                <a href="{{ route('user.mypage.index') }}">
-                    <button class="ml-10 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
-                        設定する
-                    </button>
-                </a>
-            </div>
-
+        <div class="max-w-sm w-full lg:max-w-full lg:flex">
             <div class="mt-10 mx-5">
-                <form method="POST" action="{{ route('posts.store') }}">
-                    @csrf
-                    <input type="hidden" name="farm_id" value="{{ $farm->id }}" class="block mt-1 w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                    <input type="text" name="post_title" :value="old('post_title')" placeholder="タイトル(無記入OK)" class="block mt-1 w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                    <textarea name="post_content" placeholder="本文" class="block mt-5 w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"></textarea>
-                    <button type="submit" class="mt-10 bg-transparent hover:bg-orange-500 text-orange-700 font-semibold hover:text-white py-2 px-4 border border-orange-500 hover:border-transparent rounded">投稿する</button>
-                </form>
+                @if($mypage)
+                    <!-- Mypageが存在する場合、編集画面に遷移するリンクを設定 -->
+                    <a href="{{ route('user.mypage.edit', ['mypage' => $mypage->id]) }}">
+                        <button class="ml-10 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
+                            編集する
+                        </button>
+                    </a>
+                @else
+                    <!-- Mypageが存在しない場合、作成画面に遷移するリンクを設定 -->
+                    <a href="{{ route('user.mypage.create') }}">
+                        <button class="ml-10 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
+                            設定する
+                        </button>
+                    </a>
+                @endif
             </div>
+        </div>
+        @if (session('success'))
+            <div class="ml-5 alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        <div class="flex items-center justify-start">
+            <div class="mypage mt-10 ml-10 w-1/6">
+                <img src="{{ $mypage->my_image ?? asset('storage/noimage.jpg') }}" alt="Mypage Image">
+            </div>
+            <p class="ml-5">{{ $mypage->nickname ?? '名無しさん' }}</p>
+        </div>
+        <div class="m-20 flex items-center justify-start">
+            <p class="ml-5">{{ $mypage->catchphrase ?? '' }}</p>
+        </div>
 
-            <div class="mt-10 mx-5">
-            <!-- 投稿された内容を表示 -->
+        <div class="mt-10 mx-5">
+            <h2 class="text-lg font-semibold">投稿一覧</h2>
             @forelse ($posts as $post)
-            <div class="mt-4 p-4 border rounded {{ $post->mypage_id == auth()->user()->mypage->id ? 'bg-green-100' : '' }}">
-                <h3>{{ $post->post_title }}</h3>
-                <p>{{ $post->post_content }}</p>
-                <div class="flex">
-                    <small class="icon_pic"><img src="{{ $post->mypage->my_image ?? asset('storage/noimage.jpg') }}" alt="Mypage Image" class="w-1/6"></small>
-                    <small class="flex items-center justify-start">投稿者: {{ $post->mypage->nickname ?? '名無しさん' }}</small>
+                <div class="mt-4 p-4 border rounded flex justify-between items-center">
+                    <div>
+                        <h3>{{ $post->post_title }}</h3>
+                        <p>{{ $post->post_content }}</p>
+                    </div>
+                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" onclick="return confirm('本当に削除してよろしいですか？');" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                            削除
+                        </button>
+                    </form>
                 </div>
-            </div>
             @empty
                 <p>投稿はありません。</p>
             @endforelse
-            </div>
         </div>
+        
     </div>
 
 </x-app-layout>
