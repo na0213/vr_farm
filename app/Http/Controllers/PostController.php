@@ -20,17 +20,48 @@ class PostController extends Controller
     // }
     public function index(Farm $farm)
     {
-        // 特定のファームに関連する生産者（owner）の投稿を取得
-        $ownerposts = $farm->ownerposts()->get();
+        $ownerposts = $farm->ownerposts()->get()->map(function ($post) {
+            return (object)[
+                'post_title' => $post->post_title,
+                'post_content' => $post->post_content,
+                'is_owner' => true,
+                'mypage' => null,
+                'created_at' => $post->created_at,
+                'image' => $post->owner_image ?? null,  // 仮の属性名を使っています
+            ];
+        });
     
-        // 特定のファームに関連するすべてのユーザーの投稿を取得
-        $posts = Post::with('mypage')->where('farm_id', $farm->id)->get();
+        $posts = Post::with('mypage')->where('farm_id', $farm->id)->get()->map(function ($post) {
+            return (object)[
+                'post_title' => $post->post_title,
+                'post_content' => $post->post_content,
+                'is_owner' => false,
+                'mypage' => $post->mypage,
+                'created_at' => $post->created_at,
+                'image' => optional($post->mypage)->my_image ?? null,
+            ];
+        });
     
-        // 現在ログインしているユーザーのMypage情報を取得
+        $allPosts = $ownerposts->merge($posts)->sortBy('created_at');
         $mypage = auth()->user()->mypage;
     
-        return view('user.community.index', compact('farm', 'ownerposts', 'posts', 'mypage'));
+        return view('user.community.index', compact('farm', 'allPosts', 'mypage'));
     }
+    
+
+    // public function index(Farm $farm)
+    // {
+    //     // 特定のファームに関連する生産者（owner）の投稿を取得
+    //     $ownerposts = $farm->ownerposts()->get();
+    
+    //     // 特定のファームに関連するすべてのユーザーの投稿を取得
+    //     $posts = Post::with('mypage')->where('farm_id', $farm->id)->get();
+    
+    //     // 現在ログインしているユーザーのMypage情報を取得
+    //     $mypage = auth()->user()->mypage;
+    
+    //     return view('user.community.index', compact('farm', 'ownerposts', 'posts', 'mypage'));
+    // }
 
     public function store(Request $request)
     {

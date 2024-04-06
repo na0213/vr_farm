@@ -43,9 +43,46 @@
                     <button type="submit" class="mt-10 bg-transparent hover:bg-orange-500 text-orange-700 font-semibold hover:text-white py-2 px-4 border border-orange-500 hover:border-transparent rounded">投稿する</button>
                 </form>
             </div>
-            <div class="flex">
+
+            <div class="mx-5">
+                <div>すべての投稿</div>
+                @forelse ($allPosts as $post)
+                    <div class="mt-4 p-4 border rounded {{ $post->is_owner ? 'bg-green-100' : (optional($post->mypage)->user_id == auth()->user()->id ? 'bg-blue-100' : '') }}">
+                        <h3>{{ $post->post_title }}</h3>
+                        <p>{{ $post->post_content }}</p>
+                        <div class="flex">
+                            <!-- ここでmypageの存在とis_publishedを確認 -->
+                            @if(!$post->is_owner && $post->mypage && $post->mypage->is_published)
+                                <a href="{{ route('user.mypage.public_show', ['mypage' => $post->mypage->id]) }}" class="custom-link">
+                                <div class="flex">
+                                    @if($post->image)
+                                        <small class="icon_pic">
+                                            <img src="{{ $post->image }}" alt="Image" class="w-1/6">
+                                        </small>
+                                    @endif
+                                    <small>投稿者: {{ $post->is_owner ? $farm->farm_name : $post->mypage->nickname }}</small>
+                                </div>
+                                </a>
+                            @else
+                                @if($post->image)
+                                    <small class="icon_pic">
+                                        <img src="{{ $post->image }}" alt="Image" class="w-1/6">
+                                    </small>
+                                @endif
+                                <small>投稿者: {{ $post->is_owner ? $farm->farm_name : '名無しさん' }}</small>
+                            @endif
+                        </div>
+                    </div>
+                @empty
+                    <p>投稿はありません。</p>
+                @endforelse
+            </div>
+            
+            
+
+            {{-- <div class="flex">
                 <div class="w-1/2">
-                    <div>生産者の投稿</div>
+                    <div>{{ $farm->farm_name }}の投稿</div>
                     @forelse ($ownerposts as $post)
                         <div class="mt-4 p-4 border rounded">
                             <h3>{{ $post->post_title }}</h3>
@@ -60,25 +97,25 @@
                 <div class="w-1/2">
                     <div>みんなの投稿</div>
                     @forelse ($posts as $post)
-                        <div class="mt-4 p-4 border rounded {{ auth()->user()->id == $post->user_id ? 'bg-blue-100' : '' }}">
-                            <h3>{{ $post->post_title }}</h3>
-                            <p>{{ $post->post_content }}</p>
-                            @if(optional($post->mypage)->is_published)
-                                <a href="{{ route('user.mypage.public_show', ['mypage' => $post->mypage->id]) }}" class="custom-link">
-                                    <small class="icon_pic">
-                                        <img src="{{ optional($post->mypage)->my_image ?? asset('storage/noimage.jpg') }}" alt="Mypage Image">
-                                    </small>
-                                    <small>投稿者: {{ optional($post->mypage)->nickname ?? '名無しさん' }}</small>
-                                </a>
-                            @else
-                                <small>投稿者: {{ '名無しさん' }}</small>
-                            @endif
-                        </div>
+                    <div class="mt-4 p-4 border rounded {{ optional($post->mypage)->user_id == auth()->user()->id ? 'bg-blue-100' : '' }}">
+                        <h3>{{ $post->post_title }}</h3>
+                        <p>{{ $post->post_content }}</p>
+                        @if(optional($post->mypage)->is_published)
+                            <a href="{{ route('user.mypage.public_show', ['mypage' => $post->mypage->id]) }}" class="custom-link">
+                                <small class="icon_pic">
+                                    <img src="{{ optional($post->mypage)->my_image ?? asset('storage/noimage.jpg') }}" alt="Mypage Image">
+                                </small>
+                                <small>投稿者: {{ optional($post->mypage)->nickname ?? '名無しさん' }}</small>
+                            </a>
+                        @else
+                            <small>投稿者: {{ '名無しさん' }}</small>
+                        @endif
+                    </div>
                     @empty
                         <p>投稿はありません。</p>
                     @endforelse
                 </div>
-            </div>
+            </div> --}}
             
             {{-- <div class="mt-10 mx-5">
             <div>みんなの投稿</div>
