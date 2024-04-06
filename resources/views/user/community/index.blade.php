@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-farm-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -17,8 +17,22 @@
                 </div>
             @endif
             <div class="mt-10 mx-5 text-2xl">
-                <span class="mr-2">{{ $farm->farm_name }}様</span><i class="far fa-bell text-green-500"></i><span class="ml-2">コミュニティ</span>
+                <span class="mr-2">{{ $farm->farm_name }}</span><i class="far fa-heart text-green-500"></i><span class="ml-2">コミュニティ</span>
             </div>
+            
+            <div class="swiper-container mt-10 mx-5">
+                <div class="swiper-wrapper">
+                    @foreach($farmImages as $image)
+                        <div class="swiper-slide">
+                            <img src="{{ asset($image->image_path) }}" alt="Farm Image">
+                        </div>
+                    @endforeach
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+
             <div class="flex items-center justify-start">
                 <div class="mypage mt-10 ml-10 w-1/6">
                     <img src="{{ $mypage->my_image ?? asset('storage/noimage.jpg') }}" alt="Mypage Image">
@@ -45,7 +59,7 @@
             </div>
 
             <div class="mx-5">
-                <div>すべての投稿</div>
+                <div>みんなの投稿</div>
                 @forelse ($allPosts as $post)
                     <div class="mt-4 p-4 border rounded {{ $post->is_owner ? 'bg-green-100' : (optional($post->mypage)->user_id == auth()->user()->id ? 'bg-blue-100' : '') }}">
                         <h3>{{ $post->post_title }}</h3>
@@ -149,4 +163,4 @@
         </div>
     </div>
 
-</x-app-layout>
+</x-farm-layout>

@@ -33,8 +33,8 @@
     </div>
 
     <a href="{{ route('user.community.index', ['farm' => $farm->id]) }}">
-    <button class="ml-10 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
-        感想を投稿しよう！  
+    <button class="ml-10 mb-2 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
+        コミュニティへ行こう！  
     </button>
     </a>
     <div class="flex items-center justify-center">

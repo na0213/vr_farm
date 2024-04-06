@@ -44,8 +44,10 @@ class PostController extends Controller
     
         $allPosts = $ownerposts->merge($posts)->sortBy('created_at');
         $mypage = auth()->user()->mypage;
-    
-        return view('user.community.index', compact('farm', 'allPosts', 'mypage'));
+
+        $farmImages = $farm->farmImages()->orderBy('image_order')->get();
+
+        return view('user.community.index', compact('farm', 'allPosts', 'mypage', 'farmImages'));
     }
     
 
