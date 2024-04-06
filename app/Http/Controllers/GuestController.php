@@ -3,36 +3,54 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7;
 use App\Models\Farm;
-use App\Models\Kind;
-use App\Models\Keyword;
+use App\Models\Post;
+
 
 class GuestController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function top()
+    {
+        try {
+            $query = 'アニマルウェルフェア OR 循環型酪農 OR 循環型畜産';
+            $url = config('newsapi.news_api_url') . "everything?q={$query}&apiKey=" . config('newsapi.news_api_key');
+            $method = "GET";
+    
+            $client = new \GuzzleHttp\Client();
+            $response = $client->request($method, $url);
+    
+            $results = $response->getBody();
+            $articles = json_decode($results, true);
+    
+            $news = [];
+    
+            foreach ($articles['articles'] as $article) {
+                array_push($news, [
+                    'name' => $article['title'],
+                    'url' => $article['url'],
+                    'thumbnail' => $article['urlToImage'],
+                ]);
+            }
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            echo \GuzzleHttp\Psr7\Message::toString($e->getRequest());
+            if ($e->hasResponse()) {
+                echo \GuzzleHttp\Psr7\Message::toString($e->getResponse());
+            }
+        }
+    
+        return view('home', compact('news'));
+    }
+    
+
     public function index()
     {
         $farms = Farm::where('is_published', 1)->with(['keywords', 'farmImages'])->get();
 
         return view('farm.map', compact('farms'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     public function show($id)
@@ -41,27 +59,34 @@ class GuestController extends Controller
         return view('farm.show', compact('farm'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function communityIndex(Farm $farm)
     {
-        //
+        $ownerposts = $farm->ownerposts()->get()->map(function ($post) {
+            return (object)[
+                'post_title' => $post->post_title,
+                'post_content' => $post->post_content,
+                'is_owner' => true,
+                'mypage' => null,
+                'created_at' => $post->created_at,
+                'image' => $post->owner_image ?? null,
+            ];
+        });
+
+        $posts = Post::with('mypage')->where('farm_id', $farm->id)->get()->map(function ($post) {
+            return (object)[
+                'post_title' => $post->post_title,
+                'post_content' => $post->post_content,
+                'is_owner' => false,
+                'mypage' => $post->mypage,
+                'created_at' => $post->created_at,
+                'image' => optional($post->mypage)->my_image ?? null,
+            ];
+        });
+
+        $allPosts = $ownerposts->merge($posts)->sortBy('created_at');
+        $farmImages = $farm->farmImages()->orderBy('image_order')->get();
+
+        return view('farm.community', compact('farm', 'allPosts', 'farmImages'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

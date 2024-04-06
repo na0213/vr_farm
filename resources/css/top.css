@@ -2,7 +2,7 @@ body {
     color: #333333;
 }
 div {
-    cursor:pointer
+    /* cursor:pointer */
   }
 /* TOP 画像 */
 .swiper {
