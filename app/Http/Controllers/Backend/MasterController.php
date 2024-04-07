@@ -93,7 +93,7 @@ class MasterController extends Controller
     public function posts(Farm $farm)
     {
         $ownerposts = $farm->ownerposts()->get()->map(function ($post) {
-            return (object)[
+            return [
                 'id' => $post->id,
                 'post_title' => $post->post_title,
                 'post_content' => $post->post_content,
@@ -103,9 +103,9 @@ class MasterController extends Controller
                 'image' => $post->owner_image ?? null,
             ];
         });
-
+    
         $posts = Post::with('mypage')->where('farm_id', $farm->id)->get()->map(function ($post) {
-            return (object)[
+            return [
                 'post_title' => $post->post_title,
                 'post_content' => $post->post_content,
                 'is_owner' => false,
@@ -114,10 +114,13 @@ class MasterController extends Controller
                 'image' => optional($post->mypage)->my_image ?? null,
             ];
         });
-
+    
+        // すべての投稿を時系列でマージし、ソート
         $allPosts = $ownerposts->merge($posts)->sortBy('created_at');
+    
         $farmImages = $farm->farmImages()->orderBy('image_order')->get();
     
         return view('backend.masters.posts', compact('farm', 'allPosts', 'farmImages'));
     }
+    
 }
