@@ -16,7 +16,7 @@ class GuestController extends Controller
     public function top()
     {
         try {
-            $query = 'アニマルウェルフェア OR 循環型酪農 OR 循環型畜産';
+            $query = '(アニマルウェルフェア OR 循環型酪農 OR 循環型畜産 OR グラスフェッド) OR (牛乳 AND 放牧)';
             $url = config('newsapi.news_api_url') . "everything?q={$query}&apiKey=" . config('newsapi.news_api_key');
             $method = "GET";
     
