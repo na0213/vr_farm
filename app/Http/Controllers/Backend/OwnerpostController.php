@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Ownerpost;
+use App\Models\Mypage;
+use App\Models\Owner;
 
 class OwnerpostController extends Controller
 {
@@ -52,4 +55,13 @@ class OwnerpostController extends Controller
         }
     }
 
+    public function usershow($id)
+    {
+        $owner = Owner::find(Auth::guard('owners')->id());
+        $farm = $owner->farm;
+        $mypage = Mypage::where('id', $id)->where('is_published', true)->firstOrFail();
+        // Mypageに紐づく投稿を取得
+        $posts = $mypage->posts()->get();
+        return view('backend.masters.usershow', compact('owner', 'farm', 'mypage', 'posts'));
+    }
 }

@@ -10,7 +10,7 @@
         </h1>
     </div>
 
-    <div class="w-full mt-20 mx-5 mb-5">
+    <div class="mt-20 mb-5 flex items-center justify-center">
         {!! $farm->vr !!}
     </div>
 
