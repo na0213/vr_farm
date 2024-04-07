@@ -8,16 +8,6 @@ use App\Models\Post;
 
 class PostController extends Controller
 {
-    // public function index(Farm $farm)
-    // {
-    //     // 特定のファームに関連する生産者（owner）の投稿を取得
-    //     $ownerposts = $farm->ownerposts()->get();
-
-    //     // 特定のファームに関連するすべてのユーザーの投稿を取得
-    //     $posts = Post::with('mypage')->where('farm_id', $farm->id)->get();
-
-    //     return view('user.community.index', compact('farm', 'ownerposts', 'posts'));
-    // }
     public function index(Farm $farm)
     {
         $ownerposts = $farm->ownerposts()->get()->map(function ($post) {
@@ -54,21 +44,6 @@ class PostController extends Controller
 
         return view('user.community.index', compact('farm', 'allPosts', 'mypage', 'farmImages'));
     }
-    
-
-    // public function index(Farm $farm)
-    // {
-    //     // 特定のファームに関連する生産者（owner）の投稿を取得
-    //     $ownerposts = $farm->ownerposts()->get();
-    
-    //     // 特定のファームに関連するすべてのユーザーの投稿を取得
-    //     $posts = Post::with('mypage')->where('farm_id', $farm->id)->get();
-    
-    //     // 現在ログインしているユーザーのMypage情報を取得
-    //     $mypage = auth()->user()->mypage;
-    
-    //     return view('user.community.index', compact('farm', 'ownerposts', 'posts', 'mypage'));
-    // }
 
     public function store(Request $request)
     {
