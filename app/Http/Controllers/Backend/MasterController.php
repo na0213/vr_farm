@@ -102,10 +102,11 @@ class MasterController extends Controller
                 'created_at' => $post->created_at,
                 'image' => $post->owner_image ?? null,
             ];
-        });
+        })->toArray();
     
         $posts = Post::with('mypage')->where('farm_id', $farm->id)->get()->map(function ($post) {
             return [
+                'id' => $post->id,
                 'post_title' => $post->post_title,
                 'post_content' => $post->post_content,
                 'is_owner' => false,
@@ -113,14 +114,17 @@ class MasterController extends Controller
                 'created_at' => $post->created_at,
                 'image' => optional($post->mypage)->my_image ?? null,
             ];
-        });
+        })->toArray();
     
-        // すべての投稿を時系列でマージし、ソート
-        $allPosts = $ownerposts->merge($posts)->sortBy('created_at');
+        $allPosts = array_merge($ownerposts, $posts);
+        usort($allPosts, function ($a, $b) {
+            return $a['created_at'] <=> $b['created_at'];
+        });
     
         $farmImages = $farm->farmImages()->orderBy('image_order')->get();
     
         return view('backend.masters.posts', compact('farm', 'allPosts', 'farmImages'));
     }
+    
     
 }
