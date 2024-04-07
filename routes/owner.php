@@ -80,12 +80,13 @@ Route::middleware('auth:owners')->group(function () {
         Route::get('/owners/{id}/show', 'show')->name('backend.masters.show');
         Route::get('/owners/{id}/edit', 'edit')->name('backend.masters.edit');
         Route::put('/owners/{id}', 'update')->name('backend.masters.update');
-        Route::get('/owners/{id}/posts', 'posts')->name('backend.masters.posts');
+        Route::get('/farm/{farm}/posts', 'posts')->name('backend.masters.posts');
     });
 
     Route::controller(OwnerpostController::class)->group(function () {
         Route::post('/ownerposts/store', 'store')->name('ownerposts.store');
         Route::delete('/ownerposts/{ownerpost}', 'destroy')->name('ownerposts.destroy');
+        Route::get('/ownerposts/{mypage}/usershow', 'usershow')->name('ownerposts.usershow');
     });
 
 });

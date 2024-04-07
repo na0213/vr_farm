@@ -7,6 +7,7 @@ use App\Models\Owner;
 use App\Models\Farm;
 use App\Models\Kind;
 use App\Models\Keyword;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +23,7 @@ class MasterController extends Controller
 
     public function show($id)
     {
-        $farm = Farm::with(['owner', 'kinds', 'keywords'])->findOrFail($id);
+        $farm = Farm::with(['owner', 'kinds', 'keywords', 'animals'])->findOrFail($id);
         $owner = $farm->owner;
         $kinds = Kind::all();
         $keywords = Keyword::all();
@@ -89,15 +90,34 @@ class MasterController extends Controller
         }
     }
 
-    public function posts($id)
+    public function posts(Farm $farm)
     {
-        // 生産者（owner）が所有する農場を取得
-        $farm = Farm::with(['ownerposts', 'posts'])->findOrFail($id);
+        $ownerposts = $farm->ownerposts()->get()->map(function ($post) {
+            return (object)[
+                'id' => $post->id,
+                'post_title' => $post->post_title,
+                'post_content' => $post->post_content,
+                'is_owner' => true,
+                'mypage' => null,
+                'created_at' => $post->created_at,
+                'image' => $post->owner_image ?? null,
+            ];
+        });
+
+        $posts = Post::with('mypage')->where('farm_id', $farm->id)->get()->map(function ($post) {
+            return (object)[
+                'post_title' => $post->post_title,
+                'post_content' => $post->post_content,
+                'is_owner' => false,
+                'mypage' => $post->mypage,
+                'created_at' => $post->created_at,
+                'image' => optional($post->mypage)->my_image ?? null,
+            ];
+        });
+
+        $allPosts = $ownerposts->merge($posts)->sortBy('created_at');
+        $farmImages = $farm->farmImages()->orderBy('image_order')->get();
     
-        // 生産者が所有する農場に紐づく投稿を取得
-        $ownerposts = $farm->ownerposts()->get();
-        $posts = $farm->posts()->get();
-    
-        return view('backend.masters.posts', compact('ownerposts', 'posts', 'farm'));
+        return view('backend.masters.posts', compact('farm', 'allPosts', 'farmImages'));
     }
 }
