@@ -62,7 +62,8 @@ class GuestController extends Controller
     public function communityIndex(Farm $farm)
     {
         $ownerposts = $farm->ownerposts()->get()->map(function ($post) {
-            return (object)[
+            return [
+                'id' => $post->id,
                 'post_title' => $post->post_title,
                 'post_content' => $post->post_content,
                 'is_owner' => true,
@@ -70,10 +71,11 @@ class GuestController extends Controller
                 'created_at' => $post->created_at,
                 'image' => $post->owner_image ?? null,
             ];
-        });
-
+        })->toArray();
+    
         $posts = Post::with('mypage')->where('farm_id', $farm->id)->get()->map(function ($post) {
-            return (object)[
+            return [
+                'id' => $post->id,
                 'post_title' => $post->post_title,
                 'post_content' => $post->post_content,
                 'is_owner' => false,
@@ -81,9 +83,13 @@ class GuestController extends Controller
                 'created_at' => $post->created_at,
                 'image' => optional($post->mypage)->my_image ?? null,
             ];
+        })->toArray();
+    
+        $allPosts = array_merge($ownerposts, $posts);
+        usort($allPosts, function ($a, $b) {
+            return $a['created_at'] <=> $b['created_at'];
         });
-
-        $allPosts = $ownerposts->merge($posts)->sortBy('created_at');
+    
         $farmImages = $farm->farmImages()->orderBy('image_order')->get();
 
         return view('farm.community', compact('farm', 'allPosts', 'farmImages'));
