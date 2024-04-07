@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\Owner\PasswordController;
 use App\Http\Controllers\Auth\Owner\PasswordResetLinkController;
 use App\Http\Controllers\Auth\Owner\RegisteredUserController;
 use App\Http\Controllers\Auth\Owner\VerifyEmailController;
+use App\Http\Controllers\Backend\MasterprofileController;
 use App\Http\Controllers\Backend\MasterController;
 use App\Http\Controllers\Backend\OwnerpostController;
 
@@ -53,6 +54,10 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth:owners')->group(function () {
+
+    Route::get('/profile', [MasterprofileController::class, 'edit'])->name('backend.masters.profile.edit');
+    Route::patch('/profile', [MasterprofileController::class, 'update'])->name('backend.masters.profile.update');
+    Route::delete('/profile', [MasterprofileController::class, 'destroy'])->name('backend.masters.profile.destroy');
 
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
