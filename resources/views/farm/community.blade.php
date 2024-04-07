@@ -31,41 +31,38 @@
 
             <div class="mx-5 mt-10">
                 <div>みんなの投稿<br>
-                ログインすると投稿できるよ！</div>
+                    ログインすると投稿できるよ！</div>
                 @forelse ($allPosts as $post)
-                <div class="mt-4 p-4 border rounded {{ $post->is_owner ? 'bg-green-100' : '' }}">
-
-                    {{-- <div class="mt-4 p-4 border rounded {{ $post->is_owner ? 'bg-green-100' : (optional($post->mypage)->user_id == auth()->user()->id ? 'bg-blue-100' : '') }}"> --}}
-                        <h3>{{ $post->post_title }}</h3>
-                        <p>{{ $post->post_content }}</p>
-                        <div class="flex">
-                            <!-- ここでmypageの存在とis_publishedを確認 -->
-                            @if(!$post->is_owner && $post->mypage && $post->mypage->is_published)
-                                {{-- <a href="{{ route('user.mypage.public_show', ['mypage' => $post->mypage->id]) }}" class="custom-link"> --}}
+                <div class="mt-4 p-4 border rounded {{ $post['is_owner'] ? 'bg-green-100' : '' }}">
+                    <h3>{{ $post['post_title'] }}</h3>
+                    <p>{{ $post['post_content'] }}</p>
+                    <div class="flex">
+                        @if(!$post['is_owner'] && $post['mypage'] && $post['mypage']['is_published'])
+                            {{-- <a href="{{ route('owner.ownerposts.usershow', ['mypage' => $post['mypage']['id']]) }}" class="custom-link"> --}}
                                 <div class="flex">
-                                    @if($post->image)
+                                    @if($post['image'])
                                         <small class="icon_pic">
-                                            <img src="{{ $post->image }}" alt="Image" class="w-1/6">
+                                            <img src="{{ $post['image'] }}" alt="Image" class="w-1/6">
                                         </small>
                                     @endif
-                                    <small>投稿者: {{ $post->is_owner ? $farm->farm_name : $post->mypage->nickname }}</small>
+                                    <small>投稿者: {{ $post['is_owner'] ? $farm->farm_name : $post['mypage']['nickname'] }}</small>
                                 </div>
-                                {{-- </a> --}}
-                            @else
-                                @if($post->image)
-                                    <small class="icon_pic">
-                                        <img src="{{ $post->image }}" alt="Image" class="w-1/6">
-                                    </small>
-                                @endif
-                                <small>投稿者: {{ $post->is_owner ? $farm->farm_name : '名無しさん' }}</small>
+                            {{-- </a> --}}
+                        @else
+                            @if($post['image'])
+                                <small class="icon_pic">
+                                    <img src="{{ $post['image'] }}" alt="Image" class="w-1/6">
+                                </small>
                             @endif
-                        </div>
+                            <small>投稿者: {{ $post['is_owner'] ? $farm->farm_name : '名無しさん' }}</small>
+                        @endif
                     </div>
+                </div>
                 @empty
                     <p>投稿はありません。</p>
                 @endforelse
             </div>
-        </div>
+
     </div>
    
 
