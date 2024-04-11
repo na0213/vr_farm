@@ -1,4 +1,16 @@
 <x-app-layout>
+    <x-slot name="header">
+        <div class="flex">
+            <a href="{{ route('user.mypage.show') }}">
+                <h2 class="text-xl text-gray-600 dark:text-gray-200 leading-tight">
+                    戻る
+                </h2>
+            </a>
+            <h2 class="pl-10 font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                マイページ
+            </h2>
+        </div>
+    </x-slot>
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <div class="wrap mt-10">
@@ -18,8 +30,9 @@
                 <input type="text" id="nickname" name="nickname" value="{{ $mypage->nickname }}" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
             </div>
             <div class="mt-10 mb-10">
-                <label for="catchphrase" class="mt-10 leading-7 text-sm text-gray-600">私のキャッチフレーズ</label>
-                <input type="text" id="catchphrase" name="catchphrase" value="{{ $mypage->catchphrase }}" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                <label for="catchphrase" class="mt-10 leading-7 text-sm text-gray-600">ちょっと自己紹介</label>
+                <textarea name="catchphrase" id="catchphrase" cols="30" rows="10" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ $mypage->catchphrase }}</textarea>
+                {{-- <input type="text" id="catchphrase" name="catchphrase" value="{{ $mypage->catchphrase }}" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"> --}}
             </div>
 
             <div class="-m-2">

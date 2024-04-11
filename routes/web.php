@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\MypageController;
+use App\Http\Controllers\NoteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,9 +70,18 @@ Route::middleware('auth')->group(function () {
         Route::put('/mypage/{mypage}', 'update')->name('user.mypage.update');
         Route::delete('/user/mypage/{mypage}', 'destroy')->name('user.mypage.destroy');
         Route::get('/user/{mypage}/public_show', 'publicShow')->name('user.mypage.public_show');
-        
+        Route::post('/mypage/{mypage}/follow', 'follow')->name('mypage.follow');
+        Route::delete('/mypage/{mypage}/unfollow', 'unfollow')->name('mypage.unfollow');
     });
-
+    
+    Route::controller(NoteController::class)->group(function () {
+        Route::get('/user/note/create', 'create')->name('user.note.create');
+        Route::post('/user/note/store', 'store')->name('user.note.store');
+        Route::get('/note/{note}', 'show')->name('user.note.show');
+        Route::get('/note/{note}/edit', 'edit')->name('user.note.edit');
+        Route::put('/note/{note}', 'update')->name('user.note.update');
+        Route::delete('/user/note/{note}', 'destroy')->name('user.note.destroy');
+    });
 });
 
 require __DIR__.'/auth.php';

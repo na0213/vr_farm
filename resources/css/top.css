@@ -475,6 +475,24 @@ h3 {
     padding-bottom: 200px; /* 閉じるボタンのbottomからの位置 */
     transition: all 0.5s;
   }
+
+  .text-start {
+    font-size: 70px;
+    color: #FFF67F;
+  }
+  .title-font {
+    font-size: 50px;
+    color: #c9ccce;
+  }
+
+  .note-content {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
 /*  */
 @media (max-width:768px) {
     .box {

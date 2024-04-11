@@ -11,20 +11,6 @@ use Illuminate\Support\Facades\Storage;
 
 class MypageController extends Controller
 {
-    // public function index()
-    // {
-    //     $user = auth()->user();
-    //     $mypage = $user->mypage;
-
-    //     if ($mypage) {
-    //         // Mypageが存在する場合は編集ページへリダイレクト
-    //         return redirect()->route('user.mypage.edit', $mypage->id);
-    //     } else {
-    //         // Mypageが存在しない場合は新規作成ページへリダイレクト
-    //         return redirect()->route('user.mypage.create');
-    //     }
-    // }
-
     public function create()
     {
         return view('user.mypage.create');
@@ -34,7 +20,7 @@ class MypageController extends Controller
     {
         $validated = $request->validate([
             'nickname' => 'required|string|max:255',
-            'catchphrase' => 'nullable|string',
+            'catchphrase' => 'nullable|string|max:3000',
             'my_image' => 'nullable|image|max:3072', // 3MBまで
             'is_published' => 'required|boolean',
         ]);
@@ -134,9 +120,10 @@ class MypageController extends Controller
     
         // Mypageに紐づく投稿を取得
         $posts = $mypage->posts()->get();
+        $notes = $mypage->notes()->get();
     
         // Mypageが存在する場合は、詳細画面を表示
-        return view('user.mypage.show', compact('mypage', 'posts'));
+        return view('user.mypage.show', compact('mypage', 'posts', 'notes'));
     }
 
     public function destroy(string $id)
@@ -160,5 +147,28 @@ class MypageController extends Controller
         // Mypageに紐づく投稿を取得
         $posts = $mypage->posts()->get();
         return view('user.mypage.public_show', compact('mypage', 'posts'));
+    }
+
+    public function follow(Request $request, $id)
+    {
+        $follower = auth()->user()->mypage;
+        $followed = Mypage::findOrFail($id);
+    
+        if ($follower->id !== $followed->id) {
+            $follower->following()->updateOrCreate([
+                'followed_id' => $followed->id,
+            ]);
+        }
+    
+        return back()->with('success', 'フォローしました！');
+    }
+    public function unfollow($id)
+    {
+        $follower = auth()->user()->mypage;
+        $followed = Mypage::findOrFail($id);
+    
+        $follower->following()->where('followed_id', $followed->id)->delete();
+    
+        return back()->with('success', 'フォローを解除しました！');
     }
 }

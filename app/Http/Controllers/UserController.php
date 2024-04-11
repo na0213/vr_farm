@@ -84,8 +84,13 @@ class UserController extends Controller
         $favorites = $user->likes()->with('farm')->get()->map(function ($like) {
             return $like->farm;
         });
+
+        // フォローしているマイページを取得
+        $followings = $user->mypage->following()->with('followed')->get()->map(function ($follow) {
+            return $follow->followed;
+        });
     
-        return view('user.favorites', compact('favorites'));
+        return view('user.favorites', compact('favorites', 'followings'));
     }
     
 }
