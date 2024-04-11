@@ -29,7 +29,9 @@
                 <div class="p-2 w-4/5 mx-auto">
                     <div class="relative">
                     <label for="catchphrase" class="leading-7 text-sm text-gray-600">私のキャッチフレーズ</label>
-                    <input type="text" id="catchphrase" name="catchphrase" value="{{ old('catchphrase')}}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                    <textarea name="catchphrase" id="catchphrase" cols="30" rows="10" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ old('catchphrase')}}</textarea>
+
+                    {{-- <input type="text" id="catchphrase" name="catchphrase" value="{{ old('catchphrase')}}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"> --}}
                     </div>
                 </div>
             </div>

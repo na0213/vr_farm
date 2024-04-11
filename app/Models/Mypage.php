@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Post;
 use App\Models\Like;
 use App\Models\Follow;
+use App\Models\Note;
 
 class Mypage extends Model
 {
@@ -28,6 +29,11 @@ class Mypage extends Model
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
     }
 
     public function likes()

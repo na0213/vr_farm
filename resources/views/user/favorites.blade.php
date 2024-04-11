@@ -2,6 +2,7 @@
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <div class="wrap">
+        <h1 class="text-start">F<span class="title-font">ARM</h1>
         <ul class="grid ">
             @forelse ($favorites as $farm)
                 <li class="card rounded overflow-hidden shadow-lg">
@@ -48,6 +49,24 @@
             <div class="m-10">
                 <li>お気に入り登録はありません。</li>
             </div>
+            @endforelse
+        </ul>
+        <h1 class="text-start mt-10">F<span class="title-font">OLLOW</h1>
+        <ul class="grid">
+            @forelse ($followings as $mypage)
+                <li class="card rounded overflow-hidden shadow-lg">
+                    <a href="{{ route('user.mypage.public_show', ['mypage' => $mypage->id]) }}">
+                        <div class="mypage mt-10 ml-10 w-1/6">
+                            <img src="{{ $mypage->my_image ?? asset('storage/noimage.jpg') }}" alt="Mypage Image">
+                        </div>
+                        <p class="ml-5">{{ $mypage->nickname ?? '名無しさん' }}</p>
+                        {{-- <p class="ml-5">{{ $mypage->catchphrase ?? '' }}</p> --}}
+                    </a>
+                </li>
+            @empty
+                <div class="m-10">
+                    <li>フォローはありません。</li>
+                </div>
             @endforelse
         </ul>
     </div>
