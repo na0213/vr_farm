@@ -59,6 +59,7 @@ class GuestController extends Controller
         return view('farm.show', compact('farm'));
     }
 
+    // コミュニティ
     public function communityIndex(Farm $farm)
     {
         $ownerposts = $farm->ownerposts()->get()->map(function ($post) {

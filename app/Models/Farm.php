@@ -13,8 +13,9 @@ use App\Models\StoreImage;
 use App\Models\Point;
 use App\Models\Keyword;
 use App\Models\Kind;
-use App\Models\Post;
+use App\Models\Qr;
 use App\Models\Ownerpost;
+use App\Models\Dlshop;
 
 class Farm extends Model
 {
@@ -82,5 +83,13 @@ class Farm extends Model
     public function isFavoriteBy(User $user)
     {
         return $this->likes()->where('user_id', $user->id)->exists();
+    }
+    public function qr()
+    {
+        return $this->hasOne(Qr::class);
+    }
+    public function dlshops()
+    {
+        return $this->hasMany(Dlshop::class);
     }
 }

@@ -238,18 +238,50 @@
               <table class="w-11/12 mx-auto mb-10 text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-6 py-2 whitespace-nowrap">
+                        {{-- <th scope="col" class="px-6 py-2 whitespace-nowrap">
                           ID
                         </th>
                         <th scope="col" class="px-6 py-2 whitespace-nowrap">
                           タイトル
-                        </th>
+                        </th> --}}
                         <th scope="col" class="px-6 py-2 whitespace-nowrap">
                           編集
                         </th>
                     </tr>
                 </thead>
                 <tbody>
+                  @if($farm)
+                    <div class="flex justify-between">
+                      <p class="p-5">【QR管理】</p>
+                      <div class="m-3">
+                        <a href="{{ route('admin.backend.qr.create', ['farm' => $farm->id]) }}">
+                          <button type="button" class="text-white bg-yellow-500 border-0 py-1 px-4 focus:outline-none hover:bg-yellow-600 rounded text-lg">登録</button>
+                        </a>
+                      </div>
+                    </div>
+                    @if ($farm->qr) <!-- $farm が存在し、さらに $farm->qr が存在するかを確認 -->
+                      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                          <a href="{{ route('admin.backend.qr.edit', ['id' => $farm->qr->id]) }}">編集</a>
+                        </td>
+                      </tr>
+                    @else
+                      <tr>
+                        <td colspan="3" class="text-center py-4">
+                          QRコードを登録してください。
+                        </td>
+                      </tr>
+                    @endif
+                  @else
+                    <tr>
+                      <td colspan="3" class="text-center py-4">
+                        関連する牧場情報がありません。
+                      </td>
+                    </tr>
+                  @endif
+                </tbody>
+                
+                {{-- <tbody>
                   @if($farm)
                   <div class="flex justify-between">
                     <p class="p-5">【SDGs管理】</p>
@@ -281,7 +313,7 @@
                     </td>
                   </tr>
                   @endif
-                </tbody>
+                </tbody> --}}
               </table>
             </div>
             <div class="p-2 w-full flex justify-around mt-4">

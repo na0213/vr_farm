@@ -19,6 +19,7 @@ use App\Http\Controllers\Backend\AnimalController;
 use App\Http\Controllers\Backend\StoreController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\PointController;
+use App\Http\Controllers\QrController;
 
 /*
 |--------------------------------------------------------------------------
@@ -165,4 +166,13 @@ Route::middleware('auth:admins')->group(function () {
         Route::put('/points/{id}', 'update')->name('backend.points.update');
         Route::delete('/points/{id}', 'destroy')->name('backend.points.destroy');
         });
+
+    Route::controller(QrController::class)->group(function () {
+        Route::get('/qr/create/{farm}', 'create')->name('backend.qr.create');
+        Route::post('/qr/{farm}', 'store')->name('backend.qr.store');
+        Route::get('/qr/{id}/show', 'show')->name('backend.qr.show');
+        Route::get('/qr/{id}/edit', 'edit')->name('backend.qr.edit');
+        Route::put('/qr/{id}', 'update')->name('backend.qr.update');
+        Route::delete('/qr/{id}', 'destroy')->name('backend.qr.destroy');
+    });
 });

@@ -25,6 +25,12 @@
             コミュニティへ行こう！  
         </button>
     </a>
+    <a href="{{ route('qrs.index', ['farm' => $farm->id]) }}">
+    {{-- <a href="{{ route('user.community.index', ['farm' => $farm->id]) }}"> --}}
+        <button class="ml-10 mb-2 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
+            飲食関係の方向け  
+        </button>
+    </a>
     <div class="flex items-center justify-center">
         <div class="w-4/5 mt-20 p-5 rounded overflow-hidden shadow-lg">
             <div class="sub-title">ー Story ー</div>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DlshopController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\UserController;
@@ -28,7 +29,10 @@ Route::get('/', [GuestController::class, 'top']);
 Route::get('/farm/map', [GuestController::class, 'index'])->name('farm.index');
 Route::get('/farm/{id}', [GuestController::class, 'show'])->name('farm.show');
 Route::get('/farm/{farm}/community', [GuestController::class, 'communityIndex'])->name('farm.community');
-Route::get('/mypage/{user}', [GuestController::class, 'show'])->name('mypage.show');
+
+Route::get('/farm/{farm}/qrs', [DlshopController::class, 'index'])->name('qrs.index');
+Route::get('/farm/{farm}/qr/show', [DlshopController::class, 'show'])->name('qrs.show');
+Route::post('/farm/{farm}/qr', [DlshopController::class, 'store'])->name('qrs.store');
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
