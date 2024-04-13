@@ -1,7 +1,13 @@
 <x-app-layout>
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <h1 class="title-start mt-10 ml-10">My<span class="title-font">Page</h1>
     <div class="wrap mt-10">
+        <div class="m-2">
+            <div class="p-2 mx-auto">
+                登録するとnote投稿ができるよ！
+            </div>
+        </div>
         <form action="{{ route('user.mypage.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="flex-container m-5">
@@ -28,7 +34,7 @@
             <div class="-m-2">
                 <div class="p-2 w-4/5 mx-auto">
                     <div class="relative">
-                    <label for="catchphrase" class="leading-7 text-sm text-gray-600">私のキャッチフレーズ</label>
+                    <label for="catchphrase" class="leading-7 text-sm text-gray-600">自己紹介</label>
                     <textarea name="catchphrase" id="catchphrase" cols="30" rows="10" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ old('catchphrase')}}</textarea>
 
                     {{-- <input type="text" id="catchphrase" name="catchphrase" value="{{ old('catchphrase')}}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"> --}}

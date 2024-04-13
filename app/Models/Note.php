@@ -13,6 +13,7 @@ class Note extends Model
         'mypage_id',
         'note_title',
         'note_content',
+        'note_image',
     ];
 
     public function mypage()

@@ -2,7 +2,7 @@
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <div class="wrap">
-        <h1 class="text-start">F<span class="title-font">ARM</h1>
+        <h1 class="title-start">F<span class="title-font">ARM</h1>
         <ul class="grid ">
             @forelse ($favorites as $farm)
                 <li class="card rounded overflow-hidden shadow-lg">
@@ -51,7 +51,7 @@
             </div>
             @endforelse
         </ul>
-        <h1 class="text-start mt-10">F<span class="title-font">OLLOW</h1>
+        <h1 class="title-start mt-10">F<span class="title-font">OLLOW</h1>
         <ul class="grid">
             @forelse ($followings as $mypage)
                 <li class="card rounded overflow-hidden shadow-lg">

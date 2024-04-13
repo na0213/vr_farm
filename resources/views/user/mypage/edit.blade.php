@@ -30,7 +30,7 @@
                 <input type="text" id="nickname" name="nickname" value="{{ $mypage->nickname }}" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
             </div>
             <div class="mt-10 mb-10">
-                <label for="catchphrase" class="mt-10 leading-7 text-sm text-gray-600">ちょっと自己紹介</label>
+                <label for="catchphrase" class="mt-10 leading-7 text-sm text-gray-600">自己紹介</label>
                 <textarea name="catchphrase" id="catchphrase" cols="30" rows="10" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ $mypage->catchphrase }}</textarea>
                 {{-- <input type="text" id="catchphrase" name="catchphrase" value="{{ $mypage->catchphrase }}" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"> --}}
             </div>
