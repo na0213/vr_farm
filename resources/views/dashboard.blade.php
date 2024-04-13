@@ -53,7 +53,6 @@
           人と動物と環境にやさしい牧場があります。<br>
           日本の未来に大切な牧場です。<br><br>
           毎日いただいているお肉・卵・牛乳。<br>
-          月に１度でも。<br>
           自分にも動物にも環境にも<br>
           ちょっといいコトを。<br>
           とってもいいモノを。<br>
@@ -80,6 +79,41 @@
         </div>
       </div>
     </div>
+
+    <div class="story my-5">
+      <p>NOTE</p>
+    </div>
+    <p class="mb-3 mx-5 flex items-center justify-center">みんなのつぶやきやイベントを確認しよう！</p>
+    <div class="mx-auto max-w-screen-lg mb-10 flex flex-wrap justify-center">
+      @foreach($notes as $note)
+      <div class="relative flex w-80 flex-col overflow-hidden rounded-xl bg-white shadow-md">
+        <div class="h-48 overflow-hidden bg-transparent">
+          <img class="w-full h-full object-cover" src="{{ $note->note_image ?? '/storage/noimage.jpg' }}" alt="Note Image" />
+        </div>
+        <div class="p-6">
+          <h4 class="text-2xl font-semibold leading-snug text-blue-gray-900">
+            {{ $note->note_title }}
+          </h4>
+          <p class="mt-3 text-xl text-gray-700">{!! $note->note_content !!}</p>
+        </div>
+        <div class="flex items-center justify-between p-6">
+          <div class="flex items-center -space-x-3">
+            <img alt="{{ $note->mypage->nickname }}" src="{{ $note->mypage->my_image ?? '/storage/noimage.jpg' }}" class="h-9 w-9 rounded-full border-2 border-white object-cover" />
+          </div>
+          <p class="text-base">{{ $note->mypage->nickname }}</p>
+        </div>
+        <div class="flex items-center justify-center">
+        <a href="{{ route('user.note.public', $note->id) }}" class="w-1/3 mb-2 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          読む
+          <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+          </svg>
+        </a>
+        </div>
+      </div>
+      @endforeach      
+    </div>
+
     <div class="story my-5">
       <p>NEWS</p>
     </div>
@@ -87,7 +121,7 @@
       <div class="mx-auto max-w-screen-lg flex flex-wrap justify-center">
         @foreach($news as $data)
         <div class="max-w-xs m-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-          <img class="w-full" src="{{ $data['thumbnail'] ? $data['thumbnail'] : asset('storage/noimage.jpg') }}">
+          <img class="w-full h-48" src="{{ $data['thumbnail'] ? $data['thumbnail'] : asset('storage/noimage.jpg') }}">
           <div class="p-3">
             {{$data['name']}}
           <div class="mt-4">

@@ -1,7 +1,7 @@
 <x-app-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
-    <h1 class="text-start mt-10 ml-10">My<span class="title-font">Page</h1>
+    <h1 class="title-start mt-10 ml-10">My<span class="title-font">Page</h1>
     <div class="py-12">
         <div class="max-w-sm w-full lg:max-w-full lg:flex">
             <div>
@@ -46,8 +46,10 @@
         </a>
         <div class="mt-10 mx-5">
             <h2 class="mb-3 text-lg font-semibold">ノート一覧</h2>
+            <div class="flex">
             @forelse ($notes as $note)
-                <div class="mb-2 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <div class="mb-2 ml-2 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                        <img class="p-8 rounded-t-lg" src="{{ $note->note_image }}" alt="product image" />
                     <a href="#">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $note->note_title }}</h5>
                     </a>
@@ -59,9 +61,11 @@
                         </svg>
                     </a>
                 </div>
+            
             @empty
                 <p>投稿はありません。</p>
             @endforelse
+            </div>
         </div>
 
         {{-- 投稿 --}}

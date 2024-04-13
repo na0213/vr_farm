@@ -146,7 +146,8 @@ class MypageController extends Controller
         $mypage = Mypage::where('id', $id)->where('is_published', true)->firstOrFail();
         // Mypageに紐づく投稿を取得
         $posts = $mypage->posts()->get();
-        return view('user.mypage.public_show', compact('mypage', 'posts'));
+        $notes = $mypage->notes()->get();
+        return view('user.mypage.public_show', compact('mypage', 'posts', 'notes'));
     }
 
     public function follow(Request $request, $id)

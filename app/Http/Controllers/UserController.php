@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Farm;
+use App\Models\Note;
 
 class UserController extends Controller
 {
@@ -29,14 +30,19 @@ class UserController extends Controller
                     'thumbnail' => $article['urlToImage'],
                 ]);
             }
+
+            $notes = Note::with('mypage')->get();
+
         } catch (\GuzzleHttp\Exception\RequestException $e) {
             echo \GuzzleHttp\Psr7\Message::toString($e->getRequest());
             if ($e->hasResponse()) {
                 echo \GuzzleHttp\Psr7\Message::toString($e->getResponse());
             }
+            $news = [];
+            $notes = [];
         }
     
-        return view('dashboard', compact('news'));
+        return view('dashboard', compact('news', 'notes'));
     }
 
     public function index()
@@ -84,11 +90,16 @@ class UserController extends Controller
         $favorites = $user->likes()->with('farm')->get()->map(function ($like) {
             return $like->farm;
         });
-
-        // フォローしているマイページを取得
-        $followings = $user->mypage->following()->with('followed')->get()->map(function ($follow) {
-            return $follow->followed;
-        });
+    
+        // マイページが存在しない場合は空のコレクションを返す
+        $followings = collect();
+    
+        if ($user->mypage) {
+            // フォローしているマイページを取得
+            $followings = $user->mypage->following()->with('followed')->get()->map(function ($follow) {
+                return $follow->followed;
+            });
+        }
     
         return view('user.favorites', compact('favorites', 'followings'));
     }

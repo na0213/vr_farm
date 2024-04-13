@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('mypage_id')->constrained()->onDelete('cascade');
             $table->string('note_title')->nullable();
             $table->text('note_content')->nullable();
+            $table->string('note_image')->nullable();
             $table->datetime('created_at');
             $table->datetime('updated_at');
         });

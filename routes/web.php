@@ -85,6 +85,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/note/{note}/edit', 'edit')->name('user.note.edit');
         Route::put('/note/{note}', 'update')->name('user.note.update');
         Route::delete('/user/note/{note}', 'destroy')->name('user.note.destroy');
+        Route::get('/user/{note}/public', 'publicShow')->name('user.note.public');
     });
 });
 
