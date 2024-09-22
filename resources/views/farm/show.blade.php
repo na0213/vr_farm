@@ -20,17 +20,17 @@
         <h2>{{ $farm->catchcopy }}</h2>
     </div>
 
-    <a href="{{ route('farm.community', ['farm' => $farm->id]) }}">
+    {{-- <a href="{{ route('farm.community', ['farm' => $farm->id]) }}">
         <button class="ml-10 mb-2 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
             コミュニティへ行こう！  
         </button>
     </a>
-    <a href="{{ route('qrs.index', ['farm' => $farm->id]) }}">
+    <a href="{{ route('qrs.index', ['farm' => $farm->id]) }}"> --}}
     {{-- <a href="{{ route('user.community.index', ['farm' => $farm->id]) }}"> --}}
-        <button class="ml-10 mb-2 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
+        {{-- <button class="ml-10 mb-2 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
             飲食関係の方向け  
         </button>
-    </a>
+    </a> --}}
     <div class="flex items-center justify-center">
         <div class="w-4/5 mt-20 p-5 rounded overflow-hidden shadow-lg">
             <div class="sub-title">ー Story ー</div>
@@ -68,13 +68,13 @@
         </div>
     </div>
 
-    <div class="bg my-20 pb-10 px-10">
+    {{-- <div class="bg my-20 pb-10 px-10">
         <div class="sub-title mt-10 mb-5 py-5">ー商品 ー</div>
-        <div class="swiper mx-5">
+        <div class="swiper mx-5"> --}}
             <!-- 必要に応じたwrapper -->
-            <div class="swiper-wrapper">
+            {{-- <div class="swiper-wrapper"> --}}
             <!-- スライド -->
-            @foreach ($farm->products as $product)
+            {{-- @foreach ($farm->products as $product)
             <div class="swiper-slide">
                 <img src="{{ $product->product_image }}" alt="">
                 <div class="slide-content">
@@ -83,14 +83,14 @@
                 </div>
             </div>
             @endforeach
-            </div>
+            </div> --}}
             <!-- 必要に応じてページネーション -->
-            <div class="swiper-pagination"></div>
+            {{-- <div class="swiper-pagination"></div> --}}
             <!-- 必要に応じてナビボタン -->
-            <div class="swiper-button-prev"></div>
+            {{-- <div class="swiper-button-prev"></div>
             <div class="swiper-button-next"></div>
-        </div>  
-
+        </div>   --}}
+{{-- 
         <div class="sub-title mt-10 mb-5 py-5">ー取扱い店 ー</div>
         <div class="relative overflow-x-auto">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -121,7 +121,7 @@
                     @endforeach
                 </tbody>
             </table>
-        </div>  
+        </div>   --}}
     </div>
    
 

@@ -2,7 +2,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <div class="slide-title">牧場から<br>食を知る</div>
+    <div class="slide-title">牧場<br>食を知る</div>
     <div class="swiper">
         <div class="swiper-wrapper">
           <div class="swiper-slide">
@@ -84,7 +84,7 @@
       </div>
     </div>
 
-    <div class="story my-5">
+    {{-- <div class="story my-5">
       <p>NEWS</p>
     </div>
     <p class="mb-3 mx-5 flex items-center justify-center">「アニマルウェルフェア」「放牧」「循環型」「グラスフェッド」などに関する旬なニュースをお届け</p>
@@ -105,5 +105,5 @@
           </div>
         </div>
         @endforeach
-      </div>
+      </div> --}}
 </x-top-layout>

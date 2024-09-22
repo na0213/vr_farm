@@ -15,34 +15,34 @@ class GuestController extends Controller
 {
     public function top()
     {
-        try {
-            $query = '(アニマルウェルフェア OR 循環型酪農 OR 循環型畜産 OR グラスフェッド) OR (牛乳 AND 放牧) OR (畜産 AND SDGs)';
-            $url = config('newsapi.news_api_url') . "everything?q={$query}&apiKey=" . config('newsapi.news_api_key');
-            $method = "GET";
+        // try {
+        //     $query = '(アニマルウェルフェア OR 循環型酪農 OR 循環型畜産 OR グラスフェッド) OR (牛乳 AND 放牧) OR (畜産 AND SDGs)';
+        //     $url = config('newsapi.news_api_url') . "everything?q={$query}&apiKey=" . config('newsapi.news_api_key');
+        //     $method = "GET";
     
-            $client = new \GuzzleHttp\Client();
-            $response = $client->request($method, $url);
+        //     $client = new \GuzzleHttp\Client();
+        //     $response = $client->request($method, $url);
     
-            $results = $response->getBody();
-            $articles = json_decode($results, true);
+        //     $results = $response->getBody();
+        //     $articles = json_decode($results, true);
     
-            $news = [];
+        //     $news = [];
     
-            foreach ($articles['articles'] as $article) {
-                array_push($news, [
-                    'name' => $article['title'],
-                    'url' => $article['url'],
-                    'thumbnail' => $article['urlToImage'],
-                ]);
-            }
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
-            echo \GuzzleHttp\Psr7\Message::toString($e->getRequest());
-            if ($e->hasResponse()) {
-                echo \GuzzleHttp\Psr7\Message::toString($e->getResponse());
-            }
-        }
+        //     foreach ($articles['articles'] as $article) {
+        //         array_push($news, [
+        //             'name' => $article['title'],
+        //             'url' => $article['url'],
+        //             'thumbnail' => $article['urlToImage'],
+        //         ]);
+        //     }
+        // } catch (\GuzzleHttp\Exception\RequestException $e) {
+        //     echo \GuzzleHttp\Psr7\Message::toString($e->getRequest());
+        //     if ($e->hasResponse()) {
+        //         echo \GuzzleHttp\Psr7\Message::toString($e->getResponse());
+        //     }
+        // }
     
-        return view('home', compact('news'));
+        return view('home');
     }
     
 
