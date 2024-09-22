@@ -9,6 +9,7 @@ use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,10 +26,15 @@ use App\Http\Controllers\NoteController;
 //     return view('home');
 // });
 
-Route::get('/', [GuestController::class, 'top']);
+// Route::get('/', [GuestController::class, 'top']);
+Route::get('/', [GuestController::class, 'top'])->name('index');
 Route::get('/farm/map', [GuestController::class, 'index'])->name('farm.index');
 Route::get('/farm/{id}', [GuestController::class, 'show'])->name('farm.show');
 Route::get('/farm/{farm}/community', [GuestController::class, 'communityIndex'])->name('farm.community');
+
+Route::get('contact', [ContactController::class, 'formTop'])->name('contact.form');
+Route::post('contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
+Route::post('contact/send', [ContactController::class, 'SendProcess'])->name('contact.send');
 
 Route::get('/farm/{farm}/qrs', [DlshopController::class, 'index'])->name('qrs.index');
 Route::get('/farm/{farm}/qr/show', [DlshopController::class, 'show'])->name('qrs.show');
