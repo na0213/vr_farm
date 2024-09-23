@@ -1,5 +1,6 @@
 body {
     color: #333333;
+    background-color: #F2EEEA;
 }
 div {
     /* cursor:pointer */
@@ -17,17 +18,15 @@ div {
 .slide-title {
     position: absolute;
     top: 90px; /* スライダーの上端からのオフセット */
-    left: 10px; /* スライダーの右端からのオフセット */
+    left: 10px;
     width: 30%;
     padding: 30px;
-    background-color: rgba(252, 250, 250, 0.8);
+    background-color: rgba(252, 250, 250, 0.7);
     text-align: center;
     box-sizing: border-box;
     z-index: 10; /* スライダーの上に表示させる */
-    /* color: #502200; */
-    /* font-weight: bold; */
     font-size: 25px;
-    /* border-radius: 50%; */
+    border-radius: 5%;
 }
 .swiper-slide {
     width: 100%; /* Swiperスライドの幅を親要素の幅いっぱいに設定 */
@@ -37,7 +36,7 @@ div {
     /* border-radius: 5%; */
 }
 .swiper-img-wrapper {
-    width: 80%; /* 画像の幅（コンテナの幅）を調整 */
+    width: 90%; /* 画像の幅（コンテナの幅）を調整 */
     height: auto; /* 画像の高さを自動で調整 */
     overflow: hidden; /* コンテナ内のはみ出しを防ぐ */
     display: flex; /* Flexboxを使用して配置を調整 */
@@ -107,6 +106,95 @@ div {
 			}
 }
 
+.circle {
+  display: flex;
+  justify-content: center; /* コンテナの中央に配置 */
+}
+.concept {
+  align-items: center; /* 垂直方向に中央揃え */
+  height: auto;
+  padding: 40px;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%; /* 丸くする */
+  position: relative; /* 絶対配置の基準にする */
+  margin-left: 40px;
+  overflow: hidden;
+  transition: transform 0.3s ease; /* 画像のアニメーションを追加 */
+}
+
+.bg-image-1 {
+  background-image: url('../../public/storage/story.jpg'); /* 背景画像を指定 */
+  background-size: cover; /* 背景画像がコンテナ全体を覆う */
+  background-position: center;
+  background-repeat: no-repeat; /* 背景画像が繰り返されないように設定 */
+}
+.bg-image-1:hover {
+  transform: translateY(-10px); /* カーソルを合わせたときに上に動かす */
+}
+.bg-image-1::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5); /* 半透明のオーバーレイ */
+  z-index: 1;
+  opacity: 0.99; /* 透明度を調整 */
+  border-radius: 50%; /* オーバーレイも丸くする */
+  transition: transform 0.3s ease; /* オーバーレイにもアニメーションを追加 */
+}
+
+.bg-image-2 {
+  background-image: url('../../public/storage/product.png'); /* 背景画像を指定 */
+  background-size: cover; /* 背景画像がコンテナ全体を覆う */
+  background-position: center;
+  background-repeat: no-repeat; /* 背景画像が繰り返されないように設定 */
+}
+.bg-image-2:hover {
+  transform: translateY(-10px); /* カーソルを合わせたときに上に動かす */
+}
+.bg-image-2::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5); /* 半透明のオーバーレイ */
+  z-index: 1;
+  opacity: 0.99; /* 透明度を調整 */
+  border-radius: 50%; /* オーバーレイも丸くする */
+  transition: transform 0.3s ease; /* オーバーレイにもアニメーションを追加 */
+}
+
+.center-text {
+  color: #333;
+  z-index: 2; /* 背景画像の上に表示 */
+  font-size: 20px;
+  text-align: center; /* テキストを中央に揃える */
+  position: absolute; /* 背景画像の中央に配置するために絶対配置 */
+  top: 50%; /* 上から50%の位置に配置 */
+  left: 50%; /* 左から50%の位置に配置 */
+  transform: translate(-50%, -50%); /* 中央に正確に配置 */
+  font-weight: bold;
+  transition: transform 0.3s ease; /* テキストのアニメーションを追加 */
+}
+
+.bg-image-1:hover .center-text {
+  transform: translate(-50%, -60%); /* カーソルを合わせたときに少し上に移動 */
+}
+.bg-image-2:hover .center-text {
+  transform: translate(-50%, -60%); /* カーソルを合わせたときに少し上に移動 */
+}
+
+.story p {
+  position: relative;
+  z-index: 2; /* テキストがオーバーレイの上に表示される */
+  text-align: center; /* テキストを中央揃え */
+  font-weight: bold;
+}
 /* story */
 .story {
     position: relative; /* 追加: 相対位置指定 */
@@ -494,49 +582,96 @@ h3 {
   }
 
 /*  */
+@media (max-width:1024px) {
+  .slide-title {
+    position: relative; /* 絶対位置をやめて相対位置に変更 */
+    top: 10; /* 画面の最上部に配置 */
+    left: 0;
+    width: 30%; /* 画面幅全体を使う */
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #474646;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    z-index: 10; /* スライダーの上に表示させる */
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 5%;
+  }
+}
+
 @media (max-width:768px) {
-    .box {
-        flex-direction: column;
-    }
-    .box:nth-child(even) {
-        flex-direction: column;
-    }
-    .text {
-        text-align: center;
-    }
-    .box:nth-child(even) .text {
-        text-align: center;
-    }
-    .pict {
-        width:100%;
-        margin-left: 0;
-        text-align: center;
-    }
-    .box:nth-child(even) .pict {
-        margin-left: 0;
-        margin-right: 0%;
-    }
-    .pict img {
-        width:50%;
-        height:auto;
-    }
-    /* map */
-    .map-container {
-        position: relative;
-        width: 350px; /* 地図画像の幅に合わせる */
-        height: 350px; /* 地図画像の高さに合わせる */
-    }
-    .map-container img {
-        width: 100%;
-        height: auto;
-    }
-    .overlay {
-        position: absolute;
-        top: 75px;
-        right: 40px;
-        width: 80%;
-        height: 45%;
-    }
+  .circle {
+    flex-direction: column;
+  }
+  .concept {
+    justify-content: center; /* 中央揃えに修正 */
+    align-items: center;
+    height: auto;
+    padding: 20px;
+    margin: 0 auto; /* コンテナ全体を中央揃え */
+    width: 400px; /* 画面サイズに合わせて画像のサイズを縮小 */
+    height: 400px;
+  }
+
+  .bg-image-1 {
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
+  }
+  .bg-image-1:hover .center-text {
+    transform: translate(-50%, -60%);
+  }
+  .bg-image-2 {
+    transition: transform 0.3s ease;
+  }
+  .bg-image-2:hover .center-text {
+    transform: translate(-50%, -60%);
+  }
+  .center-text {
+    font-size: 18px; /* テキストサイズを少し小さくする */
+  }
+  .box {
+      flex-direction: column;
+  }
+  .box:nth-child(even) {
+      flex-direction: column;
+  }
+  .text {
+      text-align: center;
+  }
+  .box:nth-child(even) .text {
+      text-align: center;
+  }
+  .pict {
+      width:100%;
+      margin-left: 0;
+      text-align: center;
+  }
+  .box:nth-child(even) .pict {
+      margin-left: 0;
+      margin-right: 0%;
+  }
+  .pict img {
+      width:50%;
+      height:auto;
+  }
+  /* map */
+  .map-container {
+      position: relative;
+      width: 350px; /* 地図画像の幅に合わせる */
+      height: 350px; /* 地図画像の高さに合わせる */
+  }
+  .map-container img {
+      width: 100%;
+      height: auto;
+  }
+  .overlay {
+      position: absolute;
+      top: 75px;
+      right: 40px;
+      width: 80%;
+      height: 45%;
+  }
 
     /* farm */
     .top-title {
@@ -602,35 +737,43 @@ h3 {
 
 
 /* レスポンシブ */
-@media screen and (max-width: 479px) { /*ウィンドウ幅が最大479pxまでの場合に適用*/   
-    .slide-title {
-        position: absolute;
-        top: 80px; /* スライダーの上端からのオフセット */
-        left: 5px; /* スライダーの右端からのオフセット */
-        width: auto;
-        padding: 20px;
-        background-color: rgba(255, 255, 255, 0.8);
-        color: #fff;
-        text-align: center;
-        box-sizing: border-box;
-        z-index: 10; /* スライダーの上に表示させる */
-        color: #333333;
-        /* font-weight: bold; */
-        font-size: 15px;
-        border-radius: 5%;
-    }
-    /* 牛のアイコン */
-    .fuwafuwa {
-      position: relative; /* 位置を相対的に設定 */
-      z-index: 10; /* スタック順序を高く設定 */
-      animation: fuwafuwa 3s ease-in-out infinite alternate;
-      background: url(../../public/storage/welcome.png) no-repeat center center / 90px auto;
-      display: inline-block;
-      transition: 1.5s ease-in-out;
-      width: 70px;
-      height: 100px;
-      margin: 30px;
-    }
+@media screen and (max-width: 479px) { /*ウィンドウ幅が最大479pxまでの場合に適用*/  
+  .circle {
+    flex-direction: column;
+  }
+  .concept {
+    justify-content: center; /* 中央揃えに修正 */
+    align-items: center;
+    height: auto;
+    padding: 20px;
+    margin: 0 auto; /* コンテナ全体を中央揃え */
+    width: 250px; /* 画面サイズに合わせて画像のサイズを縮小 */
+    height: 250px;
+  }
+
+  .bg-image-1 {
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
+  }
+  .bg-image-1:hover .center-text {
+    transform: translate(-50%, -60%);
+  }
+  .bg-image-2 {
+    transition: transform 0.3s ease;
+  }
+  .bg-image-2:hover .center-text {
+    transform: translate(-50%, -60%);
+  }
+  .center-text {
+    font-size: 16px; /* テキストサイズを少し小さくする */
+    text-align: center; /* テキストを中央揃え */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 完全に中央に配置 */
+    transition: transform 0.3s ease;
+  }
+
     .farm_link {
         padding: -50px;
         font-size: 10px;
