@@ -107,3 +107,87 @@
         @endforeach
       </div> --}}
 </x-top-layout>
+
+<!-- Hero Section with Image and Title -->
+<div class="hero-section">
+    <img src="{{ asset('storage/top1.jpg') }}" alt="Hero Image" class="hero-image">
+    <div class="hero-text">
+        <h1>牧場</h1>
+        <p>食を知る</p>
+    </div>
+</div>
+
+<!-- Section with Cards or Features -->
+<div class="feature-section">
+    <div class="feature-item">
+        <img src="{{ asset('storage/feature1.jpg') }}" alt="Feature 1" class="feature-image">
+        <p>安心・安全な食材をお届け</p>
+    </div>
+    <div class="feature-item">
+        <img src="{{ asset('storage/feature2.jpg') }}" alt="Feature 2" class="feature-image">
+        <p>循環型牧場の魅力</p>
+    </div>
+    <div class="feature-item">
+        <img src="{{ asset('storage/feature3.jpg') }}" alt="Feature 3" class="feature-image">
+        <p>アニマルウェルフェアの実践</p>
+    </div>
+</div>
+
+<!-- Concept Section with Waves -->
+<div class="wave-section">
+    <div class="wave"></div>
+    <div class="content">
+        <h2>CONCEPT</h2>
+        <p class="con-text">
+            「アニマルウェルフェア」<br>
+            「放牧」<br>
+            「循環型」<br>
+            人と動物と環境にやさしい牧場があります。<br>
+            日本の未来に大切な牧場です。<br><br>
+            毎日いただいているお肉・卵・牛乳。<br>
+            自分にも動物にも環境にも<br>
+            ちょっといいコトを。<br>
+            とってもいいモノを。
+        </p>
+    </div>
+</div>
+
+<!-- Story Section -->
+<div class="story-section">
+    <div class="image-wrapper">
+        <img src="{{ asset('storage/concept.jpg') }}" alt="Story Image" class="story-image">
+    </div>
+    <div class="story-content">
+        <h2>STORY</h2>
+        <p class="con-text">
+            いただく命に感謝をする。<br>
+            「いただきます」<br>
+            この言葉は日本でうまれた言葉。<br><br>
+            「いただきます」<br>
+            命が生きている時にも関心を向けてみる。<br><br>
+            人・動物・環境が生命とともに循環する。<br>
+            そのストーリーを「いただこう」
+        </p>
+    </div>
+</div>
+
+<!-- Link Section (e.g., to Farms) -->
+<a href="{{ route('farm.index') }}" class="cta-link">
+    <div class="cta-button">牧場へ行く</div>
+</a>
+
+<!-- Shop Section (Optional) -->
+<div class="shop-section">
+    <h2>ONLINE STORE</h2>
+    <div class="shop-items">
+        <div class="shop-item">
+            <img src="{{ asset('storage/shop1.jpg') }}" alt="Shop Item 1">
+            <p>美味しいパン</p>
+        </div>
+        <div class="shop-item">
+            <img src="{{ asset('storage/shop2.jpg') }}" alt="Shop Item 2">
+            <p>ミルク100%</p>
+        </div>
+        <!-- Add more items as needed -->
+    </div>
+</div>
