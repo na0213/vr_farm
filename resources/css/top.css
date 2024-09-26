@@ -25,9 +25,10 @@ div {
     z-index: 10; /* スライダーの上に表示させる */
     font-size: 30px;
     font-weight: bold;
-    color: #c47059;
     letter-spacing: 0.3em;
-    /* border-radius: 5%; */
+    background: linear-gradient(270deg, #c47059 0%, #c49b59 40%, #b0c459 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 .swiper-slide {
     width: 100%; /* Swiperスライドの幅を親要素の幅いっぱいに設定 */

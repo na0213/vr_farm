@@ -43,10 +43,10 @@
                   <td class="px-6 py-2">{{ $article->farm->farm_name }}</td>
                   <td class="px-6 py-2">{{ $article->title }}</td>
                   <td class="px-6 py-2">
-                      {{-- <a href="{{ route('admin.backend.article.edit', $article->id) }}" class="px-3 py-2 text-black bg-detail text-md hover:bg-yellow-500">編集</a> --}}
+                      <a href="{{ route('admin.backend.article.edit', $article->id) }}" class="px-3 py-2 text-black bg-detail text-md hover:bg-yellow-500">編集</a>
                   </td>
                   <td class="px-6 py-2">
-                    {{-- <a href="{{ route('admin.backend.article.show', $article->id) }}" class="px-3 py-2 text-black bg-detail text-md hover:bg-yellow-500">詳細</a> --}}
+                    <a href="{{ route('admin.backend.article.show', $article->id) }}" class="px-3 py-2 text-black bg-detail text-md hover:bg-yellow-500">詳細</a>
                   </td>
               </tr>
             @empty
