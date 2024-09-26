@@ -16,6 +16,7 @@ use App\Models\Kind;
 use App\Models\Qr;
 use App\Models\Ownerpost;
 use App\Models\Dlshop;
+use App\Models\Article;
 
 class Farm extends Model
 {
@@ -92,4 +93,9 @@ class Farm extends Model
     {
         return $this->hasMany(Dlshop::class);
     }
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
+
 }

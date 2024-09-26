@@ -30,6 +30,7 @@ class FarmController extends Controller
 
     public function store(Request $request, $ownerId)
     {
+        Log::info('CKEditor Content: ' . $request->input('editor1'));
         // バリデーション
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -176,6 +177,7 @@ class FarmController extends Controller
 
     public function storeImages(Request $request, $id)
     {
+        // dd($request);
         $farm = Farm::findOrFail($id);
     
         if ($request->hasFile('images')) {

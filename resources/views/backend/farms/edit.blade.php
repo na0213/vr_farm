@@ -107,9 +107,10 @@
                 <div class="-m-2">
                     <div class="p-4 w-full mx-auto">
                         <div class="form-group">
-                            <h1 style="text-align: center;">ご紹介文</h1>
-                            <div class="col-md-12">        
-                                <textarea name="editor1">{{ $farm->farm_info }}</textarea>
+                            <h1 style="text-align: center;">牧場紹介 -Story-</h1>
+                            <div class="col-md-12">
+                                <textarea id="editor1" name="content">{{ $farm->farm_info }}</textarea>   
+                                {{-- <textarea name="editor1">{{ $farm->farm_info }}</textarea> --}}
                             </div>
                         </div>
                     </div>

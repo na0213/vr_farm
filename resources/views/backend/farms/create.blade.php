@@ -37,7 +37,7 @@
                     <div class="p-2 w-4/5 mx-auto">
                         <div class="relative">
                         <label for="catchcopy" class="leading-7 text-sm text-gray-600">キャッチコピー</label>
-                        <input type="text" id="catchcopy" name="catchcopy" value="{{ old('catchcopy')}}" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                        <input type="text" id="catchcopy" name="catchcopy" value="{{ old('catchcopy')}}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                         </div>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                     <div class="p-2 w-4/5 mx-auto">
                         <div class="relative">
                         <label for="vr" class="leading-7 text-sm text-gray-600">VR</label>
-                        <input type="text" id="vr" name="vr" value="{{ old('vr')}}" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                        <input type="text" id="vr" name="vr" value="{{ old('vr')}}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                         </div>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
                     <div class="p-2 w-4/5 mx-auto">
                         <div class="relative">
                         <label for="theme" class="leading-7 text-sm text-gray-600">ツアーテーマ</label>
-                        <input type="text" id="theme" name="theme" value="{{ old('theme')}}" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                        <input type="text" id="theme" name="theme" value="{{ old('theme')}}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                         </div>
                     </div>
                 </div>
@@ -106,9 +106,10 @@
                 <div class="-m-2">
                     <div class="p-4 w-full mx-auto">
                         <div class="form-group">
-                            <h1 style="text-align: center;">ご紹介文</h1>
-                            <div class="col-md-12">        
-                                <textarea name="editor1"></textarea>
+                            <h1 style="text-align: center;">牧場紹介 -Story-</h1>
+                            <div class="col-md-12">
+                                <textarea id="editor1" name="editor1"></textarea>
+                                {{-- <textarea id="editor1" name="content"></textarea>    --}}
                             </div>
                         </div>
                     </div>
@@ -132,14 +133,33 @@
             </form>
         </div>
     </div>
+    <!-- CKEditorの初期化コード -->
     <script>
-        CKEDITOR.replace( 'editor1',{
-            height:350,
-            removeButtons:'Image, Unlink,Anchor, NewPage,DocProps,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Find,Replace,SelectAll,Scayt,RemoveFormat,Outdent,Indent,Blockquote,Styles,About'
+        CKEDITOR.replace('editor1', {
+            height: 350, // エディタの高さ設定
+            toolbar: [
+                { name: 'document', items: ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates'] },
+                { name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'] },
+                { name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt'] },
+                '/',
+                { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat'] },
+                { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote'] },
+                { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+                { name: 'insert', items: ['Image', 'Table', 'HorizontalRule', 'SpecialChar'] },
+                '/',
+                { name: 'styles', items: ['Styles', 'Format'] },
+                { name: 'tools', items: ['Maximize'] }
+            ],
+            removeButtons: 'Source,Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,Undo,Redo', // 不要なボタンを削除
+            allowedContent: true // HTMLの全ての要素を許可
         });
-        // フォームが送信される時にCKEditorの内容をtextareaに同期させる
-        document.querySelector('form').addEventListener('submit', function() {
-            CKEDITOR.instances.editor1.updateElement();
+
+        // フォーム送信時にCKEditorの内容をtextareaに同期させる
+        document.querySelector('form').addEventListener('submit', function(e) {
+            for (const instance in CKEDITOR.instances) {
+                CKEDITOR.instances[instance].updateElement();
+            }
         });
     </script>
+    
 </x-admin-layout>

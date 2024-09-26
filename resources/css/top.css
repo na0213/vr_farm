@@ -18,15 +18,16 @@ div {
 .slide-title {
     position: absolute;
     top: 90px; /* スライダーの上端からのオフセット */
-    left: 10px;
-    width: 30%;
-    padding: 30px;
-    background-color: rgba(252, 250, 250, 0.7);
+    width: 20%;
+    /* background-color: rgba(252, 250, 250, 0.7); */
     text-align: center;
     box-sizing: border-box;
     z-index: 10; /* スライダーの上に表示させる */
-    font-size: 25px;
-    border-radius: 5%;
+    font-size: 30px;
+    font-weight: bold;
+    color: #c47059;
+    letter-spacing: 0.3em;
+    /* border-radius: 5%; */
 }
 .swiper-slide {
     width: 100%; /* Swiperスライドの幅を親要素の幅いっぱいに設定 */
@@ -218,7 +219,11 @@ div {
   padding: 50px;
   font-size: 18px;
 }
-
+.ck-editor__editable {
+  min-height: 350px; /* エディタの最小高さを設定 */
+  resize: vertical;  /* 高さのリサイズを可能にする */
+  overflow: auto;    /* コンテンツが多いときにスクロールを有効にする */
+}
 /* 牛のアイコン */
 .fuwafuwa {
   position: relative; /* 位置を相対的に設定 */
@@ -586,21 +591,31 @@ h3 {
   .slide-title {
     position: relative; /* 絶対位置をやめて相対位置に変更 */
     top: 10; /* 画面の最上部に配置 */
-    left: 0;
+    left: 10px;
     width: 30%; /* 画面幅全体を使う */
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.8);
-    color: #474646;
     text-align: center;
-    font-size: 20px;
-    font-weight: bold;
     z-index: 10; /* スライダーの上に表示させる */
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 5%;
+    font-size: 30px;
+    font-weight: bold;
+    color: #c47059;
+    letter-spacing: 0.3em;
   }
 }
 
 @media (max-width:768px) {
+  .slide-title {
+    position: relative; /* 絶対位置をやめて相対位置に変更 */
+    top: 10; /* 画面の最上部に配置 */
+    left: 10px;
+    width: 30%; /* 画面幅全体を使う */
+    text-align: center;
+    z-index: 10; /* スライダーの上に表示させる */
+    font-size: 20px;
+    font-weight: bold;
+    color: #c47059;
+    letter-spacing: 0.3em;
+  }
+
   .circle {
     flex-direction: column;
   }
@@ -613,7 +628,6 @@ h3 {
     width: 400px; /* 画面サイズに合わせて画像のサイズを縮小 */
     height: 400px;
   }
-
   .bg-image-1 {
     transition: transform 0.3s ease;
     margin-bottom: 20px;
