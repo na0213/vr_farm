@@ -12,6 +12,7 @@ export default defineConfig({
                 'resources/css/farm.css',
                 'resources/css/owner.css',
                 'resources/js/app.js',
+                'resources/js/editor.js',
                 'resources/js/swiper.js',
                 'resources/js/swiperfarm.js',
                 'resources/js/swipershow.js',

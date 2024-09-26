@@ -24,6 +24,7 @@ class ProductController extends Controller
 
     public function store(Request $request, $farmId)
     {
+        // dd($request);
         $request->validate([
             'product_name' => 'required|string|max:255',
             'product_info' => 'required|string',

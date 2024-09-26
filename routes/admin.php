@@ -17,8 +17,9 @@ use App\Http\Controllers\Backend\OwnerController;
 use App\Http\Controllers\Backend\FarmController;
 use App\Http\Controllers\Backend\AnimalController;
 use App\Http\Controllers\Backend\StoreController;
-use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\PointController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\QrController;
 
 /*
@@ -174,5 +175,15 @@ Route::middleware('auth:admins')->group(function () {
         Route::get('/qr/{id}/edit', 'edit')->name('backend.qr.edit');
         Route::put('/qr/{id}', 'update')->name('backend.qr.update');
         Route::delete('/qr/{id}', 'destroy')->name('backend.qr.destroy');
+    });
+
+    Route::controller(ArticleController::class)->group(function () {
+        Route::get('/article', 'index')->name('backend.article.index');
+        Route::get('/article/create', 'create')->name('backend.article.create');
+        Route::post('/article', 'store')->name('backend.article.store');
+        Route::get('/article/{id}/show', 'show')->name('backend.article.show');
+        Route::get('/article/{id}/edit', 'edit')->name('backend.article.edit');
+        Route::put('/article/{id}', 'update')->name('backend.article.update');
+        Route::delete('/article/{id}', 'destroy')->name('backend.article.destroy');
     });
 });
