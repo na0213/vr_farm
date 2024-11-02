@@ -9,40 +9,14 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7;
 use App\Models\Farm;
 use App\Models\Post;
-
+use App\Models\Article;
 
 class GuestController extends Controller
 {
     public function top()
     {
-        // try {
-        //     $query = '(アニマルウェルフェア OR 循環型酪農 OR 循環型畜産 OR グラスフェッド) OR (牛乳 AND 放牧) OR (畜産 AND SDGs)';
-        //     $url = config('newsapi.news_api_url') . "everything?q={$query}&apiKey=" . config('newsapi.news_api_key');
-        //     $method = "GET";
-    
-        //     $client = new \GuzzleHttp\Client();
-        //     $response = $client->request($method, $url);
-    
-        //     $results = $response->getBody();
-        //     $articles = json_decode($results, true);
-    
-        //     $news = [];
-    
-        //     foreach ($articles['articles'] as $article) {
-        //         array_push($news, [
-        //             'name' => $article['title'],
-        //             'url' => $article['url'],
-        //             'thumbnail' => $article['urlToImage'],
-        //         ]);
-        //     }
-        // } catch (\GuzzleHttp\Exception\RequestException $e) {
-        //     echo \GuzzleHttp\Psr7\Message::toString($e->getRequest());
-        //     if ($e->hasResponse()) {
-        //         echo \GuzzleHttp\Psr7\Message::toString($e->getResponse());
-        //     }
-        // }
-    
-        return view('home');
+        $articles = Article::where('is_published', 1)->get();
+        return view('home', compact('articles'));
     }
     
 
@@ -96,4 +70,13 @@ class GuestController extends Controller
         return view('farm.community', compact('farm', 'allPosts', 'farmImages'));
     }
 
+    public function showArticle($id)
+    {
+        // 記事のIDで記事を検索
+        $article = Article::findOrFail($id);
+
+        // 記事詳細ビューにデータを渡して表示
+        return view('article.show', compact('article'));
+    }
+    
 }
