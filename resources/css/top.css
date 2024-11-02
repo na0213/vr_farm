@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css?family=M+PLUS+1p');
 body {
     color: #333333;
     background-color: #F2EEEA;
+    font-family: 'M PLUS 1p', sans-serif;
 }
 div {
     /* cursor:pointer */
@@ -11,10 +13,7 @@ div {
     /* border-radius: 5%; */
 }
 
-.swiper-wrapper {
-    /* border-radius: 5%; */
-}
-
+/* TOP slider */
 .slide-title {
     position: absolute;
     top: 90px; /* スライダーの上端からのオフセット */
@@ -65,6 +64,31 @@ div {
   .swiper-slide-duplicate-active .swiper-img,
   .swiper-slide-prev .swiper-img {
     transform: scale(1.15); /* アクティブなスライドでのみズームアップ */
+}
+
+/* article画像 */
+.swiper-card {
+  height: 500px; /* スライダーの高さを調整 */
+}
+
+.swiper-card .swiper-slide.card {
+  width: 100%; /* 各スライドの幅を設定 */
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-card .swiper-image-wrapper {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.swiper-card .swiper-image img {
+  max-width: 100%;
+  height: auto;
 }
 
 /* ウェーブ */
@@ -197,6 +221,7 @@ div {
   text-align: center; /* テキストを中央揃え */
   font-weight: bold;
 }
+
 /* story */
 .story {
     position: relative; /* 追加: 相対位置指定 */
@@ -215,6 +240,10 @@ div {
   padding: 50px;
   font-size: 20px;
 }
+.note-title {
+  text-align: center;
+  margin-bottom: 30px;
+}
 .con_text {
   line-height: 40px;
   padding: 50px;
@@ -225,6 +254,7 @@ div {
   resize: vertical;  /* 高さのリサイズを可能にする */
   overflow: auto;    /* コンテンツが多いときにスクロールを有効にする */
 }
+
 /* 牛のアイコン */
 .fuwafuwa {
   position: relative; /* 位置を相対的に設定 */
@@ -389,12 +419,14 @@ h3 {
     height: 100%;
     object-fit: cover; /* 画像がコンテナを埋めるように調整しつつ、比率を保つ */
   }
+
 .card {
     transition:transform 0.3s;
 }
 .card:hover {
     transform:scale(1.1);
 }
+
 /* farm */
 .top-title {
     position: absolute;
@@ -587,6 +619,238 @@ h3 {
     text-overflow: ellipsis;
   }
 
+  /*スクロールバースタイル */
+
+@keyframes infinity-scroll-left {
+  from {
+    transform: translateX(0);
+  }
+    to {
+    transform: translateX(-100%);
+  }
+  }
+  .scroll-infinity__wrap {
+    display: flex;
+    overflow: hidden;
+  }
+  .scroll-infinity__list {
+    display: flex;
+    list-style: none;
+    padding: 0
+  }
+  .scroll-infinity__list--left {
+    animation: infinity-scroll-left 80s infinite linear 0.5s both;
+  }
+  .scroll-infinity__item {
+    width: calc(100vw / 6);
+  }
+  .scroll-infinity__item>img {
+    width: 100%;
+  }
+/* カード型横スクロール */
+@keyframes scroll-left {
+  0% {
+      transform: translateX(0);
+  }
+  100% {
+      transform: translateX(-50%);
+  }
+}
+
+.card-wrap {
+  overflow-x: auto; /* 横スクロールを可能に */
+  margin: 0 auto;
+  padding: 30px 0;
+  width: 100%;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-color: #333 #ccc;
+  scrollbar-width: thin;
+}
+
+.card-wrap-in {
+  display: flex;
+  scroll-snap-type: x mandatory;
+  max-width: 2400px; /* 必要に応じて調整 */
+  animation: scroll-left 80s linear infinite; /* アニメーションで無限ループ */
+  will-change: transform; /* スムーズなスクロールとアニメーションのために追加 */
+}
+
+.card-item {
+  scroll-snap-align: start;
+  margin: 0 10px;
+  min-width: 240px;
+  max-width: calc((100% / 5) - 20px);
+  white-space: normal;
+  background-color: #f4f4f4;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s;
+}
+.card-item:hover {
+  transform: translateY(-20px);
+  border-radius: 0 10%;
+  box-shadow: 0 3px 10px 0 #333;
+  opacity: 0.8;
+  cursor: pointer;
+
+}
+
+.card-item .pic {
+  overflow: hidden;
+  width: 100%;
+  height: 160px;
+}
+
+.card-item .pic img {
+  aspect-ratio: 1.618 / 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-item a {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-item p {
+  padding: 10px;
+  line-height: 1.6;
+  font-size: 14px;
+  text-align: left;
+}
+
+@media screen and (min-width: 1280px) {
+  .card-wrap-in {
+    flex-wrap: wrap;
+  }
+}
+
+/* FOOTER */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.footer {
+  padding: 2rem;
+  font-size: 15px;
+  color: #4b5564;
+  background: #F2EEEA;
+}
+
+.footer__navi-heading {
+  font-weight: 600;
+}
+
+.footer__logo {
+  display: inline-block;
+}
+
+.footer__navi li {
+  margin-bottom: 0.75rem;
+}
+
+.footer__social a {
+  display: inline-block;
+  width: 24px;
+  opacity: 0.7;
+}
+
+.footer__social a:not(:last-child) {
+  margin-right: 16px;
+}
+
+.article-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 10px;
+}
+
+.text-container {
+  margin-top: 50px;
+  padding: 20px;
+}
+
+.text-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.text-container p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.slideshow-fade {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+}
+
+.slideshow-fade li {
+  list-style: none;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.image-container {
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+
+
+@keyframes slide {
+  0% {
+    margin-left: 0;
+  }
+  33% {
+    margin-left: -100%;
+  }
+  66% {
+    margin-left: -200%;
+  }
+  100% {
+    margin-left: -300%;
+  }
+}
+
+.center {
+  margin: auto;
+}
+@media screen and (min-width: 1280px) {
+  .card-item {
+    margin-top: 20px;
+  }
+}
+/* もっと見るリンク */
+.more-link {
+  font-size: 14px;
+  display: block;
+  text-align: right;
+  padding: 10px;
+  text-decoration: underline !important;
+  margin-top: auto;
+}
+
+
 /*  */
 @media (max-width:1024px) {
   .slide-title {
@@ -747,9 +1011,15 @@ h3 {
         letter-spacing: 20px;
         color: #777;
         animation: moveInRight 1s ease-out;
-    }     
+    }
+    .grid {
+      font-size: small;
+    }
+    .text-container {
+      margin-top: 30px;
+      padding: 20px;
+    }
 }
-
 
 /* レスポンシブ */
 @media screen and (max-width: 479px) { /*ウィンドウ幅が最大479pxまでの場合に適用*/  
@@ -821,5 +1091,9 @@ h3 {
       padding-top: 20px;
       line-height: 25px;
       font-size: 12px;
+    }
+    .text-container {
+      margin-top: 10px;
+      padding: 20px;
     }
 }
