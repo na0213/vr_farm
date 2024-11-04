@@ -109,7 +109,9 @@
                         <div class="form-group">
                             <h1 style="text-align: center;">牧場紹介 -Story-</h1>
                             <div class="col-md-12">
-                                <textarea id="editor1" name="content">{{ $farm->farm_info }}</textarea>   
+                                <textarea id="editor1" name="farm_info">{{ $farm->farm_info }}</textarea>
+
+                                {{-- <textarea id="editor1" name="content">{{ $farm->farm_info }}</textarea>    --}}
                                 {{-- <textarea name="editor1">{{ $farm->farm_info }}</textarea> --}}
                             </div>
                         </div>
@@ -140,8 +142,10 @@
             removeButtons:'Image, Unlink,Anchor, NewPage,DocProps,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Find,Replace,SelectAll,Scayt,RemoveFormat,Outdent,Indent,Blockquote,Styles,About'
         });
         // フォームが送信される時にCKEditorの内容をtextareaに同期させる
-        document.querySelector('form').addEventListener('submit', function() {
-            CKEDITOR.instances.editor1.updateElement();
+        document.querySelector('form').addEventListener('submit', function(e) {
+            for (const instance in CKEDITOR.instances) {
+                CKEDITOR.instances[instance].updateElement();
+            }
         });
     </script>
 </x-admin-layout>

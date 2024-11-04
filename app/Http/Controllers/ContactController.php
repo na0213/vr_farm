@@ -18,9 +18,10 @@ class ContactController extends Controller
     {
         $this->validate($request, [
             'send_name'  => 'required',
-            'send_mail' => 'required|email',
-            'message' => 'present',
+            'send_email' => 'required|email',  // send_mail を send_email に変更
+            'send_message' => 'required',      // message を send_message に変更し、必須化
         ]);
+
         $postarr = $request->all();
         //present フィールドが入力データに存在していることをバリデート
 
@@ -29,19 +30,37 @@ class ContactController extends Controller
 
     public function SendProcess(Request $request)
     {
-        $action = $request->get('action', 'back');
-        $input = $request->except('action');
-
+        $action = $request->get('action', 'back'); // submitまたはback
+        $input = $request->except('action'); // ボタンのaction部分を除外
 
         if($action === 'submit') {
+            // 入力データの取得
             $postarr = $request->all();
-            $mailto = array('farm360.info@gmail.com',$postarr["send_mail"]);
-            Mail::to($mailto)->send(new Contact($postarr));//mailableクラス
+            $mailto = ['farm360.info@gmail.com', $postarr["send_email"]];
+            Mail::to($mailto)->send(new Contact($postarr)); // メール送信の処理
             $request->session()->regenerateToken();
-            return view('contact.complete');
+            
+            return view('contact.complete'); // 完了ビューの表示
         } else {
+            // 入力画面への戻り
             return redirect()->action([ContactController::class, 'formTop'])->withInput($input);
+        }
     }
-    }
+    // public function SendProcess(Request $request)
+    // {
+    //     $action = $request->get('action', 'back');
+    //     $input = $request->except('action');
+
+
+    //     if($action === 'submit') {
+    //         $postarr = $request->all();
+    //         $mailto = array('farm360.info@gmail.com',$postarr["send_email"]);
+    //         Mail::to($mailto)->send(new Contact($postarr));//mailableクラス
+    //         $request->session()->regenerateToken();
+    //         return view('contact.complete');
+    //     } else {
+    //         return redirect()->action([ContactController::class, 'formTop'])->withInput($input);
+    // }
+    // }
     
 }

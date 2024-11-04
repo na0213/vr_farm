@@ -10,9 +10,10 @@
 
         <!-- ナビゲーションリンク -->
         <div class="hidden space-x-8 lg:flex lg:items-center"> <!-- sm:flex を lg:flex に変更 -->
-            <x-nav-link :href="route('login')" :active="request()->routeIs('login')">ログイン</x-nav-link>
-            <x-nav-link :href="route('register')" :active="request()->routeIs('register')">新規登録</x-nav-link>
-            <x-nav-link :href="route('contact.form')" :active="request()->routeIs('contact.form')">お問い合わせ</x-nav-link>
+            {{-- <x-nav-link :href="route('login')" :active="request()->routeIs('login')">ログイン</x-nav-link>
+            <x-nav-link :href="route('register')" :active="request()->routeIs('register')">新規登録</x-nav-link> --}}
+            <x-nav-link :href="route('farm.index') " :active="request()->routeIs('farm.index')">FARM</x-nav-link>
+            <x-nav-link :href="route('contact.form')" :active="request()->routeIs('contact.form')">CONTACT</x-nav-link>
         </div>
 
         <!-- ハンバーガーメニュー -->
@@ -29,18 +30,18 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden lg:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('shop.login')" :active="request()->routeIs('shop.login')">
-                ログイン
+            <x-responsive-nav-link :href="route('farm.index')" :active="request()->routeIs('farm.index')">
+                FARM
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('shop.login')" :active="request()->routeIs('shop.login')">
+            <x-responsive-nav-link :href="route('contact.form')" :active="request()->routeIs('contact.form')">
+                CONTACT
+            </x-responsive-nav-link>
+            {{-- <x-responsive-nav-link :href="route('shop.login')" :active="request()->routeIs('shop.login')">
                 ログイン
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('register')" :active="request()->routeIs('register')">
                 新規登録
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('contact.form')" :active="request()->routeIs('contact.form')">
-                お問い合わせ
-            </x-responsive-nav-link>
+            </x-responsive-nav-link> --}}
         </div>
     </div>
 </nav>
