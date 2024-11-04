@@ -393,7 +393,7 @@ h3 {
 }
 .grid li {
   width: 280px; /* 固定幅 */
-  height: 350px; /* 固定高さ */
+  height: 400px; /* 固定高さ */
   padding: 4px;
   border: 1px solid white;
   box-sizing: border-box;
@@ -425,6 +425,13 @@ h3 {
 }
 .grid-card:hover {
   transform: scale(1.1);
+}
+.ttl {
+  padding-top: 5px;
+  text-align: center; /* Center-aligns the text */
+  font-weight: bold; /* Optional: Makes the text bold */
+  font-size: 1.20rem; /* Optional: Adjusts the font size */
+  margin: 10px 0; /* Optional: Adds spacing above and below */
 }
 
 /* farm */
@@ -931,7 +938,20 @@ h3 {
   text-decoration: underline !important;
   margin-top: auto;
 }
+.text-container h1 {
+  font-size: 2em;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
 
+.text-container p {
+  font-size: 1em;
+  margin-bottom: 1em;
+}
+
+.text-container strong {
+  font-weight: bold;
+}
 /*  */
 @media (max-width:1024px) {
   .slide-title {
@@ -954,6 +974,7 @@ h3 {
 @media (max-width:768px) {
   .grid {
     grid-template-columns: 1fr; /* スマホサイズで1つ並び */
+    justify-items: center;
   }
   .slide-title {
     position: relative; /* 絶対位置をやめて相対位置に変更 */

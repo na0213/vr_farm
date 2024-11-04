@@ -20,7 +20,7 @@
   <!-- タイトルとテキストは画像スライドの外に表示 -->
   <div class="text-container">
     <h2>{{ $article->title }}</h2>
-    <p>{!! $article->article_content !!}</p>
+    <div>{!! $article->article_content !!}</div>
   </div>
 </div>
     

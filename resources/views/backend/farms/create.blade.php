@@ -152,6 +152,7 @@
             ],
             removeButtons: 'Source,Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,Undo,Redo', // 不要なボタンを削除
             allowedContent: true // HTMLの全ての要素を許可
+            extraAllowedContent: 'h1 h2 strong b p ul ol li; a[!href,target]'
         });
 
         // フォーム送信時にCKEditorの内容をtextareaに同期させる
