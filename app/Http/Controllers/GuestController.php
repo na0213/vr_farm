@@ -29,8 +29,11 @@ class GuestController extends Controller
 
     public function show($id)
     {
+        // 関連するfarmとarticlesを取得
         $farm = Farm::with('animals')->findOrFail($id);
-        return view('farm.show', compact('farm'));
+        $articles = Article::where('farm_id', $id)->where('is_published', true)->get(); // farm_idに一致する公開済みの記事を取得
+        
+        return view('farm.show', compact('farm', 'articles'));
     }
 
     // コミュニティ

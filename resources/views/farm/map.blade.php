@@ -1,12 +1,16 @@
 <x-top-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
+    <!-- パンくずリストの表示 -->
+    <nav aria-label="breadcrumb" class="mt-10 mb-10">
+        {!! Breadcrumbs::render('farm.index') !!}
+    </nav>
 
     {{-- <div class="flex"> --}}
         <div class="wrap">
-            <ul class="grid ">
+            <ul class="grid">
                 @foreach ($farms as $farm)
-                    <li class="card rounded overflow-hidden shadow-lg">
+                    <li class="grid-card rounded overflow-hidden shadow-lg">
                     <a href="{{ route('farm.show', ['id' => $farm->id]) }}">
                         @if($farm->farmImages->isNotEmpty())
                             <figure class="farmimg">
