@@ -7,8 +7,25 @@
     </nav>
 
     <div class="mt-20 mb-5 flex items-center justify-center">
-        {!! $farm->vr !!}
+        @if ($farm->vr)
+            {!! $farm->vr !!}
+        @elseif ($farm->farmImages->isNotEmpty())
+            <div class="imageshow-container">
+                @foreach ($farm->farmImages as $image)
+                    <div class="image">
+                        <img src="{{ $image->image_path }}" alt="{{ $farm->farm_name }}" class="image-image">
+                    </div>
+                @endforeach
+    
+                <!-- 左右の矢印ボタン -->
+                <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
+                <a class="next" onclick="changeSlide(1)">&#10095;</a>
+            </div>
+        @else
+            <p>No VR content or images available.</p>
+        @endif
     </div>
+    
 
     <div class="flex items-center justify-center">
         <p>{{ $farm->theme }}</p>
@@ -53,8 +70,36 @@
         @endforeach
         </div>
     </div>
-
-
+    <script>
+        let slideIndex = 0;
+        showSlides(slideIndex);
+    
+        // スライドを切り替える関数
+        function showSlides(n) {
+            let slides = document.getElementsByClassName("image");
+    
+            // すべてのスライドを非表示にする
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+    
+            // インデックスを正しい範囲内に収める
+            slideIndex = (n + slides.length) % slides.length;
+    
+            // 現在のスライドを表示
+            slides[slideIndex].style.display = "block";
+        }
+    
+        // 左右の矢印でスライドを切り替える
+        function changeSlide(n) {
+            showSlides(slideIndex + n);
+        }
+    
+        // 自動スライド (4秒ごとに次のスライド)
+        setInterval(function() {
+            changeSlide(1);
+        }, 4000);
+    </script>
 </x-top-layout>
 
 
