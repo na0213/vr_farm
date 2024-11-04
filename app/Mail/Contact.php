@@ -26,8 +26,8 @@ class Contact extends Mailable
     {
 
         $this->name = $postarr['send_name'];
-        $this->mail = $postarr['send_mail'];
-        $this->message = $postarr['message'];
+        $this->mail = $postarr['send_email'];
+        $this->message = $postarr['send_message'];
     }
 
     /**

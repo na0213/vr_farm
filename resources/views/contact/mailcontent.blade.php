@@ -10,8 +10,8 @@
 ■お名前:
 {{ $postarr['send_name'] }}
 ■メールアドレス:
-{{ $postarr['send_mail'] }}
+{{ $postarr['send_email'] }}
 
 ■お問い合わせ内容:
-{{ ($postarr["message"]) }}
+{{ ($postarr["send_message"]) }}
 ------------------------------

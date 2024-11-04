@@ -123,6 +123,8 @@ class FarmController extends Controller
 
     public function update(Request $request, $id)
     {
+        Log::info('Updating farm_info: ' . $request->input('farm_info'));
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'catchcopy' => 'nullable|string|max:500',
@@ -148,7 +150,8 @@ class FarmController extends Controller
             $farm->address = $validated['address'];
             $farm->vr = $validated['vr'];
             $farm->theme = $validated['theme'];
-            $farm->farm_info = $request->input('editor1'); // CKEditor からの入力
+            $farm->farm_info = $validated['farm_info'];
+            // $farm->farm_info = $request->input('editor1'); // CKEditor からの入力
             $farm->is_published = $validated['is_published'];
             $farm->save();
     
