@@ -1,12 +1,10 @@
-<x-topshow-layout>
+<x-top-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
-    <div class="top-title">
-        <h1 class="top-content">
-          <span class="farm-name">{{ $farm->farm_name }}</span>
-          <span class="farm-address">{{ $farm->prefecture }}</span>
-        </h1>
-    </div>
+    <!-- パンくずリストの表示 -->
+    <nav aria-label="breadcrumb" class="mt-10">
+        {!! Breadcrumbs::render('farm.show', $farm) !!}
+    </nav>
 
     <div class="mt-20 mb-5 flex items-center justify-center">
         {!! $farm->vr !!}
@@ -19,6 +17,46 @@
     <div class="flex items-center justify-center">
         <h2>{{ $farm->catchcopy }}</h2>
     </div>
+    <h2 class="heading06" data-en="{{ $farm->prefecture }}">{{ $farm->farm_name }}</h2>
+
+    <div class="flex items-center justify-center">
+        <div class="w-4/5 mt-20 p-5 rounded overflow-hidden shadow-lg">
+            <div class="cp_box">
+                <input id="cp01" type="checkbox">
+                <label for="cp01"></label>
+                <div class="cp_container">
+                    <p>{!! $farm->farm_info !!}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- farm_idに一致する記事の内容を表示 -->
+    <div class="story">
+        <p class="mt-20 text-[#e0db85]">NOTE</p>
+    </div>
+    <div class="note-title">
+    <p>〜訪問記録・インタビュー〜</p>
+    </div>
+    <div class="noteshow-wrap">
+        <div class="noteshow-wrap-in">
+        @foreach ($articles as $article)
+            <div class="note-item">
+                <a href="{{ route('article.show', $article->id) }}">
+                    <div class="pic">
+                        <img src="{{ json_decode($article->article_images)[0] }}" alt="{{ $article->title }}">
+                    </div>
+                    <p>{{ $article->title }}</p>
+                    <a href="{{ route('article.show', $article->id) }}" class="more-link">もっとみる →</a>
+                </a>
+            </div>
+        @endforeach
+        </div>
+    </div>
+
+
+</x-top-layout>
+
 
     {{-- <a href="{{ route('farm.community', ['farm' => $farm->id]) }}">
         <button class="ml-10 mb-2 bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
@@ -31,20 +69,7 @@
             飲食関係の方向け  
         </button>
     </a> --}}
-    <div class="flex items-center justify-center">
-        <div class="w-4/5 mt-20 p-5 rounded overflow-hidden shadow-lg">
-            <div class="sub-title">ー Story ー</div>
-            <div class="cp_box">
-                <input id="cp01" type="checkbox">
-                <label for="cp01"></label>
-                <div class="cp_container">
-                    <p>{!! $farm->farm_info !!}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="flex items-center justify-center">
+       {{-- <div class="flex items-center justify-center">
         <div class="w-4/5 mt-20 p-5 rounded overflow-hidden shadow-lg">
             <div class="sub-title">ー飼育 ー</div>
             <div class="cp_box">
@@ -66,7 +91,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     {{-- <div class="bg my-20 pb-10 px-10">
         <div class="sub-title mt-10 mb-5 py-5">ー商品 ー</div>
@@ -122,7 +147,3 @@
                 </tbody>
             </table>
         </div>   --}}
-    </div>
-   
-
-</x-topshow-layout>

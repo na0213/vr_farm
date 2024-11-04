@@ -95,11 +95,11 @@
   <div class="note-title">
     <p>〜訪問記録・インタビュー〜</p>
   </div>
-  <div class="card-wrap">
-    <div class="card-wrap-in">
+  <div class="note-wrap">
+    <div class="note-wrap-in">
         @foreach ($articles as $article)
             @if($article->is_published)
-                <div class="card-item">
+                <div class="note-item">
                     <a href="{{ route('article.show', $article->id) }}">
                         <div class="pic"><img src="{{ json_decode($article->article_images)[0] }}" alt="{{ $article->title }}"></div>
                         <p>{{ $article->title }}</p>
@@ -111,7 +111,7 @@
         <!-- リストを複製して無限スクロールのループを実現 -->
         @foreach ($articles as $article)
             @if($article->is_published)
-                <div class="card-item">
+                <div class="note-item">
                     <a href="{{ route('article.show', $article->id) }}">
                         <div class="pic"><img src="{{ json_decode($article->article_images)[0] }}" alt="{{ $article->title }}"></div>
                         <p>{{ $article->title }}</p>

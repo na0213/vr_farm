@@ -32,6 +32,9 @@
             <x-responsive-nav-link :href="route('shop.login')" :active="request()->routeIs('shop.login')">
                 ログイン
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('shop.login')" :active="request()->routeIs('shop.login')">
+                ログイン
+            </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('register')" :active="request()->routeIs('register')">
                 新規登録
             </x-responsive-nav-link>
