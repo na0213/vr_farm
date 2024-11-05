@@ -738,6 +738,7 @@ h3 {
   margin-right: 16px;
 }
 
+/* article>show */
 .article-container {
   width: 100%;
   max-width: 800px;
@@ -771,7 +772,6 @@ h3 {
   top: 0;
   left: 0;
 }
-
 .image-container {
   width: 100%;
   height: 100%;
@@ -779,7 +779,6 @@ h3 {
   background-position: center;
   background-repeat: no-repeat;
 }
-
 @keyframes slide {
   0% {
     margin-left: 0;
@@ -794,6 +793,7 @@ h3 {
     margin-left: -300%;
   }
 }
+/* ここまで */
 
 .center {
   margin: auto;
@@ -834,23 +834,19 @@ h3 {
   list-style: none;
   font-weight: bold;/*太字*/
 }
-
 .breadcrumb li:after {/* ▶を表示*/
   font-family: 'Font Awesome 6 Free';
   content: '\f0da';
   padding: 0 0.4em;
   color: silver;
 }
-
 .breadcrumb li:last-child:after {
   content: '';
 }
-
 .breadcrumb li a {
   text-decoration: none;
   color: #888;
 }
-
 .breadcrumb li:first-child a:before {
   /*家アイコン*/
   font-family: FontAwesome;
@@ -859,10 +855,10 @@ h3 {
   font-size: 1.1em;
   color: #f3948f;
 }
-
 .breadcrumb li a:hover {
   text-decoration: underline;
 }
+/* ここまで */
 
 .imageshow-container {
   position: relative;
@@ -880,13 +876,13 @@ h3 {
   height: 100%;
   text-align: center;
 }
-
 .image-image {
   width: 100%;
   height: 100%;
   object-fit: contain; /* 画像を枠内に収め、比率を保つ */
   object-position: center; /* 画像を中央に配置 */
 }
+
 /* 矢印ボタンのスタイル */
 .prev, .next {
   cursor: pointer;
@@ -902,20 +898,18 @@ h3 {
   border-radius: 0 3px 3px 0;
   user-select: none;
 }
-
 .prev {
   left: 0;
   border-radius: 3px 0 0 3px;
 }
-
 .next {
   right: 0;
   border-radius: 3px 0 0 3px;
 }
-
 .prev:hover, .next:hover {
   background-color: rgba(0, 0, 0, 0.8);
 }
+
 @media screen and (min-width: 1280px) {
   .card-item {
     margin-top: 20px;
@@ -953,6 +947,7 @@ h3 {
   font-weight: bold;
 }
 /*  */
+
 @media (max-width:1024px) {
   .slide-title {
     position: relative; /* 絶対位置をやめて相対位置に変更 */
@@ -1094,33 +1089,73 @@ h3 {
   .grid {
     font-size: small;
   }
-  .text-container {
-    margin-top: 30px;
-    padding: 20px;
-  }
 
-  .heading06 {
-    margin-top: 30px;
-    position: relative;
-    padding-top: 50px;
-    padding-bottom: 50px;
-    font-size: 26px;
-    text-align: center;
-  }
-  .heading06 span {
-    position: relative;
-    z-index: 2;
-  }
-  .heading06::before {
-    content: attr(data-en);
-    position: absolute;
-    top: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: rgba(224,66,114,0.2);
-    font-size: 50px;
-    font-style: italic;
-  }
+/* article>show */
+.article-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 10px;
+}
+.text-container {
+  margin-top: 30px;
+  padding: 20px;
+}
+.text-container h1 {
+  font-size: 1.0rem;
+  margin-bottom: 5px;
+  text-align: center;
+}
+.text-container h2 {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  text-align: center;
+}
+.text-container p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+/* ここまで */
+
+.heading06 {
+  margin-top: 30px;
+  position: relative;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  font-size: 26px;
+  text-align: center;
+}
+.heading06 span {
+  position: relative;
+  z-index: 2;
+}
+.heading06::before {
+  content: attr(data-en);
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(224,66,114,0.2);
+  font-size: 50px;
+  font-style: italic;
+}
+
+/* ぱんくず */
+.breadcrumb {
+  margin-left: 10px;
+}
+.breadcrumb-font {
+  font-size: 12px;
+}
+.breadcrumb li:after {
+  /* ▶を表示*/
+  padding: 0 0.2em;
+}
+.breadcrumb li:first-child a:before {
+  /*家アイコン*/
+  font-size: 0.8em;
+}
+/* ここまで */
 }
 
 /* レスポンシブ */

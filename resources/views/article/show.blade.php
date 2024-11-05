@@ -1,7 +1,7 @@
 <x-top-layout>
 <!-- Session Status -->
 <x-auth-session-status class="mb-4" :status="session('status')" />
-<nav aria-label="breadcrumb" class="mt-10">
+<nav aria-label="breadcrumb" class="breadcrumb-font mt-10">
   {!! Breadcrumbs::render('article.show', $article) !!}
 </nav>
 <div class="article-container">
