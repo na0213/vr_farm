@@ -94,21 +94,9 @@
   </div>
   <div class="note-title">
     <p>〜訪問記録・インタビュー〜</p>
-  </div>
-  <div class="note-wrap">
+</div>
+<div class="note-wrap">
     <div class="note-wrap-in">
-        @foreach ($articles as $article)
-            @if($article->is_published)
-                <div class="note-item">
-                    <a href="{{ route('article.show', $article->id) }}">
-                        <div class="pic"><img src="{{ json_decode($article->article_images)[0] }}" alt="{{ $article->title }}"></div>
-                        <p>{{ $article->title }}</p>
-                        <a href="{{ route('article.show', $article->id) }}" class="more-link">もっとみる →</a>
-                    </a>
-                </div>
-            @endif
-        @endforeach
-        <!-- リストを複製して無限スクロールのループを実現 -->
         @foreach ($articles as $article)
             @if($article->is_published)
                 <div class="note-item">
