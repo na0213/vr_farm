@@ -108,8 +108,8 @@
                         <div class="form-group">
                             <h1 style="text-align: center;">牧場紹介 -Story-</h1>
                             <div class="col-md-12">
-                                <textarea id="editor1" name="editor1"></textarea>
-                                {{-- <textarea id="editor1" name="content"></textarea>    --}}
+                                <textarea id="editor1" name="farm_info"></textarea>
+                                {{-- <textarea id="editor1" name="editor1"></textarea> --}}
                             </div>
                         </div>
                     </div>
@@ -135,25 +135,11 @@
     </div>
     <!-- CKEditorの初期化コード -->
     <script>
-        CKEDITOR.replace('editor1', {
-            height: 350, // エディタの高さ設定
-            toolbar: [
-                { name: 'document', items: ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates'] },
-                { name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'] },
-                { name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt'] },
-                '/',
-                { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat'] },
-                { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote'] },
-                { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
-                { name: 'insert', items: ['Image', 'Table', 'HorizontalRule', 'SpecialChar'] },
-                '/',
-                { name: 'styles', items: ['Styles', 'Format'] },
-                { name: 'tools', items: ['Maximize'] }
-            ],
-            removeButtons: 'Source,Save,NewPage,Preview,Print,Templates,Cut,Copy,Paste,Undo,Redo', // 不要なボタンを削除
-            allowedContent: true // HTMLの全ての要素を許可
-            extraAllowedContent: 'h1 h2 strong b p ul ol li; a[!href,target]'
-        });
+    CKEDITOR.replace('editor1', {
+        height: 350, // エディタの高さ
+        removeButtons: 'Image, Unlink,Anchor, NewPage,DocProps,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Find,Replace,SelectAll,Scayt,RemoveFormat,Outdent,Indent,Blockquote,Styles,About',
+        allowedContent: true, // HTML要素を許可
+    });
 
         // フォーム送信時にCKEditorの内容をtextareaに同期させる
         document.querySelector('form').addEventListener('submit', function(e) {

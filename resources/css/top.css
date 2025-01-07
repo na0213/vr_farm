@@ -624,39 +624,26 @@ h3 {
       transform: translateX(0);
   }
   100% {
-      transform: translateX(-50%);
+      transform: translateX(-100%);
   }
 }
 .note-wrap {
-  overflow-x: auto; /* 横スクロールを可能に */
-  margin: 0 auto;
-  padding: 30px 0;
-  width: 100%;
+  overflow: hidden; /* スクロールバーを非表示に */
   position: relative;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-color: #333 #ccc;
-  scrollbar-width: thin;
+  width: 100%;
 }
 .note-wrap-in {
   display: flex;
-  scroll-snap-type: x mandatory;
-  max-width: 2400px; /* 必要に応じて調整 */
-  animation: scroll-left 80s linear infinite; /* アニメーションで無限ループ */
-  will-change: transform; /* スムーズなスクロールとアニメーションのために追加 */
+  gap: 10px; /* 各アイテムの間隔 */
+  will-change: transform;
 }
 .note-item {
-  scroll-snap-align: start;
-  margin: 0 10px;
   min-width: 240px;
-  max-width: calc((100% / 5) - 20px);
-  white-space: normal;
+  max-width: 240px;
   background-color: #f4f4f4;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   border-radius: 16px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: all 0.2s;
 }
 .note-item:hover {
   transform: translateY(-20px);
@@ -891,7 +878,7 @@ h3 {
   width: auto;
   padding: 16px;
   margin-top: -22px;
-  color: white;
+  color: rgb(81, 244, 190);
   font-weight: bold;
   font-size: 18px;
   transition: 0.3s;
