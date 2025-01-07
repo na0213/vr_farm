@@ -96,6 +96,34 @@
     <p>〜訪問記録・インタビュー〜</p>
 </div>
 <div class="note-wrap">
+  <div class="note-wrap-in">
+    @foreach ($articles as $article)
+      @if($article->is_published)
+        <div class="note-item">
+          <a href="{{ route('article.show', $article->id) }}">
+            <div class="pic"><img src="{{ json_decode($article->article_images)[0] }}" alt="{{ $article->title }}"></div>
+            <p>{{ $article->title }}</p>
+            <a href="{{ route('article.show', $article->id) }}" class="more-link">もっとみる →</a>
+          </a>
+        </div>
+      @endif
+    @endforeach
+    <!-- 以下で記事リストをもう1回繰り返す -->
+    @foreach ($articles as $article)
+      @if($article->is_published)
+        <div class="note-item">
+          <a href="{{ route('article.show', $article->id) }}">
+            <div class="pic"><img src="{{ json_decode($article->article_images)[0] }}" alt="{{ $article->title }}"></div>
+            <p>{{ $article->title }}</p>
+            <a href="{{ route('article.show', $article->id) }}" class="more-link">もっとみる →</a>
+          </a>
+        </div>
+      @endif
+    @endforeach
+  </div>
+</div>
+
+{{-- <div class="note-wrap">
     <div class="note-wrap-in">
         @foreach ($articles as $article)
             @if($article->is_published)
@@ -109,7 +137,7 @@
             @endif
         @endforeach
     </div>
-</div>
+</div> --}}
 <script>
 const cardWrap = document.querySelector('.card-wrap');
 const cardWrapIn = document.querySelector('.card-wrap-in');
@@ -124,6 +152,32 @@ cardWrap.addEventListener('scroll', () => {
         cardWrapIn.style.animationPlayState = 'running';
     }, 3000); // 3秒後にアニメーションを再開
 });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const noteWrapIn = document.querySelector('.note-wrap-in');
+  const noteItems = Array.from(noteWrapIn.children);
+
+  // 要素を複製して無限ループを実現
+  const duplicateItems = noteItems.map(item => item.cloneNode(true));
+  duplicateItems.forEach(item => noteWrapIn.appendChild(item));
+
+  let scrollAmount = 0;
+  const scrollSpeed = 0.2; // スクロール速度 (px)
+
+  function loopScroll() {
+    scrollAmount -= scrollSpeed;
+    if (Math.abs(scrollAmount) >= noteWrapIn.scrollWidth / 2) {
+      // スクロール位置をリセット
+      scrollAmount = 0;
+    }
+    noteWrapIn.style.transform = `translateX(${scrollAmount}px)`;
+    requestAnimationFrame(loopScroll);
+  }
+
+  loopScroll();
+});
+
 </script>
 </x-top-layout>
 

@@ -22,7 +22,7 @@
                 <a class="next" onclick="changeSlide(1)">&#10095;</a>
             </div>
         @else
-            <p>No VR content or images available.</p>
+            <p>No Image</p>
         @endif
     </div>
     

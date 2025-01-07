@@ -76,7 +76,7 @@
                     <div class="p-2 w-4/5 mx-auto">
                         <div class="relative">
                         <label for="vr" class="leading-7 text-sm text-gray-600">VR</label>
-                        <input type="text" id="vr" name="vr" value="{{ $farm->vr }}" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                        <input type="text" id="vr" name="vr" value="{{ $farm->vr }}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                         </div>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                     <div class="p-2 w-4/5 mx-auto">
                         <div class="relative">
                         <label for="theme" class="leading-7 text-sm text-gray-600">ツアーテーマ</label>
-                        <input type="text" id="theme" name="theme" value="{{ $farm->theme }}" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                        <input type="text" id="theme" name="theme" value="{{ $farm->theme }}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                         </div>
                     </div>
                 </div>
@@ -110,9 +110,6 @@
                             <h1 style="text-align: center;">牧場紹介 -Story-</h1>
                             <div class="col-md-12">
                                 <textarea id="editor1" name="farm_info">{{ $farm->farm_info }}</textarea>
-
-                                {{-- <textarea id="editor1" name="content">{{ $farm->farm_info }}</textarea>    --}}
-                                {{-- <textarea name="editor1">{{ $farm->farm_info }}</textarea> --}}
                             </div>
                         </div>
                     </div>
