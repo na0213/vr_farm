@@ -5,7 +5,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        {{-- <title>{{ config('app.name', 'Laravel') }}</title> --}}
+        <title>動物にも環境にも優しい牧場を訪ねて｜持続可能な未来へ</title>
+        <meta name="description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場を巡り、その魅力や取り組みをお届け。自然と調和するその魅力を感じてください。">
+        <meta name="keywords" content="牧場, 放牧, アニマルウェルフェア, 循環型, サステナブル, 牧場体験">
+        <meta property="og:title" content="動物にも環境にも優しい牧場を訪ねて｜持続可能な未来へ">
+        <meta property="og:description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場を巡り、その魅力や取り組みをお届け。自然と調和するその魅力を感じてください。">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta property="og:image" content="{{ asset('storage/sns.PNG') }}">
+        <link rel="canonical" href="{{ url()->current() }}">
+        <meta name="robots" content="index, follow">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
