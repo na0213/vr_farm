@@ -6,11 +6,11 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         {{-- <title>{{ config('app.name', 'Laravel') }}</title> --}}
-        <title>動物にも環境にも優しい牧場を訪ねて｜持続可能な未来へ</title>
-        <meta name="description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場を巡り、その魅力や取り組みをお届け。自然と調和するその魅力を感じてください。">
+        <title>牧場へ行こう - 人にも動物にも環境にも優しい全国の牧場検索サイト</title>
+        <meta name="description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場を巡り、その魅力や取り組みをお届け。地域と自然と調和するその魅力を感じてください。">
         <meta name="keywords" content="牧場, 放牧, アニマルウェルフェア, 循環型, サステナブル, 牧場体験">
         <meta property="og:title" content="動物にも環境にも優しい牧場を訪ねて｜持続可能な未来へ">
-        <meta property="og:description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場を巡り、その魅力や取り組みをお届け。自然と調和するその魅力を感じてください。">
+        <meta property="og:description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場を巡り、その魅力や取り組みをお届け。地域と自然と調和するその魅力を感じてください。">
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ url()->current() }}">
         <meta property="og:image" content="{{ asset('storage/sns.PNG') }}">
@@ -57,10 +57,81 @@
         </script>
     </body>
     
-    <footer class="footer">
+    <footer class="footer bg-gradient-to-b from-[#f2eee9] to-[#e8ded4] py-8">
+        <div class="container mx-auto">
+          <div class="flex flex-col items-start">
+            <!-- ロゴ -->
+            <div class="mb-2">
+            <a href="{{ route('index') }}">
+              <img src="{{ asset('storage/footer.png') }}" alt="牧場へいこう" class="w-24 md:w-32">
+            </a>
+            </div>
+            <!-- リンクリスト -->
+            <ul class="list-none w-full space-y-5">
+             <li>
+                <a href="{{ route('farm.index') }}" class="text-[#333] font-medium hover:underline block">
+                    牧場検索
+                </a>
+             </li>
+             <li>
+                <a href="{{ route('contact.form') }}" class="text-[#333] font-medium hover:underline block">
+                  問い合わせ
+                </a>
+              </li>
+              <li>
+                <a href="{{ route('about.index') }}" class="text-[#333] font-medium hover:underline block">
+                  事業者情報
+                </a>
+              </li>
+            </ul>
+          </div>
+          <p class="text-[#666] text-xs sm:text-sm mt-6 text-center">
+            &copy; Bokujyou he Ikou. All rights reserved.
+          </p>
+        </div>
+      </footer>
+      
+      
+      
+    {{-- <footer class="footer bg-gradient-to-b from-[#f2eee9] to-[#e8ded4] py-8">
+        <div class="container mx-auto">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+            <!-- ロゴ -->
+            <div class="md:mb-0 md:order-first">
+              <img src="{{ asset('storage/footer.png') }}" alt="牧場へいこう" class="w-24 md:w-32 mx-auto md:mx-0">
+            </div>
+            <!-- リンクリスト -->
+            <ul class="flex flex-col md:flex-row md:justify-center md:space-x-8 space-y-4 md:space-y-0 text-base sm:text-sm">
+              <li>
+                <a href="{{ route('contact.form') }}" class="text-[#333] font-medium hover:underline block">
+                  問い合わせ
+                </a>
+              </li>
+              <li>
+                <a href="" class="text-[#333] font-medium hover:underline block">
+                  事業概要
+                </a>
+              </li>
+              <li>
+                <a href="{{ route('farm.index') }}" class="text-[#333] font-medium hover:underline block">
+                  牧場検索
+                </a>
+              </li>
+            </ul>
+          </div>
+          <p class="text-[#666] text-xs sm:text-sm mt-6 text-center">
+            &copy; 2025 FARM360. All rights reserved.
+          </p>
+        </div>
+      </footer> --}}
+      
+      
+      
+      
+    {{-- <footer class="footer">
       <hr />
       <div class="flex flex-col items-center space-y-4 md:flex-row md:justify-center md:space-y-0 md:space-x-6">
-          <p class="text-center">© 2024 FRAM360</p>
+          <p class="text-center">© 2024 FRAM360</p> --}}
           {{-- <div class="flex space-x-4">
               <a href="#" aria-label="Facebook">
                   <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -93,7 +164,7 @@
                   </svg>
               </a>
           </div> --}}
-      </div>
-  </footer>
+      {{-- </div>
+  </footer> --}}
   
 </html>
