@@ -12,8 +12,8 @@
         <div class="hidden space-x-8 lg:flex lg:items-center"> <!-- sm:flex を lg:flex に変更 -->
             {{-- <x-nav-link :href="route('login')" :active="request()->routeIs('login')">ログイン</x-nav-link>
             <x-nav-link :href="route('register')" :active="request()->routeIs('register')">新規登録</x-nav-link> --}}
-            <x-nav-link :href="route('farm.index') " :active="request()->routeIs('farm.index')">FARM</x-nav-link>
-            <x-nav-link :href="route('contact.form')" :active="request()->routeIs('contact.form')">CONTACT</x-nav-link>
+            <x-nav-link :href="route('farm.index') " :active="request()->routeIs('farm.index')">牧場検索</x-nav-link>
+            <x-nav-link :href="route('contact.form')" :active="request()->routeIs('contact.form')">問い合わせ</x-nav-link>
         </div>
 
         <!-- ハンバーガーメニュー -->

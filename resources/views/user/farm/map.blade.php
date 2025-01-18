@@ -18,6 +18,7 @@
                             </figure>
                         @endif
                         <p class="ttl">{{ $farm->farm_name }}</p>
+                        <p class="pref">{{ $farm->prefecture }}</p>
                         <p class="icon">
                             @foreach ($farm->kinds as $kind)
                             @switch($kind->id)

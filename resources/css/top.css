@@ -377,62 +377,55 @@ h3 {
 }
 
 /* カードコンテンツ */
-.wrap {
-  max-width: 1000px;
-  padding: 0 20px;
+/* 全体のカード */
+.card {
+  margin: 0 10px;
+  display: flex; /* 横並びレイアウト */
+  align-items: center; /* 垂直方向を中央揃え */
+  background-color: white; /* 背景を白に設定 */
+  border-radius: 8px; /* 角丸 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 影を追加 */
+  padding: 16px; /* 内側の余白 */
+  overflow: hidden; /* 内容のはみ出しを非表示 */
+  transition: transform 0.2s; /* ホバー時のアニメーション */
 }
-
-/* note */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 250px); /* 各カードの幅を固定 */
-  grid-auto-flow: dense;
-  gap: 8px;
-  justify-content: center; /* カードを中央に揃える */
-  
+.card:hover {
+  transform: scale(1.02); /* ホバー時に少し拡大 */
 }
-.grid li {
-  width: 280px; /* 固定幅 */
-  height: 400px; /* 固定高さ */
-  padding: 4px;
-  border: 1px solid white;
-  box-sizing: border-box;
-}
-.icon {
-  display: flex;
-  justify-content: end;
-  margin: 5px 0;
-}
-.icon img {
-  width: 10%;
-}
+/* 画像部分 */
 .farmimg {
-  display: block;
-  display: block;
-  width: 100%; /* コンテナの幅いっぱいに調整 */
-  height: 200px; /* 高さを固定 */
-  overflow: hidden;
-  background-color: #f0f0f0; /* 余白部分の背景色 */
+  width: 120px; /* 固定幅 */
+  height: 120px; /* 固定高さ */
+  flex-shrink: 0; /* 画像のサイズを縮小しない */
+  border-radius: 8px; /* 画像を角丸に */
+  overflow: hidden; /* 画像のはみ出しを非表示 */
+  background-color: #f0f0f0; /* 画像がない場合の背景色 */
 }
 .farmimg img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* 画像全体を表示させつつ余白を追加 */
-  object-position: center; /* 画像を中央に配置 */
+  width: 100%; /* コンテナ幅いっぱいに画像を表示 */
+  height: 100%; /* コンテナ高さいっぱいに画像を表示 */
+  object-fit: cover; /* 画像を枠内に収める */
 }
-.grid-card {
-  transition: transform 0.3s;
-}
-.grid-card:hover {
-  transform: scale(1.1);
-}
+/* 詳細情報部分 */
 .ttl {
-  padding-top: 5px;
-  text-align: center; /* Center-aligns the text */
-  font-weight: bold; /* Optional: Makes the text bold */
-  font-size: 1.20rem; /* Optional: Adjusts the font size */
-  margin: 10px 0; /* Optional: Adds spacing above and below */
+  font-size: 1.25rem; /* タイトルのサイズ */
+  font-weight: bold;
+  margin-bottom: 4px;
 }
+.pref {
+  font-size: 0.875rem; /* 地域名のフォントサイズ */
+  color: #666666; /* 色をグレーに */
+}
+.icon img {
+  width: 24px; /* アイコンのサイズ */
+  height: 24px;
+  margin-right: 8px; /* 各アイコン間のスペース */
+}
+.tag {
+  font-size: 1px;
+}
+
+
 
 /* farm */
 .top-title {
@@ -695,7 +688,89 @@ h3 {
 }
 
 /* FOOTER */
-.grid {
+.footer {
+  background: linear-gradient(to bottom, #f2eee9, #e8ded4); /* グラデーション背景 */
+  padding: 2rem 0; /* フッター全体の上下の余白 */
+}
+.footer img {
+  width: auto;
+  max-width: 8rem; /* ロゴの最大幅 */
+  margin-bottom: 1.5rem; /* ロゴとリンク間の余白 */
+}
+.footer ul {
+  list-style: none; /* リストスタイルを削除 */
+  padding: 0; /* パディングをリセット */
+  margin: 0; /* マージンをリセット */
+  width: 100%; /* リスト全体の幅を揃える */
+}
+.footer li {
+  margin: 0; /* リストアイテムの余白をリセット */
+}
+.footer a {
+  color: #333; /* リンクの色 */
+  text-decoration: none; /* デフォルトの下線を削除 */
+  font-size: 1rem; /* 通常サイズ */
+  font-weight: 500; /* 少し太字 */
+  display: block; /* 各リンクをブロック要素に */
+  text-align: left; /* 左揃え */
+  transition: color 0.3s ease; /* ホバー時のスムーズな色変化 */
+}
+.footer a:hover {
+  text-decoration: underline; /* ホバー時に下線を追加 */
+  color: #555; /* ホバー時の色変更 */
+}
+.footer p {
+  color: #666; /* コピーライトのテキスト色 */
+  font-size: 0.75rem; /* コピーライトのフォントサイズを少し小さく */
+  margin-top: 1.5rem; /* 上の要素との間隔 */
+  text-align: center; /* コピーライトは常に中央揃え */
+}
+
+/* レスポンシブ対応 */
+@media (min-width: 768px) {
+  .footer {
+    margin-top: 20px;
+  }
+
+  .footer ul {
+    flex-direction: row; /* PCサイズで横並び */
+    justify-content: center; /* 中央揃え */
+    gap: 2rem; /* 各リンク間のスペースを広めに */
+  }
+  .footer img {
+    margin: 0; /* PC時は余白をなしに */
+    max-width: 10rem; /* PC時のロゴサイズ */
+  }
+}
+
+@media (max-width: 767px) {
+  .footer {
+    padding-left: 20px;
+  }
+
+  .footer ul {
+    align-items: flex-start; /* スマホで左寄せ */
+    gap: 1rem; /* 間隔は狭めに */
+  }
+  .footer img {
+    margin-bottom: 1rem; /* ロゴとリンクの間隔 */
+    margin-left: 0; /* スマホ時は左寄せ */
+    display: block;
+  }
+  .footer a {
+    font-size: 0.875rem; /* スマホで文字サイズを小さく */
+  }
+  .footer p {
+    font-size: 0.75rem; /* コピーライトも小さく */
+  }
+}
+
+/* 事業概要 */
+
+
+
+
+/* .grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
@@ -723,7 +798,7 @@ h3 {
 }
 .footer__social a:not(:last-child) {
   margin-right: 16px;
-}
+} */
 
 /* article>show */
 .article-container {

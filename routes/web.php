@@ -32,6 +32,7 @@ Route::get('/farm/map', [GuestController::class, 'index'])->name('farm.index');
 Route::get('/farm/{id}', [GuestController::class, 'show'])->name('farm.show');
 Route::get('/farm/{farm}/community', [GuestController::class, 'communityIndex'])->name('farm.community');
 Route::get('/article/{id}', [GuestController::class, 'showArticle'])->name('article.show');
+Route::get('/about', [GuestController::class, 'about'])->name('about.index');
 
 Route::get('contact', [ContactController::class, 'formTop'])->name('contact.form');
 Route::post('contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
