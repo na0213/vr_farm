@@ -687,24 +687,47 @@ h3 {
 }
 
 /*  farm>show */
+.table-auto {
+  table-layout: auto; /* 自動幅調整 */
+  width: 100%; /* テーブル全体の幅を100%に */
+  border-collapse: collapse; /* セルの境界線を統一 */
+}
+
 .table-auto th {
   background-color: #f9fafb; /* 背景色 */
-  font-weight: bold;
+  font-weight: bold; /* 太字 */
+  text-align: left; /* 左揃え */
+  padding: 0.75rem; /* パディング */
+  width: 20%; /* thの幅を全体の30%に制限 */
 }
 
 .table-auto td {
-  border-top: 1px solid #e5e7eb; /* セルの境界線 */
+  border-top: 1px solid #e5e7eb; /* セルの上部境界線 */
+  padding: 0.75rem; /* パディング */
 }
 
 .table-auto tr:last-child td {
-  border-bottom: none; /* 最後の行の境界線を削除 */
+  border-bottom: none; /* 最後の行の下部境界線を削除 */
 }
 
 @media (max-width: 767px) {
-  .table-auto{
-    font-size: 0.875rem;
+  .table-auto {
+    table-layout: auto; /* スマホでも自動幅調整 */
+  }
+
+  .table-auto th {
+    width: 25%; /* スマホでのth幅を調整 */
+    font-size: 0.8rem; /* フォントサイズを小さく調整 */
+    padding: 0.5rem 0.75rem; /* パディング */
+    word-wrap: break-word; /* 長い単語を折り返す */
+  }
+
+  .table-auto td {
+    font-size: 0.85rem; /* tdのフォントサイズを小さく */
+    word-wrap: break-word; /* 長い単語を折り返す */
   }
 }
+
 
 /* FOOTER */
 .footer {

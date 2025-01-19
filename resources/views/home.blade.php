@@ -70,7 +70,7 @@
     <p class="mt-10 text-[#e09885]">FARM</p>
   </div>
   <div class="note-title">
-    <p>〜訪れた牧場〜</p>
+    <p>〜牧場検索〜</p>
   </div>
   <div class="circle">
     <a href="{{ route('farm.index') }}">

@@ -31,10 +31,10 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden lg:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('farm.index')" :active="request()->routeIs('farm.index')">
-                FARM
+                牧場検索
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('contact.form')" :active="request()->routeIs('contact.form')">
-                CONTACT
+                問い合わせ
             </x-responsive-nav-link>
             {{-- <x-responsive-nav-link :href="route('shop.login')" :active="request()->routeIs('shop.login')">
                 ログイン

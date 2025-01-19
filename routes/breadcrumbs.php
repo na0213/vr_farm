@@ -8,7 +8,7 @@ Breadcrumbs::for('home', function ($trail) {
 // Farms index
 Breadcrumbs::for('farm.index', function ($trail) {
     $trail->parent('home');
-    $trail->push('Farms', route('farm.index'));
+    $trail->push('牧場検索', route('farm.index'));
 });
 
 // Farm details
