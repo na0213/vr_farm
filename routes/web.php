@@ -10,6 +10,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\SitemapController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,7 @@ Route::get('/farm/{id}', [GuestController::class, 'show'])->name('farm.show');
 Route::get('/farm/{farm}/community', [GuestController::class, 'communityIndex'])->name('farm.community');
 Route::get('/article/{id}', [GuestController::class, 'showArticle'])->name('article.show');
 Route::get('/about', [GuestController::class, 'about'])->name('about.index');
+Route::get('/sitemap.xml', [SitemapController::class, 'index']);
 
 Route::get('contact', [ContactController::class, 'formTop'])->name('contact.form');
 Route::post('contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');

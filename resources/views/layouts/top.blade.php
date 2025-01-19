@@ -9,11 +9,11 @@
         <title>牧場へ行こう - 全国の牧場検索サイト | 人にも動物にも環境にも優しい「放牧」「アニマルウェルフェア」「循環型」牧場を探す</title>
         <meta name="description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場情報をお届け！全国の牧場を巡り、体験や取り組みを楽しんでみませんか？">
         <meta name="keywords" content="牧場, 僕樹見学, 家族旅行　牧場, 牧場体験, 放牧, アニマルウェルフェア, 循環型, サステナブル, 牧場体験">
-        <meta property="og:title" content="動物にも環境にも優しい牧場を訪ねて｜持続可能な未来へ">
+        <meta property="og:title" content="牧場へ行こう - 全国の牧場検索サイト | 人にも動物にも環境にも優しい牧場情報をお届け">
         <meta property="og:description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場情報をお届け！全国の牧場を巡り、体験や取り組みを楽しんでみませんか？">
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ url()->current() }}">
-        <meta property="og:image" content="{{ asset('storage/sns.PNG') }}">
+        <meta property="og:image" content="{{ asset('storage/sns.jpg') }}">
         <link rel="canonical" href="{{ url()->current() }}">
         <meta name="robots" content="index, follow">
 
