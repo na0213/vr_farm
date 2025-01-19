@@ -28,6 +28,8 @@ class Farm extends Model
         'catchcopy',
         'vr',
         'theme',
+        'hp_link',
+        'has_experience',
         'prefecture',
         'address',
         'farm_info',
