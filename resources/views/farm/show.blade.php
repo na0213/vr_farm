@@ -48,6 +48,64 @@
         </div>
     </div>
 
+    <div class="container mx-auto my-10">
+        <div class="story">
+            <p class="mt-20 text-[#e0db85]">INFO
+            </p>
+        </div>
+        <div class="note-title">
+        <p>〜牧場情報〜</p>
+        </div>
+        <table class="table-auto border-collapse w-full bg-white rounded-lg shadow-md">
+            <tbody>
+                <tr>
+                    <th class="px-4 py-2 bg-gray-200 text-left font-medium text-gray-600">牧場名</th>
+                    <td class="px-4 py-2">{{ $farm->farm_name }}</td>
+                </tr>
+                <tr>
+                    <th class="px-4 py-2 bg-gray-200 text-left font-medium text-gray-600">住所</th>
+                    <td class="px-4 py-2">{{ $farm->prefecture }} {{ $farm->address }}</td>
+                </tr>
+                <tr>
+                    <th class="px-4 py-2 bg-gray-200 text-left font-medium text-gray-600">主な動物</th>
+                    <td class="px-4 py-2">
+                        @foreach ($farm->kinds as $kind)
+                            <span class="inline-block bg-green-100 text-green-800 text-sm font-semibold px-2 py-1 rounded">{{ $kind->kind }}</span>
+                        @endforeach
+                    </td>
+                </tr>
+                <tr>
+                    <th class="px-4 py-2 bg-gray-200 text-left font-medium text-gray-600">こだわり</th>
+                    <td class="px-4 py-2">
+                        @foreach ($farm->keywords as $keyword)
+                            <span class="inline-block bg-blue-100 text-blue-800 text-sm font-semibold px-2 py-1 rounded">{{ $keyword->keyword }}</span>
+                        @endforeach
+                    </td>
+                </tr>
+                <tr>
+                    <th class="px-4 py-2 bg-gray-200 text-left font-medium text-gray-600">体験可否</th>
+                    <td class="px-4 py-2">
+                        @if ($farm->has_experience)
+                            <span class="text-green-600 font-semibold">体験・視察可能</span>
+                        @else
+                            <span class="text-gray-500 font-semibold">ー</span>
+                        @endif
+                    </td>
+                </tr>
+                <tr>
+                    <th class="px-4 py-2 bg-gray-200 text-left font-medium text-gray-600">HP</th>
+                    <td class="px-4 py-2">
+                        @if ($farm->hp_link)
+                            <a href="{{ $farm->hp_link }}" target="_blank" class="text-blue-500 hover:underline">{{ $farm->hp_link }}</a>
+                        @else
+                            <span class="text-gray-500">ー</span>
+                        @endif
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
     <!-- farm_idに一致する記事の内容を表示 -->
     <div class="story">
         <p class="mt-20 text-[#e0db85]">NOTE</p>

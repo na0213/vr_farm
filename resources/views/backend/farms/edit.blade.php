@@ -105,6 +105,39 @@
                     </div>
                 </div>
                 <div class="-m-2">
+                    <div class="p-2 w-4/5 mx-auto">
+                        <div class="relative">
+                            <label for="hp_link" class="leading-7 text-sm text-gray-600">HPリンク</label>
+                            <input type="url" id="hp_link" name="hp_link" value="{{ old('hp_link', $farm->hp_link) }}" 
+                                   class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 
+                                   focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 
+                                   text-base outline-none text-gray-700 py-1 px-3 leading-8 
+                                   transition-colors duration-200 ease-in-out">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="-m-2">
+                    <div class="p-2 w-4/5 mx-auto">
+                        <div class="relative">
+                            <label for="has_experience" class="leading-7 text-sm text-gray-600">体験可否</label>
+                            <div class="flex items-center space-x-4">
+                                <div>
+                                    <input type="radio" id="experience_yes" name="has_experience" value="1" 
+                                           {{ old('has_experience', $farm->has_experience) == '1' ? 'checked' : '' }}>
+                                    <label for="experience_yes">あり</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="experience_no" name="has_experience" value="0" 
+                                           {{ old('has_experience', $farm->has_experience) == '0' ? 'checked' : '' }}>
+                                    <label for="experience_no">なし</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="-m-2">
                     <div class="p-4 w-full mx-auto">
                         <div class="form-group">
                             <h1 style="text-align: center;">牧場紹介 -Story-</h1>

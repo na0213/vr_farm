@@ -12,8 +12,7 @@ use App\Models\Keyword;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
+
 use Illuminate\Support\Str;
 // use App;
 // use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -39,6 +38,8 @@ class FarmController extends Controller
             'address' => 'nullable|string',
             'vr' => 'nullable|string',
             'theme' => 'nullable|string|max:255',
+            'hp_link' => 'nullable|url|max:500',
+            'has_experience' => 'nullable|boolean',
             'kinds' => 'nullable|array',
             'kinds.*' => 'exists:kinds,id',
             'keywords' => 'nullable|array',
@@ -60,6 +61,8 @@ class FarmController extends Controller
             $farm->address = $validated['address'];
             $farm->vr = $validated['vr'];
             $farm->theme = $validated['theme'];
+            $farm->hp_link = $validated['hp_link'];
+            $farm->has_experience = $validated['has_experience'] ?? false;
             $farm->farm_info = $request->input('editor1'); // CKEditor からの入力を直接取得
             $farm->is_published = $validated['is_published'];
 
@@ -132,6 +135,8 @@ class FarmController extends Controller
             'address' => 'nullable|string',
             'vr' => 'nullable|string',
             'theme' => 'nullable|string|max:255',
+            'hp_link' => 'nullable|url|max:500',
+            'has_experience' => 'nullable|boolean',
             'kinds' => 'nullable|array',
             'kinds.*' => 'exists:kinds,id',
             'keywords' => 'nullable|array',
@@ -150,6 +155,8 @@ class FarmController extends Controller
             $farm->address = $validated['address'];
             $farm->vr = $validated['vr'];
             $farm->theme = $validated['theme'];
+            $farm->hp_link = $validated['hp_link'];
+            $farm->has_experience = $validated['has_experience'] ?? false;
             $farm->farm_info = $validated['farm_info'];
             // $farm->farm_info = $request->input('editor1'); // CKEditor からの入力
             $farm->is_published = $validated['is_published'];

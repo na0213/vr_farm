@@ -426,7 +426,6 @@ h3 {
 }
 
 
-
 /* farm */
 .top-title {
   position: absolute;
@@ -685,6 +684,26 @@ h3 {
   gap: 20px; /* 各カード間のスペース */
   max-width: 1200px;
   margin: 0 auto;
+}
+
+/*  farm>show */
+.table-auto th {
+  background-color: #f9fafb; /* 背景色 */
+  font-weight: bold;
+}
+
+.table-auto td {
+  border-top: 1px solid #e5e7eb; /* セルの境界線 */
+}
+
+.table-auto tr:last-child td {
+  border-bottom: none; /* 最後の行の境界線を削除 */
+}
+
+@media (max-width: 767px) {
+  .table-auto{
+    font-size: 0.875rem;
+  }
 }
 
 /* FOOTER */

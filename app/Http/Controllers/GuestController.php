@@ -70,14 +70,6 @@ class GuestController extends Controller
         return view('farm.map', compact('farms', 'prefectures', 'keywords', 'kinds'));
     }
     
-    
-    // public function index()
-    // {
-    //     $farms = Farm::where('is_published', 1)->with(['keywords', 'farmImages'])->get();
-
-    //     return view('farm.map', compact('farms'));
-    // }
-
     public function show($id)
     {
         // 関連するfarmとarticlesを取得
