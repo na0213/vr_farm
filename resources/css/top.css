@@ -886,40 +886,55 @@ h3 {
   }
 }
 
-/* 事業概要 */
-
-
-
-
-/* .grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+/* LOGIN */
+.custom-form {
+  max-width: 400px; /* フォームの幅を制限 */
+  margin: 50px auto; /* 左右中央揃え */
+  padding: 20px; /* フォーム内に空白を追加 */
+  background-color: #f9f9f9; /* 背景色を設定（任意） */
+  border-radius: 8px; /* 角丸を設定 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 軽い影を追加 */
 }
-.footer {
-  padding: 2rem;
-  font-size: 15px;
-  color: #4b5564;
-  background: #F2EEEA;
+
+.custom-form div {
+  margin-bottom: 16px; /* 各入力欄の間隔を設定 */
 }
-.footer__navi-heading {
-  font-weight: 600;
+
+.custom-form label {
+  display: block; /* ラベルをブロック要素にして改行 */
+  margin-bottom: 8px; /* ラベルと入力欄の間隔 */
+  font-weight: bold; /* ラベルを強調 */
 }
-.footer__logo {
+
+.custom-form input[type="email"],
+.custom-form input[type="password"],
+.custom-form input[type="checkbox"] {
+  width: 100%; /* 入力欄を親要素の幅に合わせる */
+  padding: 8px; /* 内側に空白を追加 */
+  border: 1px solid #ddd; /* ボーダーを設定 */
+  border-radius: 4px; /* 角丸を設定 */
+  box-sizing: border-box; /* パディングを含む幅に計算 */
+}
+
+.custom-form input[type="checkbox"] {
+  width: auto; /* チェックボックスは幅を固定 */
+}
+
+.custom-form button {
   display: inline-block;
+  padding: 10px 20px; /* ボタンの内側余白を設定 */
+  background-color: #4a90e2; /* ボタンの背景色 */
+  color: white; /* ボタンの文字色 */
+  border: none; /* ボーダーを削除 */
+  border-radius: 4px; /* 角丸を設定 */
+  cursor: pointer; /* カーソルをポインタに変更 */
+  transition: background-color 0.3s; /* ホバー時のアニメーション */
 }
-.footer__navi li {
-  margin-bottom: 0.75rem;
+
+.custom-form button:hover {
+  background-color: #357ab8; /* ホバー時の色 */
 }
-.footer__social a {
-  display: inline-block;
-  width: 24px;
-  opacity: 0.7;
-}
-.footer__social a:not(:last-child) {
-  margin-right: 16px;
-} */
+
 
 /* article>show */
 .article-container {

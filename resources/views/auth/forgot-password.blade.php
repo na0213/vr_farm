@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-top-layout>
     <div class="mb-4 text-sm text-gray-600">
         {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
     </div>
@@ -6,7 +6,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('password.email') }}">
+    <form class="custom-form" method="POST" action="{{ route('password.email') }}">
         @csrf
 
         <!-- Email Address -->
@@ -22,4 +22,4 @@
             </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+</x-top-layout>

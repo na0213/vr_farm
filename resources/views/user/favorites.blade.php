@@ -50,7 +50,7 @@
                 <li>お気に入り登録はありません。</li>
             </div>
             @endforelse
-        </ul>
+        {{-- </ul>
         <h1 class="title-start mt-10">F<span class="title-font">OLLOW</h1>
         <ul class="grid">
             @forelse ($followings as $mypage)
@@ -60,7 +60,6 @@
                             <img src="{{ $mypage->my_image ?? asset('storage/noimage.jpg') }}" alt="Mypage Image">
                         </div>
                         <p class="ml-5">{{ $mypage->nickname ?? '名無しさん' }}</p>
-                        {{-- <p class="ml-5">{{ $mypage->catchphrase ?? '' }}</p> --}}
                     </a>
                 </li>
             @empty
@@ -68,7 +67,7 @@
                     <li>フォローはありません。</li>
                 </div>
             @endforelse
-        </ul>
+        </ul> --}}
     </div>
 
 </x-app-layout>
