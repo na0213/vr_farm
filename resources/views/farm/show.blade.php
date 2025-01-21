@@ -102,6 +102,19 @@
                         @endif
                     </td>
                 </tr>
+                <tr>
+                    <th class="px-4 py-2 bg-gray-200 text-left font-medium text-gray-600">Instagram</th>
+                    <td class="px-4 py-2">
+                        @if ($farm->instagram_link)
+                        <a href="{{ $farm->instagram_link }}" target="_blank">
+                            <img src="{{ asset('storage/Instagram.png') }}" alt="Instagram Icon" class="w-6 h-6 inline-block" />
+                        </a>
+                        @else
+                            <span class="text-gray-500">ー</span>
+                        @endif
+                    </td>
+                </tr>
+                
             </tbody>
         </table>
     </div>
@@ -113,21 +126,22 @@
     <div class="note-title">
     <p>〜訪問記録・インタビュー〜</p>
     </div>
-    <div class="noteshow-wrap">
-        <div class="noteshow-wrap-in">
-        @foreach ($articles as $article)
+    <div class="note-wrap">
+        <div class="note-wrap-in">
+          @foreach ($articles as $article)
             <div class="note-item">
-                <a href="{{ route('article.show', $article->id) }}">
-                    <div class="pic">
-                        <img src="{{ json_decode($article->article_images)[0] }}" alt="{{ $article->title }}">
-                    </div>
-                    <p>{{ $article->title }}</p>
-                    <a href="{{ route('article.show', $article->id) }}" class="more-link">もっとみる →</a>
-                </a>
+              <a href="{{ route('article.show', $article->id) }}">
+                <div class="pic">
+                  <img src="{{ json_decode($article->article_images)[0] }}" alt="{{ $article->title }}">
+                </div>
+                <p>{{ $article->title }}</p>
+                <a href="{{ route('article.show', $article->id) }}" class="more-link">もっとみる →</a>
+              </a>
             </div>
-        @endforeach
+          @endforeach
         </div>
-    </div>
+      </div>
+
     <script>
         let slideIndex = 0;
         showSlides(slideIndex);

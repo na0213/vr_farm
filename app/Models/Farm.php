@@ -33,6 +33,7 @@ class Farm extends Model
         'prefecture',
         'address',
         'farm_info',
+        'instagram_link',
     ];
 
     public function Owner()
