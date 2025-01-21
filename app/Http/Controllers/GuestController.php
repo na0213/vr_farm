@@ -13,7 +13,9 @@ class GuestController extends Controller
 {
     public function top()
     {
-        $articles = Article::where('is_published', 1)->get();
+        $articles = Article::where('is_published', 1)
+        ->select('id', 'title', 'article_images')
+        ->paginate(8);
         return view('home', compact('articles'));
     }
     

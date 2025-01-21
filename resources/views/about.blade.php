@@ -1,6 +1,6 @@
 <x-top-layout>
   <div class="container mx-auto px-4 py-8">
-      <h1 class="text-xl font-bold mb-6">事業概要</h1>
+      <h1 class="text-xl font-bold mb-6">事業者情報</h1>
       <div class="bg-white p-6 shadow-md rounded">
           <dl class="space-y-4">
               <div class="flex">

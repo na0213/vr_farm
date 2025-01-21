@@ -40,12 +40,6 @@
     <div class="swiper-pagination"></div>
   </div>
 
-    {{-- <a href="{{ route('farm.index') }}">
-        <div class="fuwafuwa"> --}}
-            {{-- <div class="farm_link">牧場へ行く</div><br><br><br> --}}
-            {{-- <p class="farm_link">WELCOME</p> --}}
-        {{-- </div>
-    </a> --}}
 
   <div class="wave">
     <div class="story">
@@ -80,13 +74,7 @@
         </p>
     </div>
     </a>
-    {{-- <a href="{{ route('farm.index') }}">
-      <div class="concept bg-image-2">
-          <p class="center-text">
-              牧場を<br>たべよう！
-          </p>
-      </div>
-    </a> --}}
+
   </div>
 
   <div class="story">
@@ -98,86 +86,41 @@
 <div class="note-wrap">
   <div class="note-wrap-in">
     @foreach ($articles as $article)
-      @if($article->is_published)
-        <div class="note-item">
-          <a href="{{ route('article.show', $article->id) }}">
-            <div class="pic"><img src="{{ json_decode($article->article_images)[0] }}" alt="{{ $article->title }}"></div>
-            <p>{{ $article->title }}</p>
-            <a href="{{ route('article.show', $article->id) }}" class="more-link">もっとみる →</a>
-          </a>
-        </div>
-      @endif
-    @endforeach
-    <!-- 以下で記事リストをもう1回繰り返す -->
-    @foreach ($articles as $article)
-      @if($article->is_published)
-        <div class="note-item">
-          <a href="{{ route('article.show', $article->id) }}">
-            <div class="pic"><img src="{{ json_decode($article->article_images)[0] }}" alt="{{ $article->title }}"></div>
-            <p>{{ $article->title }}</p>
-            <a href="{{ route('article.show', $article->id) }}" class="more-link">もっとみる →</a>
-          </a>
-        </div>
-      @endif
+      <div class="note-item">
+        <a href="{{ route('article.show', $article->id) }}">
+          <div class="pic">
+            <img src="{{ json_decode($article->article_images)[0] }}" alt="{{ $article->title }}">
+          </div>
+          <p>{{ $article->title }}</p>
+          <a href="{{ route('article.show', $article->id) }}" class="more-link">もっとみる →</a>
+        </a>
+      </div>
     @endforeach
   </div>
 </div>
 
-{{-- <div class="note-wrap">
-    <div class="note-wrap-in">
-        @foreach ($articles as $article)
-            @if($article->is_published)
-                <div class="note-item">
-                    <a href="{{ route('article.show', $article->id) }}">
-                        <div class="pic"><img src="{{ json_decode($article->article_images)[0] }}" alt="{{ $article->title }}"></div>
-                        <p>{{ $article->title }}</p>
-                        <a href="{{ route('article.show', $article->id) }}" class="more-link">もっとみる →</a>
-                    </a>
-                </div>
-            @endif
-        @endforeach
-    </div>
-</div> --}}
-<script>
-const cardWrap = document.querySelector('.card-wrap');
-const cardWrapIn = document.querySelector('.card-wrap-in');
+<!-- ページネーションリンク -->
+<div class="pagination">
+  @if ($articles->onFirstPage())
+    <span class="disabled">前へ</span>
+  @else
+    <a href="{{ $articles->previousPageUrl() }}">前へ</a>
+  @endif
 
-// スクロールが開始された時にアニメーションを一時停止
-cardWrap.addEventListener('scroll', () => {
-    cardWrapIn.style.animationPlayState = 'paused';
+  @foreach ($articles->getUrlRange(1, $articles->lastPage()) as $page => $url)
+    @if ($page == $articles->currentPage())
+      <span class="active">{{ $page }}</span>
+    @else
+      <a href="{{ $url }}">{{ $page }}</a>
+    @endif
+  @endforeach
 
-    // 一定時間後にアニメーションを再開
-    clearTimeout(cardWrap.scrollTimeout);
-    cardWrap.scrollTimeout = setTimeout(() => {
-        cardWrapIn.style.animationPlayState = 'running';
-    }, 3000); // 3秒後にアニメーションを再開
-});
-</script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-  const noteWrapIn = document.querySelector('.note-wrap-in');
-  const noteItems = Array.from(noteWrapIn.children);
+  @if ($articles->hasMorePages())
+    <a href="{{ $articles->nextPageUrl() }}">次へ</a>
+  @else
+    <span class="disabled">次へ</span>
+  @endif
+</div>
 
-  // 要素を複製して無限ループを実現
-  const duplicateItems = noteItems.map(item => item.cloneNode(true));
-  duplicateItems.forEach(item => noteWrapIn.appendChild(item));
-
-  let scrollAmount = 0;
-  const scrollSpeed = 0.2; // スクロール速度 (px)
-
-  function loopScroll() {
-    scrollAmount -= scrollSpeed;
-    if (Math.abs(scrollAmount) >= noteWrapIn.scrollWidth / 2) {
-      // スクロール位置をリセット
-      scrollAmount = 0;
-    }
-    noteWrapIn.style.transform = `translateX(${scrollAmount}px)`;
-    requestAnimationFrame(loopScroll);
-  }
-
-  loopScroll();
-});
-
-</script>
 </x-top-layout>
 

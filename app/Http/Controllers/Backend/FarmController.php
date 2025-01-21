@@ -40,6 +40,7 @@ class FarmController extends Controller
             'theme' => 'nullable|string|max:255',
             'hp_link' => 'nullable|url|max:500',
             'has_experience' => 'nullable|boolean',
+            'instagram_link' => 'nullable|url|max:500',
             'kinds' => 'nullable|array',
             'kinds.*' => 'exists:kinds,id',
             'keywords' => 'nullable|array',
@@ -63,6 +64,7 @@ class FarmController extends Controller
             $farm->theme = $validated['theme'];
             $farm->hp_link = $validated['hp_link'];
             $farm->has_experience = $validated['has_experience'] ?? false;
+            $farm->instagram_link = $validated['instagram_link'];
             $farm->farm_info = $request->input('editor1'); // CKEditor からの入力を直接取得
             $farm->is_published = $validated['is_published'];
 
@@ -113,15 +115,6 @@ class FarmController extends Controller
         $keywords = Keyword::all();
     
         return view('backend.farms.edit', compact('owner', 'farm', 'images', 'kinds', 'keywords', 'selected_kinds', 'selected_keywords'));
-        // $owner = Owner::with('farm')->findOrFail($id);
-        // $farm = Farm::with(['kinds', 'keywords'])->findOrFail($id);
-        // $images = $farm->iamges;
-        // $selected_kinds = $farm->kinds->pluck('id')->toArray();
-        // $selected_keywords = $farm->keywords->pluck('id')->toArray();
-        // $kinds = Kind::all();
-        // $keywords = Keyword::all();
-
-        // return view('backend.farms.edit', compact('owner', 'farm', 'images', 'kinds', 'keywords', 'selected_kinds', 'selected_keywords'));
     }
 
     public function update(Request $request, $id)
@@ -137,6 +130,7 @@ class FarmController extends Controller
             'theme' => 'nullable|string|max:255',
             'hp_link' => 'nullable|url|max:500',
             'has_experience' => 'nullable|boolean',
+            'instagram_link' => 'nullable|url|max:500',
             'kinds' => 'nullable|array',
             'kinds.*' => 'exists:kinds,id',
             'keywords' => 'nullable|array',
@@ -157,6 +151,7 @@ class FarmController extends Controller
             $farm->theme = $validated['theme'];
             $farm->hp_link = $validated['hp_link'];
             $farm->has_experience = $validated['has_experience'] ?? false;
+            $farm->instagram_link = $validated['instagram_link'];
             $farm->farm_info = $validated['farm_info'];
             // $farm->farm_info = $request->input('editor1'); // CKEditor からの入力
             $farm->is_published = $validated['is_published'];
