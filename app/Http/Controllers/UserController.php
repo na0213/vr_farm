@@ -127,4 +127,8 @@ class UserController extends Controller
         return view('user.favorites', compact('favorites', 'followings'));
     }
     
+    public function about()
+    {
+        return view('user.about');
+    }
 }

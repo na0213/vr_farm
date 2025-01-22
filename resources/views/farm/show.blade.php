@@ -118,7 +118,26 @@
             </tbody>
         </table>
     </div>
-    
+    <div class="story">
+        <p class="mt-20 text-[#e0db85]">PROEUCTS</p>
+    </div>
+    <div class="note-title">
+        <p>〜主な商品〜</p>
+    </div>
+    <div class="note-wrap">
+        <div class="note-wrap-in">
+            @foreach ($farm->products as $product)
+            <div class="note-item">
+                <div class="pic">
+                    <img src="{{ $product->product_image }}" alt="{{ $product->product_name }}">
+                </div>
+                <p>{{ $product->product_name }}</p>
+                <p>{!! nl2br(e($product->product_info)) !!}</p>
+            </div>
+            @endforeach
+        </div>
+    </div>
+
     <!-- farm_idに一致する記事の内容を表示 -->
     <div class="story">
         <p class="mt-20 text-[#e0db85]">NOTE</p>
