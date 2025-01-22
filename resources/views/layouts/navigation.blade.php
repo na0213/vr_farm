@@ -11,7 +11,7 @@
         <!-- ナビゲーションリンク -->
         <div class="hidden space-x-8 lg:flex lg:items-center">
             <x-nav-link :href="route('user.farm.index')" :active="request()->routeIs('user.farm.index')">牧場検索</x-nav-link>
-            <x-nav-link :href="route('contact.form')" :active="request()->routeIs('contact.form')">問い合わせ</x-nav-link>
+            {{-- <x-nav-link :href="route('contact.form')" :active="request()->routeIs('contact.form')">問い合わせ</x-nav-link> --}}
             <x-nav-link :href="route('user.favorites')" :active="request()->routeIs('user.favorites')">お気に入り</x-nav-link>
             {{-- <x-nav-link :href="route('user.mypage.show')" :active="request()->routeIs('user.mypage.show')">マイページ</x-nav-link> --}}
         </div>
@@ -60,7 +60,7 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden lg:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('user.farm.index')" :active="request()->routeIs('user.farm.index')">牧場検索</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('contact.form')" :active="request()->routeIs('contact.form')">問い合わせ</x-responsive-nav-link>
+            {{-- <x-responsive-nav-link :href="route('contact.form')" :active="request()->routeIs('contact.form')">問い合わせ</x-responsive-nav-link> --}}
             <x-responsive-nav-link :href="route('user.favorites')" :active="request()->routeIs('user.favorites')">お気に入り</x-responsive-nav-link>
             {{-- <x-responsive-nav-link :href="route('user.mypage.show')" :active="request()->routeIs('user.mypage.show')">マイページ</x-responsive-nav-link> --}}
         </div>

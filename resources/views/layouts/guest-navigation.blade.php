@@ -36,12 +36,12 @@
             <x-responsive-nav-link :href="route('contact.form')" :active="request()->routeIs('contact.form')">
                 問い合わせ
             </x-responsive-nav-link>
-            {{-- <x-responsive-nav-link :href="route('shop.login')" :active="request()->routeIs('shop.login')">
+            <x-responsive-nav-link :href="route('login')" :active="request()->routeIs('login')">
                 ログイン
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('register')" :active="request()->routeIs('register')">
                 新規登録
-            </x-responsive-nav-link> --}}
+            </x-responsive-nav-link>
         </div>
     </div>
 </nav>

@@ -96,7 +96,7 @@
             </ul>
           </div>
           <p class="text-[#666] text-xs sm:text-sm mt-6 text-center">
-            &copy; Bokujyou he Ikou. All rights reserved.
+            &copy; BokujyouIkou. All rights reserved.
           </p>
         </div>
       </footer>

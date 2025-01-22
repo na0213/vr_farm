@@ -4,7 +4,10 @@
 
         <!-- Name -->
         <div>
-            <x-input-label for="name" :value="__('Name')" />
+            <div class="flex items-center">
+                <x-input-label for="name" :value="__('Name')" />
+                <span class="text-red-500 text-sm ml-2">※必須</span>
+            </div>
             <x-text-input id="name" class="block mt-1 w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" 
             type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
@@ -12,7 +15,10 @@
 
         <!--prefecture -->
         <div class="mt-4">
-            <x-input-label for="prefecture" :value="__('prefecture')" />
+            <div class="flex items-center">
+                <x-input-label for="prefecture" :value="__('prefecture')" />
+                <span class="text-red-500 text-sm ml-2">※必須</span>
+            </div>
             <x-text-input id="prefecture" class="block mt-1 w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" 
             type="text" name="prefecture" :value="old('prefecture')" required autofocus autocomplete="prefecture" />
             <x-input-error :messages="$errors->get('prefecture')" class="mt-2" />
@@ -20,7 +26,10 @@
 
         <!-- Email Address -->
         <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
+            <div class="flex items-center">
+                <x-input-label for="email" :value="__('Email')" />
+                <span class="text-red-500 text-sm ml-2">※必須</span>
+            </div>
             <x-text-input id="email" class="block mt-1 w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" 
             type="email" name="email" :value="old('email')" required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
@@ -28,7 +37,10 @@
 
         {{-- age --}}
         <div class="mt-4">
-            <x-input-label for="age" :value="__('Age')" />
+            <div class="flex items-center">
+                <x-input-label for="age" :value="__('Age')" />
+                <span class="text-red-500 text-sm ml-2">※必須</span>
+            </div>
             <select id="age" name="age" class="block mt-1 w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" required>
                 <option value="">選択してください</option>
                 @foreach(['10' => '10代', '20' => '20代', '30' => '30代', '40' => '40代', '50' => '50代', '60' => '60代', '70' => '70代以上'] as $value => $label)
@@ -41,7 +53,7 @@
         {{-- Gender --}}
         <div class="mt-4">
             <x-input-label :value="__('Gender')" />
-            <div class="mt-1">
+            <div class="mt-1 flex items-center space-x-6">
                 <label for="gender_female" class="inline-flex items-center">
                     <input id="gender_female" type="radio" name="gender" value="female" @if(old('gender') == 'female') checked @endif class="mr-2" />{{ __('Female') }}
                 </label>
@@ -57,7 +69,10 @@
         
         <!-- Password -->
         <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <div class="flex items-center">
+                <x-input-label for="password" :value="__('Password')" />
+                <span class="text-red-500 text-sm ml-2">※必須</span>
+            </div>
 
             <x-text-input id="password" class="block mt-1 w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                             type="password"

@@ -68,6 +68,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/users/{id}/show', 'show')->name('user.farm.show');
         Route::post('/farms/{farm}/favorite', 'toggleFavorite')->name('farms.toggleFavorite');
         Route::get('/favorites', 'favorites')->name('user.favorites');
+        Route::get('/user/about', 'about')->name('user.about.index');
     });
 
     Route::controller(PostController::class)->group(function () {
