@@ -3,14 +3,15 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="{{ asset('storage/favicon.png') }}" type="image/x-icon">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         {{-- <title>{{ config('app.name', 'Laravel') }}</title> --}}
-        <title>牧場へ行こう - 全国の牧場検索サイト | 人にも動物にも環境にも優しい「放牧」「アニマルウェルフェア」「循環型」牧場を探す</title>
-        <meta name="description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場情報をお届け！全国の牧場を巡り、体験や取り組みを楽しんでみませんか？">
+        <title>牧場みっけ - 全国の牧場検索サイト | 人にも動物にも環境にも優しい「放牧」「アニマルウェルフェア」「循環型」牧場を探す</title>
+        <meta name="description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場情報をお届け！全国の牧場を巡り、体験や取り組みを知ってみませんか？">
         <meta name="keywords" content="牧場, 僕樹見学, 家族旅行　牧場, 牧場体験, 放牧, アニマルウェルフェア, 循環型, サステナブル, 牧場体験">
-        <meta property="og:title" content="牧場へ行こう - 全国の牧場検索サイト | 人にも動物にも環境にも優しい牧場情報をお届け">
-        <meta property="og:description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場情報をお届け！全国の牧場を巡り、体験や取り組みを楽しんでみませんか？">
+        <meta property="og:title" content="牧場みっけ - 全国の牧場検索サイト | 人にも動物にも環境にも優しい牧場情報をお届け">
+        <meta property="og:description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場情報をお届け！全国の牧場を巡り、体験や取り組みを知ってみませんか？">
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ url()->current() }}">
         <meta property="og:image" content="{{ asset('storage/sns.jpg') }}">
@@ -90,7 +91,7 @@
               </li>
               <li>
                 <a href="{{ route('about.index') }}" class="text-[#333] font-medium hover:underline block">
-                  事業者情報
+                  運営者情報
                 </a>
               </li>
             </ul>
