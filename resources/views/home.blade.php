@@ -2,7 +2,7 @@
   <!-- Session Status -->
   <x-auth-session-status class="mb-4" :status="session('status')" />
 
-  <div class="slide-title">牧場から<br>食を知る</div>
+  {{-- <div class="slide-title">牧場から<br>食を知る</div> --}}
   <div class="swiper">
     <div class="swiper-wrapper">
       <div class="swiper-slide">
@@ -52,9 +52,8 @@
         牧場ごとの味をたんのうし<br>
         牧場のある風景へ足を運ぶ<br>
         <br>
-        そこから始まった<br>
-        わたしの牧場旅<br>
-        「牧場から食を知ろう」<br>
+        牧場のファンづくりを目指して<br>
+        未来につながる暮らしと食を感じよう<br>
         <br>
       </p>
     </div>

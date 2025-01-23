@@ -37,7 +37,7 @@ class Contact extends Mailable
     {
         return new Envelope(
             subject: 'お問合せ有難うございます',
-            from: new Address('farm360.info@gmail.com', 'farm360°'),
+            from: new Address('farm360.info@gmail.com', '牧場へ行こう'),
         );
     }
 
