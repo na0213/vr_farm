@@ -7,17 +7,30 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         {{-- <title>{{ config('app.name', 'Laravel') }}</title> --}}
-        <title>牧場みっけ - 全国の牧場検索サイト | 人にも動物にも環境にも優しい「放牧」「アニマルウェルフェア」「循環型」牧場を探す</title>
+        <title>牧場いきたい - 全国の牧場検索サイト | 人にも動物にも環境にも優しい「放牧」「アニマルウェルフェア」「循環型」牧場を探す</title>
         <meta name="description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場情報をお届け！全国の牧場を巡り、体験や取り組みを知ってみませんか？">
         <meta name="keywords" content="牧場, 僕樹見学, 家族旅行　牧場, 牧場体験, 放牧, アニマルウェルフェア, 循環型, サステナブル, 牧場体験">
-        <meta property="og:title" content="牧場みっけ - 全国の牧場検索サイト | 人にも動物にも環境にも優しい牧場情報をお届け">
+        <meta property="og:title" content="牧場いきたい - 全国の牧場検索サイト | 人にも動物にも環境にも優しい牧場情報をお届け">
         <meta property="og:description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場情報をお届け！全国の牧場を巡り、体験や取り組みを知ってみませんか？">
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ url()->current() }}">
         <meta property="og:image" content="{{ asset('storage/sns.jpg') }}">
         <link rel="canonical" href="{{ url()->current() }}">
         <meta name="robots" content="index, follow">
-
+        <!-- 構造化データ -->
+        <script type="application/ld+json">
+          {
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "牧場いきたい",
+              "url": "https://www.farm360.jp",
+              "description": "放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場情報をお届け！",
+              "publisher": {
+                  "@type": "Organization",
+                  "name": "牧場いきたい運営"
+              }
+          }
+          </script>
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -74,7 +87,7 @@
             <!-- ロゴ -->
             <div class="mb-2">
             <a href="{{ route('index') }}">
-              <img src="{{ asset('storage/footer.png') }}" alt="牧場へいこう" class="w-24 md:w-32">
+              <img src="{{ asset('storage/footer.png') }}" alt="牧場いきたい" class="w-24 md:w-32">
             </a>
             </div>
             <!-- リンクリスト -->
@@ -97,7 +110,7 @@
             </ul>
           </div>
           <p class="text-[#666] text-xs sm:text-sm mt-6 text-center">
-            &copy; BokujyouIkou. All rights reserved.
+            &copy; BokujyouIkitai. All rights reserved.
           </p>
         </div>
       </footer>
