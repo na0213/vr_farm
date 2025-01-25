@@ -140,14 +140,14 @@
     </div>
     
     <!-- モーダルウィンドウ -->
-    <div id="modal" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
+    <div id="modal" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 items-center justify-center z-50">
         <div class="modal-content bg-white w-3/4 md:w-1/2 p-5 rounded-lg relative">
-            <button onclick="closeModal()" class="close absolute top-2 right-2 text-gray-500 hover:text-gray-700">×</button>
+            <!-- 閉じるボタン -->
+            <button onclick="closeModal()" class="close absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">×</button>
             <h2 id="modal-title" class="text-xl font-bold mb-4"></h2>
             <div id="modal-info" class="text-gray-700"></div>
         </div>
     </div>
-    
 
     <!-- farm_idに一致する記事の内容を表示 -->
     <div class="story">
@@ -203,8 +203,15 @@
         }, 4000);
     </script>
     <script>
+        // モーダルを開く関数
         function openModal(data) {
             const modal = document.getElementById('modal');
+
+            // データが正しいか確認
+            if (!data || !data.name || !data.info) {
+                console.error('Invalid data for modal:', data);
+                return;
+            }
 
             // タイトルと情報を設定
             document.getElementById('modal-title').textContent = data.name;
@@ -212,12 +219,24 @@
 
             // モーダルを表示
             modal.classList.remove('hidden');
+            modal.classList.add('flex'); // Flexboxで中央揃えするために追加
         }
 
+        // モーダルを閉じる関数
         function closeModal() {
             const modal = document.getElementById('modal');
+
+            // モーダルを非表示
             modal.classList.add('hidden');
+            modal.classList.remove('flex'); // Flexboxクラスを削除
         }
+
+        // モーダルの背景をクリックして閉じる
+        document.getElementById('modal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
       </script>
       
 </x-top-layout>
