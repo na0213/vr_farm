@@ -39,8 +39,8 @@
     
             <!-- 送信ボタンと戻るボタン -->
             <div class="flex justify-center">
-                <button type="submit" name="action" value="submit" class="bg-green-500 text-white px-6 py-2 rounded-lg mr-4 hover:bg-green-600">送信</button>
-                <button type="submit" name="action" value="back" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600">戻る</button>
+                <button type="submit" name="action" value="back" class="bg-gray-500 text-white px-6 py-2 rounded-lg mr-4 hover:bg-gray-600">戻る</button>
+                <button type="submit" name="action" value="submit" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600">送信</button>
             </div>
             
             <!-- hiddenでデータを再送 -->

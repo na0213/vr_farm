@@ -1,4 +1,3 @@
-{{-- <x-guest-layout> --}}
 <x-top-layout>
 <!-- Session Status -->
 <x-auth-session-status class="mb-4" :status="session('status')" />
@@ -27,32 +26,29 @@
             <x-input-error :messages="$errors->get('send_message')" class="mt-2" />
         </div>
         <div class="mt-10 flex justify-center">
-            <input class="button mr-4 bg-transparent hover:bg-gray-500 text-gray-700 font-semibold hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded" type="reset" value="リセット">
-            <input class="button bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded" type="submit" value="確認">
+          <!-- リセットボタン -->
+          <button type="button" class="button mr-4 bg-transparent hover:bg-gray-500 text-gray-700 font-semibold hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded" onclick="clearForm()">リセット</button>
+      
+          <!-- 確認ボタン -->
+          <input class="button bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded" type="submit" value="確認">
         </div>
     </form>
   </div>
 </div>
+<script>
+  function clearForm() {
+      // フォーム要素を取得
+      const form = document.querySelector('form');
 
+      if (form) {
+          // フォーム内の全ての入力フィールドをリセット
+          form.reset();
+
+          // 手動で入力された値や状態もクリアする
+          document.getElementById('exampNameInput').value = '';
+          document.getElementById('exampleEmailInput').value = '';
+          document.getElementById('exampleMessage').value = '';
+      }
+  }
+</script>
 </x-top-layout>
-{{-- </x-guest-layout> --}}
-  {{-- <table class="table full-width">
-      <tbody> --}}
-        {{-- <tr>
-          <th><label for="name">お名前</label></th>
-          <td>
-            <input class="full-width" type="text" name="send_name" placeholder="お名前" id="exampNameInput" required="required" value="{{old('send_name')}}">
-          </td>
-        </tr>
-        <tr>
-          <th><label for="email">メールアドレス</label></th>
-          <td>
-            <input class="full-width" type="email" name="send_mail" placeholder="メルアド" id="exampleEmailInput" required="required" value="{{old('send_mail')}}">
-          </td>
-        </tr> --}}
-        {{-- <tr>
-          <th><label for="exampleMessage">お問い合わせ内容</label></th>
-          <td><textarea class="full-width textarea" name="message" placeholder="用件を書いてね" id="exampleMessage" required="required">{{old('message')}}</textarea></td>
-        </tr>
-      </tbody> --}}
-    {{-- </table> --}}
