@@ -157,8 +157,8 @@ class ProductController extends Controller
 
     public function destroy(string $id)
     {
-        $product = Store::findOrFail($id);
-        $owner = $product->farm->owner; // $farmに紐づく$ownerを取得
+        $product = Product::findOrFail($id);
+        $farm = $product->farm->owner; // $farmに紐づく$ownerを取得
         // S3から画像を削除
         if ($product->product_image) {
             Storage::disk('s3')->delete(parse_url($product->product_image, PHP_URL_PATH));
@@ -167,6 +167,6 @@ class ProductController extends Controller
         // データベースから削除
         $product->delete();
     
-        return redirect()->route('admin.backend.products.show', ['id' => $owner->id])->with('success', '販売店が削除されました。');
+        return redirect()->route('admin.backend.products.create', ['farm' => $farm->id])->with('success', '販売店が削除されました。');
     }
 }
