@@ -124,42 +124,53 @@
     <div class="note-title">
         <p>〜主な商品〜</p>
     </div>
-    <div class="note-wrap">
+    <div class="products-wrap note-wrap">
         <div class="note-wrap-in">
             @foreach ($farm->products as $product)
             <div class="note-item">
-                <div class="pic">
+                <div class="pic" onclick="openModal({{ json_encode([
+                    'name' => $product->product_name,
+                    'info' => nl2br(e($product->product_info))
+                ]) }})">
                     <img src="{{ $product->product_image }}" alt="{{ $product->product_name }}">
                 </div>
-                <p>{{ $product->product_name }}</p>
-                <p>{!! nl2br(e($product->product_info)) !!}</p>
             </div>
             @endforeach
         </div>
     </div>
+    
+    <!-- モーダルウィンドウ -->
+    <div id="modal" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white w-3/4 md:w-1/2 p-5 rounded-lg relative">
+            <button onclick="closeModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">×</button>
+            <h2 id="modal-title" class="text-xl font-bold mb-4"></h2>
+            <div id="modal-info" class="text-gray-700"></div>
+        </div>
+    </div>
+    
 
     <!-- farm_idに一致する記事の内容を表示 -->
     <div class="story">
         <p class="mt-20 text-[#e0db85]">NOTE</p>
     </div>
     <div class="note-title">
-    <p>〜訪問記録・インタビュー〜</p>
+        <p>〜訪問記録・インタビュー〜</p>
     </div>
     <div class="note-wrap">
         <div class="note-wrap-in">
-          @foreach ($articles as $article)
+            @foreach ($articles as $article)
             <div class="note-item">
-              <a href="{{ route('article.show', $article->id) }}">
-                <div class="pic">
-                  <img src="{{ json_decode($article->article_images)[0] }}" alt="{{ $article->title }}">
-                </div>
-                <p>{{ $article->title }}</p>
-                <a href="{{ route('article.show', $article->id) }}" class="more-link">もっとみる →</a>
-              </a>
+                <a href="{{ route('article.show', $article->id) }}"> <!-- モーダルではなくリンク -->
+                    <div class="pic">
+                        <img src="{{ json_decode($article->article_images)[0] }}" alt="{{ $article->title }}">
+                    </div>
+                    <p>{{ $article->title }}</p>
+                    <span class="more-link">もっとみる →</span>
+                </a>
             </div>
-          @endforeach
+            @endforeach
         </div>
-      </div>
+    </div>
 
     <script>
         let slideIndex = 0;
@@ -191,6 +202,24 @@
             changeSlide(1);
         }, 4000);
     </script>
+    <script>
+        function openModal(data) {
+            const modal = document.getElementById('modal');
+
+            // タイトルと情報を設定
+            document.getElementById('modal-title').textContent = data.name;
+            document.getElementById('modal-info').innerHTML = data.info;
+
+            // モーダルを表示
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.add('hidden');
+        }
+      </script>
+      
 </x-top-layout>
 
 

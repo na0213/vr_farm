@@ -6,7 +6,6 @@
         <link rel="icon" href="{{ asset('storage/favicon.png') }}" type="image/x-icon">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        {{-- <title>{{ config('app.name', 'Laravel') }}</title> --}}
         <title>牧場いきたい - 全国の牧場検索サイト | 人にも動物にも環境にも優しい「放牧」「アニマルウェルフェア」「循環型」牧場を探す</title>
         <meta name="description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場情報をお届け！全国の牧場を巡り、体験や取り組みを知ってみませんか？">
         <meta name="keywords" content="牧場, 僕樹見学, 家族旅行　牧場, 牧場体験, 放牧, アニマルウェルフェア, 循環型, サステナブル, 牧場体験">
@@ -36,7 +35,6 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> --}}
         <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
         <!-- Scripts -->
         @vite(['resources/css/app.css','resources/css/top.css', 'resources/js/app.js'])

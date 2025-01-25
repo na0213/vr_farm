@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-[#F2EEEA]">
+<nav class="header-nav" x-data="{ open: false }" class="bg-[#F2EEEA]">
     <!-- Primary Navigation Menu -->
     <div class="mx-auto px-4 flex justify-between items-center h-16">
         <!-- ロゴ -->
@@ -12,8 +12,8 @@
         <div class="hidden space-x-8 lg:flex lg:items-center"> <!-- sm:flex を lg:flex に変更 -->
             <x-nav-link :href="route('farm.index') " :active="request()->routeIs('farm.index')">牧場検索</x-nav-link>
             <x-nav-link :href="route('contact.form')" :active="request()->routeIs('contact.form')">問い合わせ</x-nav-link>
-            <x-nav-link :href="route('login')" :active="request()->routeIs('login')">ログイン</x-nav-link>
-            <x-nav-link :href="route('register')" :active="request()->routeIs('register')">新規登録</x-nav-link>
+            {{-- <x-nav-link :href="route('login')" :active="request()->routeIs('login')">ログイン</x-nav-link>
+            <x-nav-link :href="route('register')" :active="request()->routeIs('register')">新規登録</x-nav-link> --}}
         </div>
 
         <!-- ハンバーガーメニュー -->
@@ -36,12 +36,12 @@
             <x-responsive-nav-link :href="route('contact.form')" :active="request()->routeIs('contact.form')">
                 問い合わせ
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('login')" :active="request()->routeIs('login')">
+            {{-- <x-responsive-nav-link :href="route('login')" :active="request()->routeIs('login')">
                 ログイン
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('register')" :active="request()->routeIs('register')">
                 新規登録
-            </x-responsive-nav-link>
+            </x-responsive-nav-link> --}}
         </div>
     </div>
 </nav>
