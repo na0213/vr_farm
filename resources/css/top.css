@@ -799,9 +799,8 @@ h3 {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1000; /* 高い値を設定して最前面に */
 }
-
 .modal.hidden {
   display: none; /* デフォルトで非表示 */
 }
@@ -813,19 +812,20 @@ h3 {
   max-width: 500px;
   width: 90%;
   text-align: center;
-  position: relative; /* 閉じるボタンの位置調整のために追加 */
+  position: relative;
+  z-index: 1010; /* 背景よりもさらに高い値 */
 }
-
 /* 閉じるボタン */
 .modal-content .close {
   position: absolute;
-  top: 10px; /* モーダル上部からの位置 */
-  right: 10px; /* モーダル右端からの位置 */
-  font-size: 24px; /* フォントサイズ */
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
   font-weight: bold;
-  cursor: pointer; /* カーソルを指マークに変更 */
-  color: #333; /* ボタンの色 */
-  transition: color 0.3s; /* ホバー時の色変更にアニメーションを追加 */
+  cursor: pointer;
+  color: #333;
+  transition: color 0.3s;
+  z-index: 1020; /* 最前面で確実に押せるように */
 }
 
 .modal-content .close:hover {
@@ -1565,6 +1565,10 @@ h3 {
     text-align: center;
     font-size: 15px;
     line-height: 30px;
+  }
+  .story p {
+    position: relative;
+    z-index: 1; /* 他の要素より下にならないように最低限のz-indexを設定 */
   }
   .con_text {
     padding-top: 20px;
