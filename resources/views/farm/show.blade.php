@@ -54,7 +54,7 @@
             </p>
         </div>
         <div class="note-title">
-        <p>〜牧場情報〜</p>
+        <p>牧場情報</p>
         </div>
         <table class="table-auto border-collapse w-full bg-white rounded-lg shadow-md">
             <tbody>
@@ -119,10 +119,10 @@
         </table>
     </div>
     <div class="story">
-        <p class="mt-20 text-[#e0db85]">PROEUCTS</p>
+        <p class="mt-20 text-[#e0db85]">GALLERY</p>
     </div>
     <div class="note-title">
-        <p>〜主な商品〜</p>
+        <p>撮影一覧</p>
     </div>
     <div class="products-wrap note-wrap">
         <div class="note-wrap-in">
@@ -154,7 +154,7 @@
         <p class="mt-20 text-[#e0db85]">NOTE</p>
     </div>
     <div class="note-title">
-        <p>〜訪問記録・インタビュー〜</p>
+        <p>訪問記・取材</p>
     </div>
     <div class="note-wrap">
         <div class="note-wrap-in">

@@ -662,13 +662,64 @@ h3 {
     width: 100%;
   }
 /* カード型横スクロール */
+.note-title p {
+  position: relative;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  color: #666;
+}
+
+.note-title p:before,
+.note-title p:after {
+  content: '';
+  display: block;
+  width: 30%;
+  height: 2px;
+  background-color: #e0db85;
+  position: absolute;
+  top: 50%;
+}
+
+.note-title p:before {
+  left: 0;
+}
+
+.note-title p:after {
+  right: 0;
+}
 .note-wrap-in {
   display: grid;
   grid-template-columns: repeat(auto-fill, 240px); /* PC用: カード幅を固定 */
   gap: 20px; /* カード間のスペース */
   justify-content: center; /* 中央揃え */
 }
+.note-title p {
+    position: relative;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    color: #666;
+}
 
+.note-title p:before,
+.note-title p:after {
+    content: '';
+    display: block;
+    width: 30%;
+    height: 2px;
+    background-color: #e0db85;
+    position: absolute;
+    top: 50%;
+}
+
+.note-title p:before {
+    left: 0;
+}
+
+.note-title p:after {
+    right: 0;
+}
 .note-item {
   width: 240px; /* カード幅を固定 */
   background-color: #f4f4f4;
