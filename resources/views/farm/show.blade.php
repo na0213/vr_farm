@@ -141,8 +141,8 @@
     
     <!-- モーダルウィンドウ -->
     <div id="modal" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
-        <div class="bg-white w-3/4 md:w-1/2 p-5 rounded-lg relative">
-            <button onclick="closeModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">×</button>
+        <div class="modal-content bg-white w-3/4 md:w-1/2 p-5 rounded-lg relative">
+            <button onclick="closeModal()" class="close absolute top-2 right-2 text-gray-500 hover:text-gray-700">×</button>
             <h2 id="modal-title" class="text-xl font-bold mb-4"></h2>
             <div id="modal-info" class="text-gray-700"></div>
         </div>
