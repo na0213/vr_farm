@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use App\Models\Owner;
 use App\Models\Product;
 use App\Models\Store;
@@ -35,6 +36,19 @@ class Farm extends Model
         'farm_info',
         'instagram_link',
     ];
+
+    // UUIDの使用を宣言
+    public $incrementing = false;
+    protected $keyType = 'string';
+    protected static function boot()
+    {
+        parent::boot();
+
+        // 新規作成時にUUIDを生成
+        static::creating(function ($model) {
+            $model->{$model->getKeyName()} = (string) Str::uuid();
+        });
+    }
 
     public function Owner()
     {

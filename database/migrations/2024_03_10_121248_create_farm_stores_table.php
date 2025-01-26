@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('farm_stores', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('farm_id')->constrained()->onDelete('cascade');
+            $table->uuid('farm_id');
+            $table->foreign('farm_id')->references('id')->on('farms')->onDelete('cascade');
             $table->string('store_name')->nullable();
             $table->string('product_name')->nullable();
             $table->string('store_url')->nullable();

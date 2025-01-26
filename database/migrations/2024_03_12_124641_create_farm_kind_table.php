@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('farm_kind', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('farm_id')->constrained()->onDelete('cascade');
+            $table->uuid('farm_id');
+            $table->foreign('farm_id')->references('id')->on('farms')->onDelete('cascade');
             $table->foreignId('kind_id')->constrained()->onDelete('cascade');
             $table->datetime('created_at')->nullable();
             $table->datetime('updated_at')->nullable();

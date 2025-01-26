@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('farm_id') // farmに関連づける
-            ->constrained('farms')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+            $table->uuid('farm_id');
+            $table->foreign('farm_id')->references('id')->on('farms')->onDelete('cascade');
             $table->string('title'); // 記事のタイトル
             $table->longText('article_content'); // 記事の内容
             $table->json('article_images')->nullable();

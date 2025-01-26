@@ -203,8 +203,8 @@ class FarmController extends Controller
                 }
             }
         }
-    
-        return redirect()->route('admin.backend.farms.images', $farm->id)->with('success', '画像が正常にアップロードされました。');
+        return redirect()->route('admin.backend.owners.show', ['id' => $farm->owner_id])
+        ->with('success', '画像が正常にアップロードされました。');
     }
 
     public function editImages($farmId)
@@ -238,7 +238,8 @@ class FarmController extends Controller
                 'image_path' => $url,
             ]);
 
-            return redirect()->route('admin.backend.farms.editImages', ['farmId' => $farmId])->with('success', '画像が更新されました。');
+            return redirect()->route('admin.backend.owners.show', ['id' => $farm->owner_id])
+            ->with('success', '画像が更新されました。');
         }
 
         return back()->withInput()->withErrors(['error' => '画像の更新に失敗しました。']);

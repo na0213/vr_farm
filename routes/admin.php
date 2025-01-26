@@ -127,7 +127,7 @@ Route::middleware('auth:admins')->group(function () {
         Route::get('/farms/{id}/images', 'images')->name('backend.farms.images');
         Route::post('/farms/{id}/images', 'storeImages')->name('backend.farms.storeImages');
         Route::get('/farms/{farmId}/edit-images', 'editImages')->name('admin.backend.farms.editImages');
-        Route::post('/farms/{farmId}/update-image/{imageId}', 'updateImage')->name('backend.farms.updateImage');
+        Route::put('/farms/{farmId}/update-image/{imageId}', 'updateImage')->name('backend.farms.updateImage');
         Route::delete('/farms/{farmId}/delete-image/{imageId}', 'deleteImage')->name('backend.farms.deleteImage');
 
         });
@@ -158,24 +158,6 @@ Route::middleware('auth:admins')->group(function () {
         Route::put('/stores/{id}', 'update')->name('backend.stores.update');
         Route::delete('/stores/{id}', 'destroy')->name('backend.stores.destroy');
         });
-
-    Route::controller(PointController::class)->group(function () {
-        Route::get('/points/create/{farm}', 'create')->name('backend.points.create');
-        Route::post('/points/{farm}', 'store')->name('backend.points.store');
-        Route::get('/points/{id}/show', 'show')->name('backend.points.show');
-        Route::get('/points/{id}/edit', 'edit')->name('backend.points.edit');
-        Route::put('/points/{id}', 'update')->name('backend.points.update');
-        Route::delete('/points/{id}', 'destroy')->name('backend.points.destroy');
-        });
-
-    Route::controller(QrController::class)->group(function () {
-        Route::get('/qr/create/{farm}', 'create')->name('backend.qr.create');
-        Route::post('/qr/{farm}', 'store')->name('backend.qr.store');
-        Route::get('/qr/{id}/show', 'show')->name('backend.qr.show');
-        Route::get('/qr/{id}/edit', 'edit')->name('backend.qr.edit');
-        Route::put('/qr/{id}', 'update')->name('backend.qr.update');
-        Route::delete('/qr/{id}', 'destroy')->name('backend.qr.destroy');
-    });
 
     Route::controller(ArticleController::class)->group(function () {
         Route::get('/article', 'index')->name('backend.article.index');

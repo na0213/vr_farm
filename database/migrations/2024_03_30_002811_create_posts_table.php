@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->uuid('farm_id');
             $table->foreignId('mypage_id')->constrained()->onDelete('cascade');
-            $table->foreignId('farm_id')->constrained()->onDelete('cascade');
+            $table->foreign('farm_id')->references('id')->on('farms')->onDelete('cascade');
             $table->string('post_title')->nullable();
             $table->text('post_content')->nullable();
             $table->datetime('created_at');
