@@ -40,13 +40,6 @@ Route::get('contact', [ContactController::class, 'formTop'])->name('contact.form
 Route::post('contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
 Route::post('contact/send', [ContactController::class, 'SendProcess'])->name('contact.send');
 
-Route::get('/farm/{farm}/qrs', [DlshopController::class, 'index'])->name('qrs.index');
-Route::get('/farm/{farm}/qr/show', [DlshopController::class, 'show'])->name('qrs.show');
-Route::post('/farm/{farm}/qr', [DlshopController::class, 'store'])->name('qrs.store');
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/dashboard', [UserController::class, 'top'])
     ->middleware(['auth', 'verified'])

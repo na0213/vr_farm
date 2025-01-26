@@ -150,7 +150,7 @@
                 <tbody>
                   @if($farm)
                   <div class="flex justify-between">
-                    <p class="p-5">【商品管理】</p>
+                    <p class="p-5">【ギャラリー】</p>
                     <div class="m-3">
                       <a href="{{ route('admin.backend.products.create', ['farm' => $farm->id]) }}">
                         <button type="button" class="text-white bg-yellow-500 border-0 py-1 px-4 focus:outline-none hover:bg-yellow-600 rounded text-lg">登録</button>
@@ -175,7 +175,7 @@
                   @else
                   <tr>
                     <td colspan="3" class="text-center py-4">
-                      商品を登録してください。
+                      ギャラリーを登録してください。
                     </td>
                   </tr>
                   @endif
@@ -249,71 +249,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
-                  @if($farm)
-                    <div class="flex justify-between">
-                      <p class="p-5">【QR管理】</p>
-                      <div class="m-3">
-                        <a href="{{ route('admin.backend.qr.create', ['farm' => $farm->id]) }}">
-                          <button type="button" class="text-white bg-yellow-500 border-0 py-1 px-4 focus:outline-none hover:bg-yellow-600 rounded text-lg">登録</button>
-                        </a>
-                      </div>
-                    </div>
-                    @if ($farm->qr) <!-- $farm が存在し、さらに $farm->qr が存在するかを確認 -->
-                      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          <a href="{{ route('admin.backend.qr.edit', ['id' => $farm->qr->id]) }}">編集</a>
-                        </td>
-                      </tr>
-                    @else
-                      <tr>
-                        <td colspan="3" class="text-center py-4">
-                          QRコードを登録してください。
-                        </td>
-                      </tr>
-                    @endif
-                  @else
-                    <tr>
-                      <td colspan="3" class="text-center py-4">
-                        関連する牧場情報がありません。
-                      </td>
-                    </tr>
-                  @endif
-                </tbody>
                 
-                {{-- <tbody>
-                  @if($farm)
-                  <div class="flex justify-between">
-                    <p class="p-5">【SDGs管理】</p>
-                    <div class="m-3">
-                      <a href="{{ route('admin.backend.points.create', ['farm' => $farm->id]) }}">
-                        <button type="button" class="text-white bg-yellow-500 border-0 py-1 px-4 focus:outline-none hover:bg-yellow-600 rounded text-lg">登録</button>
-                      </a>
-                    </div>
-                  </div>
-                  @endif
-                  @if ($farm && $farm->points->count() > 0)
-                    @foreach ($farm->points as $point)
-                      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $point->id }}
-                        </td>
-                        <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $point->point_name }}
-                        </td>
-                        <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          <a href="{{ route('admin.backend.points.edit', ['id' => $point->id]) }}">編集</a>
-                        </td>
-                      </tr>
-                    @endforeach
-                  @else
-                  <tr>
-                    <td colspan="3" class="text-center py-4">
-                      SDGsポイントを登録してください。
-                    </td>
-                  </tr>
-                  @endif
-                </tbody> --}}
               </table>
             </div>
             <div class="p-2 w-full flex justify-around mt-4">

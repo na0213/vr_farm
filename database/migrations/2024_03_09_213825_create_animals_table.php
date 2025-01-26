@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('animals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('farm_id')
-            ->constrained('farms')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+            $table->uuid('farm_id');
+            $table->foreign('farm_id')->references('id')->on('farms')->onDelete('cascade');
             $table->string('animal_name')->nullable();
             $table->text('animal_info')->nullable();
             $table->string('animal_image')->nullable();
