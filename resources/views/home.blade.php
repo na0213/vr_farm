@@ -85,13 +85,17 @@
 <div class="note-wrap">
   <div class="note-wrap-in">
     @foreach ($articles as $article)
+      @php
+        $images = json_decode($article->article_images, true); // JSONデコードを実行
+        $firstImage = $images[0] ?? asset('storage/noimage.jpg'); // 画像がなければデフォルト画像を設定
+      @endphp
       <div class="note-item">
         <a href="{{ route('article.show', $article->id) }}">
           <div class="pic">
-            <img src="{{ json_decode($article->article_images)[0] }}" alt="{{ $article->title }}">
+            <img src="{{ $firstImage }}" alt="{{ $article->title }}">
           </div>
           <p>{{ $article->title }}</p>
-          <a href="{{ route('article.show', $article->id) }}" class="more-link">もっとみる →</a>
+          <a href="{{ route('article.show', ['id' => $article->id]) }}" class="more-link">もっとみる →</a>
         </a>
       </div>
     @endforeach
