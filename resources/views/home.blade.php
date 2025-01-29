@@ -40,10 +40,13 @@
     <div class="swiper-pagination"></div>
   </div>
 
-
-  <div class="wave">
+  <div class="story">
+    <p class="mt-20 text-[#e09885]">STORY</p>
+  </div>
+  <div class="note-title">
+    <p>思い</p>
+  </div>
     <div class="story">
-      <p class="text-[#df8e8f]">STORY</p>
       <p class="con_text">
         「アニマルウェルフェア」<br>
         「放牧」<br>
@@ -56,14 +59,20 @@
         未来につながる暮らしと食を紡ぎたい<br>
         <br>
       </p>
+      <div class="story-decoration">
+        <div class="circ circ1"></div>
+        <div class="circ circ2"></div>
+        <div class="circ circ3"></div>
+        <div class="circ circ4"></div>
+      </div>
     </div>
-  </div>
+
 
   <div class="story">
     <p class="mt-10 text-[#e09885]">FARM</p>
   </div>
   <div class="note-title">
-    <p>〜牧場検索〜</p>
+    <p>牧場検索</p>
   </div>
   <div class="circle">
     <a href="{{ route('farm.index') }}">
@@ -73,14 +82,13 @@
         </p>
     </div>
     </a>
-
   </div>
 
   <div class="story">
-    <p class="mt-20 text-[#e0db85]">NOTE</p>
+    <p class="mt-20 text-[#e09885]">NOTE</p>
   </div>
   <div class="note-title">
-    <p>〜訪問記録・インタビュー〜</p>
+    <p>訪問記・取材</p>
 </div>
 <div class="note-wrap">
   <div class="note-wrap-in">
