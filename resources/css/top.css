@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=M+PLUS+1p');
 body {
     color: #333333;
-    background-color: #F2EEEA;
+    background-color: #ffffff;
+    /* background-color: #F2EEEA; */
     font-family: 'M PLUS 1p', sans-serif;
 }
 .header-nav {
@@ -110,11 +111,11 @@ div {
 }
 
 /* ウェーブ */
-.wave {
+/* .wave {
 	position: relative;
-	overflow: hidden;
+	overflow: hidden; */
 	/* box-shadow: 0 4px 20px rgba(0,0,0,.2); */
-	margin: 20px auto;
+	/* margin: 20px auto;
 	height: 700px;
 	border-radius: 5%;
 	background-color: rgba(255,255,255,.1);
@@ -148,7 +149,7 @@ div {
 	to {
 		transform: translateY(-50%) rotate(360deg);
 			}
-}
+} */
 
 .circle {
   display: flex;
@@ -224,6 +225,8 @@ div {
   transform: translate(-50%, -50%); /* 中央に正確に配置 */
   font-weight: bold;
   transition: transform 0.3s ease; /* テキストのアニメーションを追加 */
+  color: #FFFFFF; /* 白文字 */
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
 }
 
 .bg-image-1:hover .center-text {
@@ -271,6 +274,53 @@ div {
   min-height: 350px; /* エディタの最小高さを設定 */
   resize: vertical;  /* 高さのリサイズを可能にする */
   overflow: auto;    /* コンテンツが多いときにスクロールを有効にする */
+}
+.story-decoration {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.circ {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.5; /* 透明度を調整 */
+  z-index: -1; /* 背景として配置 */
+}
+
+.circ1 {
+  width: 90px;
+  height: 90px;
+  background-color: #f4df86;
+  top: -30px; /* 少し下げる */
+  left: 15%;
+}
+
+.circ2 {
+  width: 160px;
+  height: 160px;
+  background-color: #97c597;
+  top: 40px; /* さらに下げる */
+  left: 5%;
+  opacity: 0.4;
+}
+
+.circ3 {
+  width: 130px;
+  height: 130px;
+  background-color: #e08a85;
+  top: 280px; /* かなり下げる */
+  right: 5%;
+}
+.circ4 {
+  width: 100px;
+  height: 100px;
+  background-color: #e8d8c0;
+  top: 60px; /* さらに下げる */
+  right: 10%;
 }
 
 .pagination {
