@@ -6,11 +6,11 @@
         <link rel="icon" href="{{ asset('storage/favicon.png') }}" type="image/x-icon">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>牧場いきたい - 全国の牧場検索サイト | 人にも動物にも環境にも優しい「放牧」「アニマルウェルフェア」「循環型」牧場を探す</title>
-        <meta name="description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場情報をお届け！全国の牧場を巡り、体験や取り組みを知ってみませんか？">
+        <title>ウェルフェアFARM - アニマルウェルフェア牧場検索サイト | 人にも動物にも環境にも優しい「放牧」「アニマルウェルフェア」「循環型」牧場を探す</title>
+        <meta name="description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場情報をお届け！全国のアニマルウェルフェア牧場を巡り、体験や取り組みを知ってみませんか？">
         <meta name="keywords" content="牧場, 僕樹見学, 家族旅行　牧場, 牧場体験, 放牧, アニマルウェルフェア, 循環型, サステナブル, 牧場体験">
-        <meta property="og:title" content="牧場いきたい - 全国の牧場検索サイト | 人にも動物にも環境にも優しい牧場情報をお届け">
-        <meta property="og:description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場情報をお届け！全国の牧場を巡り、体験や取り組みを知ってみませんか？">
+        <meta property="og:title" content="ウェルフェアFARM - アニマルウェルフェア牧場検索サイト | 人にも動物にも環境にも優しい牧場情報をお届け">
+        <meta property="og:description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場情報をお届け！全国のアニマルウェルフェア牧場を巡り、体験や取り組みを知ってみませんか？">
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ url()->current() }}">
         <meta property="og:image" content="{{ asset('storage/sns.jpg') }}">
@@ -21,12 +21,12 @@
           {
               "@context": "https://schema.org",
               "@type": "WebSite",
-              "name": "牧場いきたい",
+              "name": "ウェルフェアFARM",
               "url": "https://www.farm360.jp",
               "description": "放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場情報をお届け！",
               "publisher": {
                   "@type": "Organization",
-                  "name": "牧場いきたい運営"
+                  "name": "ウェルフェアFARM運営"
               }
           }
           </script>
