@@ -2,6 +2,16 @@ body {
   color: #333333;
 }
 
+/* brand palette (align with TOP) */
+:root {
+  --brand-primary: #ff8a3d; /* warm orange */
+  --brand-surface-a: #fff4e9; /* soft peach */
+  --brand-surface-b: #ffede0; /* light coral-peach */
+  --ink-900: #1f2937;
+  --ink-700: #374151;
+  --ink-500: #6b7280;
+}
+
 /* TOP 画像 */
 .swiper-container {
   width: 100%;
@@ -31,12 +41,12 @@ body {
   height: 24px;
   width: 24px;
   margin: 4px;
-  border: 1px solid #8b98a5;
+  border: 1px solid #c7cdd4;
   border-radius: 4px;
 }
 .checkbox:checked {
-  border: 1px solid #8b98a5;
-  background-color: #AFD9AD;
+  border: 1px solid rgba(255,138,61,0.8);
+  background-color: var(--brand-primary);
 }
 .checkbox:checked::before {
   content: "";
@@ -51,7 +61,7 @@ body {
   transform: rotate(45deg);
 }
 .checkbox:focus-visible {
-  outline: 2px solid #AFD9AD;
+  outline: 2px solid rgba(255,138,61,0.6);
   outline-offset: 2px;
 }
 
@@ -107,12 +117,8 @@ border: 1px solid white;
   height: 100%;
   object-fit: cover; /* 画像がコンテナを埋めるように調整しつつ、比率を保つ */
 }
-.card {
-  transition:transform 0.3s;
-}
-.card:hover {
-  transform:scale(1.1);
-}
+.card { transition: transform .25s ease, box-shadow .25s ease; }
+.card:hover { transform: translateY(-4px) scale(1.02) rotate(-.2deg); box-shadow: 0 10px 22px rgba(0,0,0,.08); }
 /* farm */
 .top-title {
   position: absolute;
@@ -148,6 +154,35 @@ border: 1px solid white;
 .farm-info {
   color: #333333;
 }
+
+/* primary button aligned with TOP */
+.btn-primary {
+  display: inline-block;
+  padding: 0.6rem 1.1rem;
+  border-radius: 9999px;
+  background: var(--brand-primary);
+  color: #3a1f05;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(255,138,61,0.25);
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(255,138,61,0.35);
+}
+.btn-primary:focus-visible {
+  outline: 3px solid rgba(255,138,61,0.55);
+  outline-offset: 2px;
+}
+
+/* hand-drawn underline, icons (sync to TOP) */
+.wavy-underline {
+  display: inline-block; position: relative; padding-bottom: 8px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='8' viewBox='0 0 120 8'%3E%3Cpath d='M0 4 C 10 0, 20 8, 30 4 S 50 0, 60 4 80 8, 90 4 110 0, 120 4' fill='none' stroke='%23ff8a3d' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: repeat-x; background-size: 60px 8px; background-position: 0 100%;
+}
+.with-icon { display: inline-flex; align-items: center; gap: .4em; }
+.icon-leaf { display: inline-block; width: 1em; height: 1em; color: #5bbf6a; background: currentColor; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M21 3s-6.5.5-10.5 4.5S6 18 6 18s9-.5 13.5-4.5S21 3 21 3m-9.06 7.94c-1.05.7-2.04 1.53-2.94 2.44c-.91.9-1.74 1.89-2.44 2.94l1.06 1.06c.7-1.05 1.54-2.04 2.44-2.94c.91-.9 1.9-1.74 2.94-2.44z'/%3E%3C/svg%3E") center/contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M21 3s-6.5.5-10.5 4.5S6 18 6 18s9-.5 13.5-4.5S21 3 21 3m-9.06 7.94c-1.05.7-2.04 1.53-2.94 2.44c-.91.9-1.74 1.89-2.44 2.94l1.06 1.06c.7-1.05 1.54-2.04 2.44-2.94c.91-.9 1.9-1.74 2.94-2.44z'/%3E%3C/svg%3E") center/contain no-repeat; }
 
 /* rfarm */
 .rtop-title {

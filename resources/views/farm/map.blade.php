@@ -7,7 +7,7 @@
     </nav>
     <div class="wrap">
         <div class="container mx-auto px-4 py-6">
-            <h1 class="text-xl font-bold mb-4">牧場検索</h1>
+            <h1 class="text-xl font-bold mb-4 with-icon"><span class="icon-leaf" aria-hidden="true"></span><span class="wavy-underline">牧場検索</span></h1>
     
             <!-- 検索フォーム -->
             <form action="{{ route('farm.index') }}" method="GET" class="mb-6">
@@ -22,7 +22,7 @@
                     <label class="block font-bold mb-2">都道府県</label>
                     @foreach ($prefectures as $prefecture)
                         <label class="inline-flex items-center mr-4">
-                            <input type="checkbox" name="prefectures[]" value="{{ $prefecture }}" 
+                            <input class="checkbox" type="checkbox" name="prefectures[]" value="{{ $prefecture }}" 
                                 {{ request()->has('prefectures') && in_array($prefecture, request('prefectures')) ? 'checked' : '' }}>
                             <span class="ml-2">{{ $prefecture }}</span>
                         </label>
@@ -34,7 +34,7 @@
                     <label class="block font-bold mb-2">キーワード</label>
                     @foreach ($keywords as $keyword)
                         <label class="inline-flex items-center mr-4">
-                            <input type="checkbox" name="keywords[]" value="{{ $keyword->id }}" 
+                            <input class="checkbox" type="checkbox" name="keywords[]" value="{{ $keyword->id }}" 
                                 {{ request()->has('keywords') && in_array($keyword->id, request('keywords')) ? 'checked' : '' }}>
                             <span class="ml-2">{{ $keyword->keyword }}</span>
                         </label>
@@ -46,7 +46,7 @@
                     <label class="block font-bold mb-2">種別</label>
                     @foreach ($kinds as $kind)
                         <label class="inline-flex items-center mr-4">
-                            <input type="checkbox" name="kinds[]" value="{{ $kind->id }}" 
+                            <input class="checkbox" type="checkbox" name="kinds[]" value="{{ $kind->id }}" 
                                 {{ request()->has('kinds') && in_array($kind->id, request('kinds')) ? 'checked' : '' }}>
                             <span class="ml-2">{{ $kind->kind }}</span>
                         </label>
@@ -55,7 +55,7 @@
     
                 <!-- 検索ボタン -->
                 <div class="flex justify-center items-center">
-                    <button type="submit" class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
+                    <button type="submit" class="btn-primary" aria-label="検索を実行">
                         検索
                     </button>
                 </div>

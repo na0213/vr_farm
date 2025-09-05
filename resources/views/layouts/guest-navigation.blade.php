@@ -1,6 +1,6 @@
-<nav class="header-nav" x-data="{ open: false }" class="bg-[#F2EEEA]">
+<nav class="header-nav" x-data="{ open: false }" role="navigation" aria-label="グローバルナビゲーション">
     <!-- Primary Navigation Menu -->
-    <div class="mx-auto px-4 flex justify-between items-center h-16">
+    <div class="header-inner mx-auto px-4 flex justify-between items-center h-16">
         <!-- ロゴ -->
         <div class="flex items-center">
             <a href="{{ route('index') }}">
@@ -9,16 +9,16 @@
         </div>
 
         <!-- ナビゲーションリンク -->
-        <div class="hidden space-x-8 lg:flex lg:items-center"> <!-- sm:flex を lg:flex に変更 -->
-            <x-nav-link :href="route('farm.index') " :active="request()->routeIs('farm.index')">牧場検索</x-nav-link>
-            <x-nav-link :href="route('contact.form')" :active="request()->routeIs('contact.form')">問い合わせ</x-nav-link>
+        <div class="primary-links hidden space-x-3 lg:flex lg:items-center">
+            <x-nav-link class="nav-pill" :href="route('farm.index') " :active="request()->routeIs('farm.index')">牧場検索</x-nav-link>
+            <x-nav-link class="nav-pill" :href="route('contact.form')" :active="request()->routeIs('contact.form')">問い合わせ</x-nav-link>
             {{-- <x-nav-link :href="route('login')" :active="request()->routeIs('login')">ログイン</x-nav-link>
             <x-nav-link :href="route('register')" :active="request()->routeIs('register')">新規登録</x-nav-link> --}}
         </div>
 
         <!-- ハンバーガーメニュー -->
-        <div class="-me-2 flex items-center lg:hidden"> <!-- lg:hidden を維持 -->
-            <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+        <div class="-me-2 flex items-center lg:hidden nav-toggle">
+            <button @click="open = ! open" :aria-expanded="open.toString()" aria-controls="mobile-menu" aria-label="メニューを開閉" class="inline-flex items-center justify-center p-2 rounded-md focus:outline-none transition duration-150 ease-in-out">
                 <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                     <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                     <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -28,12 +28,12 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden lg:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('farm.index')" :active="request()->routeIs('farm.index')">
+    <div :class="{'block': open, 'hidden': ! open}" id="mobile-menu" class="hidden lg:hidden">
+        <div class="pt-2 pb-3 space-y-1 mobile-sheet">
+            <x-responsive-nav-link class="nav-sheet-link" :href="route('farm.index')" :active="request()->routeIs('farm.index')">
                 牧場検索
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('contact.form')" :active="request()->routeIs('contact.form')">
+            <x-responsive-nav-link class="nav-sheet-link" :href="route('contact.form')" :active="request()->routeIs('contact.form')">
                 問い合わせ
             </x-responsive-nav-link>
             {{-- <x-responsive-nav-link :href="route('login')" :active="request()->routeIs('login')">

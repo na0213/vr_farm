@@ -3,7 +3,7 @@
   <x-auth-session-status class="mb-4" :status="session('status')" />
 
   {{-- <div class="slide-title">牧場から<br>食を知る</div> --}}
-  <div class="swiper">
+  <div class="swiper home-hero">
     <div class="swiper-wrapper">
       <div class="swiper-slide">
         <div class="swiper-img-wrapper">
@@ -38,15 +38,35 @@
     </div>
     <!-- ページネーション -->
     <div class="swiper-pagination"></div>
+
+    <!-- Hero overlay -->
+    <div class="hero-overlay reveal" data-animate>
+      <p class="hero-eyebrow">牧場から、食を知る</p>
+      <h1 class="hero-title">人・動物・環境にやさしい牧場へ</h1>
+      <div class="hero-cta">
+        <a href="{{ route('farm.index') }}" class="btn-primary" aria-label="牧場検索へ">
+          牧場検索へ
+        </a>
+      </div>
+      <div class="scroll-hint" aria-hidden="true">scroll</div>
+    </div>
+
+    <!-- playful tiny decorations around hero -->
+    <div class="play-deco" aria-hidden="true">
+      <span class="sparkle s1"></span>
+      <span class="sparkle s2"></span>
+      <span class="sparkle s3"></span>
+      <span class="sparkle s4"></span>
+    </div>
   </div>
 
-  <div class="story">
-    <p class="mt-20 text-[#e09885]">STORY</p>
+  <div class="story reveal" data-animate>
+    <p class="mt-20 text-[#e09885] with-icon"><span class="icon-leaf" aria-hidden="true"></span>STORY</p>
   </div>
-  <div class="note-title">
-    <p>思い</p>
+  <div class="note-title reveal" data-animate>
+    <p class="wavy-underline">思い</p>
   </div>
-    <div class="story">
+    <div class="story story-panel reveal" data-animate>
       <p class="con_text">
         「アニマルウェルフェア」<br>
         「放牧」<br>
@@ -68,30 +88,32 @@
     </div>
 
 
-  <div class="story">
-    <p class="mt-10 text-[#e09885]">FARM</p>
+  <div class="story reveal" data-animate>
+    <p class="mt-10 text-[#e09885] with-icon"><span class="icon-leaf" aria-hidden="true"></span>FARM</p>
   </div>
-  <div class="note-title">
-    <p>牧場検索</p>
+  <div class="note-title reveal" data-animate>
+    <p class="wavy-underline">牧場検索</p>
   </div>
-  <div class="circle">
+  <div class="circle reveal" data-animate>
     <a href="{{ route('farm.index') }}">
-    <div class="concept bg-image-1">
+    <div class="concept bg-image-1 concept-accent">
         <p class="center-text">
-            推し牧場を<br>みつけよう！
+            <span class="line-1">推し牧場を</span>
+            <span class="line-2">みつけよう！</span>
         </p>
+        <span class="concept-badge" aria-hidden="true"></span>
     </div>
     </a>
   </div>
 
-  <div class="story">
-    <p class="mt-20 text-[#e09885]">NOTE</p>
+  <div class="story reveal" data-animate>
+    <p class="mt-20 text-[#e09885] with-icon"><span class="icon-star" aria-hidden="true"></span>NOTE</p>
   </div>
-  <div class="note-title">
-    <p>訪問記・取材</p>
+  <div class="note-title reveal" data-animate>
+    <p class="wavy-underline">訪問記・取材</p>
 </div>
-<div class="note-wrap">
-  <div class="note-wrap-in">
+<div class="note-wrap reveal" data-animate>
+  <div class="note-wrap-in home-note-grid">
     @foreach ($articles as $article)
       @php
         $images = json_decode($article->article_images, true); // JSONデコードを実行
@@ -103,7 +125,7 @@
             <img src="{{ $firstImage }}" alt="{{ $article->title }}">
           </div>
           <p>{{ $article->title }}</p>
-          <a href="{{ route('article.show', ['id' => $article->id]) }}" class="more-link">もっとみる →</a>
+          <a href="{{ route('article.show', ['id' => $article->id]) }}" class="more-link btn-link">もっとみる →</a>
         </a>
       </div>
     @endforeach
@@ -111,7 +133,7 @@
 </div>
 
 <!-- ページネーションリンク -->
-<div class="pagination">
+<div class="pagination reveal" data-animate>
   @if ($articles->onFirstPage())
     <span class="disabled">前へ</span>
   @else
@@ -134,4 +156,3 @@
 </div>
 
 </x-top-layout>
-

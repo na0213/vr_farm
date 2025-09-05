@@ -7,14 +7,14 @@
                   <dt class="font-bold w-24">名称:</dt>
                   <dd class="flex-1">Natomi</dd>
               </div>
-              <div class="flex">
+              {{-- <div class="flex">
                   <dt class="font-bold w-24">代表者:</dt>
                   <dd class="flex-1">石﨑 なつみ</dd>
               </div>
               <div class="flex">
                   <dt class="font-bold w-24">住所:</dt>
                   <dd class="flex-1">東京都港区南青山２－２－１５　WIN青山５３１</dd>
-              </div>
+              </div> --}}
               <div class="flex">
                   <dt class="font-bold w-24">メール:</dt>
                   <dd class="flex-1">natomi.work@gmail.com</dd>
