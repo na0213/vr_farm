@@ -79,38 +79,6 @@
         </script>
     </body>
     
-    <footer class="footer bg-gradient-to-b from-[#f2eee9] to-[#e8ded4] py-8">
-        <div class="container mx-auto">
-          <div class="flex flex-col items-start">
-            <!-- ロゴ -->
-            <div class="mb-2">
-            <a href="{{ route('index') }}">
-              <img src="{{ asset('storage/footer.png') }}" alt="牧場いきたい" class="w-24 md:w-32">
-            </a>
-            </div>
-            <!-- リンクリスト -->
-            <ul class="list-none w-full space-y-5">
-             <li>
-                <a href="{{ route('farm.index') }}" class="text-[#333] font-medium hover:underline block">
-                    牧場検索
-                </a>
-             </li>
-             <li>
-                <a href="{{ route('contact.form') }}" class="text-[#333] font-medium hover:underline block">
-                  問い合わせ
-                </a>
-              </li>
-              <li>
-                <a href="{{ route('about.index') }}" class="text-[#333] font-medium hover:underline block">
-                  運営者情報
-                </a>
-              </li>
-            </ul>
-          </div>
-          <p class="text-[#666] text-xs sm:text-sm mt-6 text-center">
-            &copy; BokujyouIkitai. All rights reserved.
-          </p>
-        </div>
-      </footer>
+    @include('layouts.partials.footer')
   
 </html>
