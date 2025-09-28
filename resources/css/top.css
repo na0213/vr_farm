@@ -763,9 +763,7 @@ h3 {
   height: 24px;
   margin-right: 8px; /* 各アイコン間のスペース */
 }
-.tag {
-  font-size: 1px;
-}
+
 
 
 /* farm */
@@ -1247,6 +1245,7 @@ h3 {
 
 /* FOOTER */
 .footer {
+  margin-top: 20px;
   position: relative;
   background: linear-gradient(to bottom, var(--brand-surface-a), var(--brand-surface-b));
   padding: 2rem 0;

@@ -78,7 +78,7 @@
                     <th class="px-4 py-2 bg-gray-200 text-left font-medium text-gray-600">こだわり</th>
                     <td class="px-4 py-2">
                         @foreach ($farm->keywords as $keyword)
-                            <span class="inline-block bg-blue-100 text-blue-800 text-sm font-semibold px-2 py-1 rounded">{{ $keyword->keyword }}</span>
+                            <span class="text-xs font-semibold px-2 py-1 rounded">#{{ $keyword->keyword }}</span>
                         @endforeach
                     </td>
                 </tr>

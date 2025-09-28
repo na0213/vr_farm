@@ -103,7 +103,7 @@
                                 @endif
                                 <p class="tag text-gray-500 mt-2">
                                     @foreach ($farm->keywords as $keyword)
-                                        <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{{ $keyword->keyword }}</span>
+                                        <span class="py-1 text-xs font-semibold text-gray-700 mr-2 mb-2">#{{ $keyword->keyword }}</span>
                                     @endforeach
                                 </p>
                             </div>
