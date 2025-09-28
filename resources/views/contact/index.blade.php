@@ -27,10 +27,10 @@
         </div>
         <div class="mt-10 flex justify-center">
           <!-- リセットボタン -->
-          <button type="button" class="button mr-4 bg-transparent hover:bg-gray-500 text-gray-700 font-semibold hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded" onclick="clearForm()">リセット</button>
+          <button type="button" class="button mr-4 bg-transparent hover:bg-gray-500 text-xs sm:text-sm  text-gray-700 font-semibold hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded" onclick="clearForm()">リセット</button>
       
           <!-- 確認ボタン -->
-          <input class="button bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded" type="submit" value="確認">
+          <input class="button bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white text-xs sm:text-sm  py-2 px-4 border border-green-500 hover:border-transparent rounded" type="submit" value="確認">
         </div>
     </form>
   </div>
