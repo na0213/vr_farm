@@ -85,6 +85,44 @@
     </div>
     <h2 class="heading06" data-en="{{ $farm->prefecture }}">{{ $farm->farm_name }}</h2>
 
+    @if($farm->animals->isNotEmpty())
+        <div class="story">
+            <p class="mt-20 text-[#e0db85]">FEATURES</p>
+        </div>
+        <div class="note-title">
+            <p>牧場の特徴</p>
+        </div>
+
+        <div class="container mx-auto px-4 mb-20 max-w-6xl animal-section">
+            @foreach($farm->animals as $animal)
+                {{-- $loop->iteration が奇数なら「左から」、偶数なら「右から」 --}}
+                @php
+                    $isEven = $loop->iteration % 2 === 0;
+                    $animClass = $isEven ? 'slide-in-right' : 'slide-in-left';
+                    $rowClass = $isEven ? 'reverse' : '';
+                @endphp
+
+                <div class="magazine-row {{ $rowClass }} {{ $animClass }}">
+                    {{-- 画像エリア --}}
+                    <div class="w-full md:w-1/2 flex justify-center">
+                        @if($animal->animal_image)
+                            <img src="{{ $animal->animal_image }}" alt="{{ $animal->animal_name }}" class="magazine-image">
+                        @else
+                            <div class="magazine-image bg-gray-200 flex items-center justify-center text-gray-500 font-bold text-xl">
+                                No Image
+                            </div>
+                        @endif
+                    </div>
+
+                    {{-- テキストエリア --}}
+                    <div class="magazine-content">
+                        <h3 class="magazine-title">{{ $animal->animal_name }}</h3>
+                        <p class="magazine-desc">{{ $animal->animal_info }}</p>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
     <div class="story">
         <p class="mt-20 text-[#e0db85]">GALLERY</p>
     </div>
@@ -114,6 +152,7 @@
     </div>
 
     <div class="container mx-auto my-10">
+        
         <div class="story">
             <p class="mt-20 text-[#e0db85]">INFO
             </p>
@@ -228,8 +267,9 @@
     </div>
 
     <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
+        // Swiper設定（ここは変更なし）
         var swiper = new Swiper(".mySwiper", {
             spaceBetween: 0,
             centeredSlides: true,
@@ -253,42 +293,50 @@
             },
         });
 
-        // Scroll Animation
+        // ▼▼▼ ここを修正しました（何度でも動くバージョン） ▼▼▼
         document.addEventListener('DOMContentLoaded', function() {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
+                        // 画面に入った時：クラスを追加してアニメーション開始
                         entry.target.classList.add('is-visible');
-                        // オブザーバーを解除して一度だけアニメーションさせる場合
-                        observer.unobserve(entry.target);
+                    } else {
+                        // 画面から出た時：クラスを削除してリセット（これで次回も動きます）
+                        entry.target.classList.remove('is-visible');
                     }
                 });
             }, {
-                threshold: 0.1,
-                rootMargin: "0px 0px -50px 0px" // 少し入ったら発火
+                threshold: 0.1, // 10%見えたら発火
+                rootMargin: "0px 0px -50px 0px" // 少し余裕を持たせる
             });
 
+            // 監視対象1: 既存のアニメーション要素
             const elements = document.querySelectorAll('.animate-on-scroll');
             elements.forEach((el) => {
                 observer.observe(el);
             });
+
+            // 監視対象2: 雑誌風レイアウトの動物リスト
+            const magazineRows = document.querySelectorAll('.magazine-row');
+            magazineRows.forEach((el) => {
+                observer.observe(el);
+            });
         });
     </script>
+
     <script>
+        // モーダル用JS（変更なし）
         function openModal(data) {
-            // モーダルの要素取得
             const modal = document.getElementById("modal");
             const modalImage = document.getElementById("modal-image").querySelector("img");
             const modalTitle = document.getElementById("modal-title");
             const modalInfo = document.getElementById("modal-info");
 
-            // 画像・タイトル・説明をセット
-            modalImage.src = data.image || "{{ asset('storage/noimage.jpg') }}"; // 画像がない場合はデフォルト画像
+            modalImage.src = data.image || "{{ asset('storage/noimage.jpg') }}";
             modalImage.alt = data.name || "Product Image";
             modalTitle.textContent = data.name;
             modalInfo.innerHTML = data.info;
 
-            // モーダルを表示
             modal.classList.remove("hidden");
             modal.classList.add("flex");
         }
@@ -298,8 +346,7 @@
             modal.classList.add("hidden");
             modal.classList.remove("flex");
         }
-    </script>
-      
+    </script>      
 </x-top-layout>
 
 

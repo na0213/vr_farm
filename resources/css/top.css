@@ -1896,3 +1896,104 @@ h3 {
   }
   
 }
+
+/* --- Magazine Layout Styles --- */
+.animal-section {
+    overflow: hidden; /* 横スクロール防止 */
+}
+
+/* 共通の行スタイル */
+.magazine-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 5rem;
+    opacity: 0; /* 初期状態は非表示 */
+    transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+@media (min-width: 768px) {
+    .magazine-row {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 4rem;
+    }
+    
+    /* 偶数番目の行は左右反転（画像が右、テキストが左） */
+    .magazine-row.reverse {
+        flex-direction: row-reverse;
+    }
+}
+
+/* 画像エリア */
+.magazine-image {
+    width: 100%;
+    max-width: 500px;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* テキストエリア */
+.magazine-content {
+    width: 100%;
+    max-width: 450px;
+    padding: 1rem;
+    text-align: center; /* スマホは中央揃え */
+}
+
+@media (min-width: 768px) {
+    .magazine-content {
+        text-align: left; /* PCは左揃え（reverseのときは右揃えにする場合もあり） */
+    }
+}
+
+.magazine-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: #333;
+    position: relative;
+    display: inline-block;
+}
+
+/* タイトルの装飾（下線など） */
+.magazine-title::after {
+    content: '';
+    display: block;
+    width: 60%;
+    height: 4px;
+    background: #ff8a3d; /* テーマカラー */
+    margin-top: 0.5rem;
+    border-radius: 2px;
+}
+@media (max-width: 767px) {
+    .magazine-title::after { margin-inline: auto; } /* スマホ中央揃え */
+}
+
+.magazine-desc {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #555;
+    white-space: pre-wrap; /* 改行を反映 */
+}
+
+/* --- Slide Animation --- */
+/* 左から入ってくるアニメーション */
+.slide-in-left {
+    transform: translateX(-100px);
+}
+
+/* 右から入ってくるアニメーション */
+.slide-in-right {
+    transform: translateX(100px);
+}
+
+/* 表示状態（元の位置に戻る） */
+.magazine-row.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
