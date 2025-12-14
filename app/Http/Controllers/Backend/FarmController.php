@@ -29,14 +29,13 @@ class FarmController extends Controller
 
     public function store(Request $request, $ownerId)
     {
-        Log::info('CKEditor Content: ' . $request->input('editor1'));
         // バリデーション
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'catchcopy' => 'nullable|string|max:500',
             'prefecture' => 'required|string|max:255',
             'address' => 'nullable|string',
-            'vr' => 'nullable|string',
+            'vr' => 'nullable|image|max:10240',
             'theme' => 'nullable|string|max:255',
             'hp_link' => 'nullable|url|max:500',
             'has_experience' => 'nullable|boolean',
@@ -45,7 +44,6 @@ class FarmController extends Controller
             'kinds.*' => 'exists:kinds,id',
             'keywords' => 'nullable|array',
             'keywords.*' => 'exists:keywords,id',
-            'farm_info' => 'nullable|string',
             'is_published' => 'required|boolean',
         ]);
     
@@ -60,13 +58,18 @@ class FarmController extends Controller
             $farm->catchcopy = $validated['catchcopy'];
             $farm->prefecture = $validated['prefecture'];
             $farm->address = $validated['address'];
-            $farm->vr = $validated['vr'];
             $farm->theme = $validated['theme'];
             $farm->hp_link = $validated['hp_link'];
             $farm->has_experience = $validated['has_experience'] ?? false;
             $farm->instagram_link = $validated['instagram_link'];
-            $farm->farm_info = $request->input('editor1'); // CKEditor からの入力を直接取得
             $farm->is_published = $validated['is_published'];
+
+            if ($request->hasFile('vr')) {
+                $image = $request->file('vr');
+                $fileName = 'farm_vr/' . uniqid() . '.jpg';
+                Storage::disk('s3')->put($fileName, file_get_contents($image), 'public');
+                $farm->vr = Storage::disk('s3')->url($fileName);
+            }
 
             $farm->save();
     
@@ -119,14 +122,13 @@ class FarmController extends Controller
 
     public function update(Request $request, $id)
     {
-        Log::info('Updating farm_info: ' . $request->input('farm_info'));
-
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'catchcopy' => 'nullable|string|max:500',
             'prefecture' => 'required|string|max:255',
             'address' => 'nullable|string',
-            'vr' => 'nullable|string',
+            // 画像バリデーション
+            'vr' => 'nullable|image|max:10240', 
             'theme' => 'nullable|string|max:255',
             'hp_link' => 'nullable|url|max:500',
             'has_experience' => 'nullable|boolean',
@@ -135,7 +137,6 @@ class FarmController extends Controller
             'kinds.*' => 'exists:kinds,id',
             'keywords' => 'nullable|array',
             'keywords.*' => 'exists:keywords,id',
-            'farm_info' => 'nullable|string',
             'is_published' => 'required|boolean',
         ]);
     
@@ -147,14 +148,40 @@ class FarmController extends Controller
             $farm->catchcopy = $validated['catchcopy'];
             $farm->prefecture = $validated['prefecture'];
             $farm->address = $validated['address'];
-            $farm->vr = $validated['vr'];
             $farm->theme = $validated['theme'];
             $farm->hp_link = $validated['hp_link'];
             $farm->has_experience = $validated['has_experience'] ?? false;
             $farm->instagram_link = $validated['instagram_link'];
-            $farm->farm_info = $validated['farm_info'];
-            // $farm->farm_info = $request->input('editor1'); // CKEditor からの入力
             $farm->is_published = $validated['is_published'];
+
+            // ▼▼▼ ここから画像処理（削除＆追加） ▼▼▼
+            if ($request->hasFile('vr')) {
+                // 1. 既存の画像があればS3から削除
+                if ($farm->vr) {
+                    // 以前のデータが<iframe>タグなどの場合はURLではないので、URLの時だけ削除を実行
+                    if (filter_var($farm->vr, FILTER_VALIDATE_URL)) {
+                        // URLからパス部分（例: /farm_vr/xxx.jpg）を抽出
+                        $existingImagePath = parse_url($farm->vr, PHP_URL_PATH);
+                        // 先頭の / を削除してS3のキーとして扱えるようにする
+                        $existingImagePath = ltrim($existingImagePath, '/');
+                        
+                        // S3から削除実行
+                        if (Storage::disk('s3')->exists($existingImagePath)) {
+                            Storage::disk('s3')->delete($existingImagePath);
+                        }
+                    }
+                }
+
+                // 2. 新しい画像をS3にアップロード
+                $image = $request->file('vr');
+                $fileName = 'farm_vr/' . uniqid() . '.jpg';
+                Storage::disk('s3')->put($fileName, file_get_contents($image), 'public');
+                
+                // 新しいURLをセット
+                $farm->vr = Storage::disk('s3')->url($fileName);
+            }
+            // ▲▲▲ 画像処理ここまで ▲▲▲
+
             $farm->save();
     
             // kinds と keywords の関連付けを更新
@@ -165,6 +192,7 @@ class FarmController extends Controller
     
             return redirect()->route('admin.backend.owners.show', ['id' => $farm->owner_id])
                 ->with('message', '牧場の情報が更新されました');
+
         } catch (\Exception $e) {
             DB::rollback();
             Log::error($e->getMessage());

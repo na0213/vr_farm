@@ -7,7 +7,7 @@
                 </h2>
             </a>
             <h2 class="pl-10 font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                飼育登録
+                特徴登録
             </h2>
         </div>
     </x-slot>
@@ -57,23 +57,53 @@
                     <button type="submit" class="text-white bg-yellow-500 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-600 rounded text-lg">登録</button>
                 </div>
             </form>
+            <div class="mt-10 border-t pt-10">
+                <h3 class="text-lg font-bold text-gray-700 mb-4 text-center">登録済みの特徴一覧</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @foreach($animals as $animal)
+                        <div class="bg-white p-4 rounded shadow">
+                            @if($animal->animal_image)
+                                <img src="{{ $animal->animal_image }}" alt="{{ $animal->animal_name }}" class="w-full h-40 object-cover rounded mb-2">
+                            @else
+                                <div class="w-full h-40 bg-gray-200 rounded mb-2 flex items-center justify-center text-gray-500">No Image</div>
+                            @endif
+                            <h4 class="font-bold text-lg">{{ $animal->animal_name }}</h4>
+                            <p class="text-sm text-gray-600 mt-1 line-clamp-3">{{ $animal->animal_info }}</p>
+                            
+                            <div class="mt-4 flex justify-between">
+                                {{-- 編集ボタン --}}
+                                <a href="{{ route('admin.backend.animals.edit', $animal->id) }}" class="text-blue-500 hover:underline">編集</a>
+                                
+                                {{-- 削除ボタン --}}
+                                <form action="{{ route('admin.backend.animals.destroy', $animal->id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-500 hover:underline">削除</button>
+                                </form>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                @if($animals->isEmpty())
+                    <p class="text-center text-gray-500">まだ登録されていません。</p>
+                @endif
+            </div>
         </div>
     </div>
     <script>
         function previewImage(input, previewId) {
-            const maxFileSize = 3 * 1024 * 1024; // 3MBをバイト単位で定義
+            const maxFileSize = 3 * 1024 * 1024; // 3MB
     
             if (input.files && input.files[0]) {
                 // ファイルサイズチェック
                 if (input.files[0].size > maxFileSize) {
-                    // ファイルサイズが1MBを超える場合
-                    alert('ファイルサイズは1MB以下にしてください。');
-                    input.value = ''; // 選択されたファイルをクリア
-                    document.getElementById(previewId).innerHTML = '<img src="{{ asset('storage/noimage.jpg') }}" alt="No Image" style="width: 200px; height: auto;">'; // プレビューをデフォルト画像にリセット
-                    return; // これ以上処理を続行しない
+                    // ★修正: アラート文言を3MBに変更
+                    alert('ファイルサイズは3MB以下にしてください。');
+                    input.value = ''; 
+                    document.getElementById(previewId).innerHTML = '<img src="{{ asset('storage/noimage.jpg') }}" alt="No Image" style="width: 200px; height: auto;">';
+                    return;
                 }
     
-                // ファイルサイズが1MB以下の場合、画像をプレビュー
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById(previewId).innerHTML = '<img src="' + e.target.result + '" alt="Image preview" style="width: 200px; height: auto;">';

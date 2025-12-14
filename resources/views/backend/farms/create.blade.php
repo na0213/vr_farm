@@ -14,7 +14,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <form action="{{ route('admin.backend.farms.store', ['owner' => $owner->id]) }}" method="POST">
+            <form action="{{ route('admin.backend.farms.store', ['owner' => $owner->id]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @if ($errors->any())
                     <div class="alert alert-danger">
@@ -74,8 +74,27 @@
                 <div class="-m-2">
                     <div class="p-2 w-4/5 mx-auto">
                         <div class="relative">
-                        <label for="vr" class="leading-7 text-sm text-gray-600">VR</label>
-                        <input type="text" id="vr" name="vr" value="{{ old('vr')}}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                            {{-- ラベル --}}
+                            <label for="vr" class="leading-7 text-sm text-gray-600">
+                                VR画像（360度画像）<span class="text-red-600">（10MB以下）</span>
+                            </label>
+
+                            {{-- ファイル入力（onchangeを追加） --}}
+                            <input type="file" id="vr" name="vr" accept="image/*" 
+                                onchange="previewImage(this, 'preview_vr')" 
+                                class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                            
+                            {{-- プレビュー表示エリア --}}
+                            <div class="mt-2" id="preview_vr">
+                                @if(isset($farm->vr) && $farm->vr)
+                                    {{-- すでに登録済みの画像があれば表示（S3のURL等） --}}
+                                    <p class="text-xs text-gray-500 mb-1">現在の登録画像:</p>
+                                    <img src="{{ $farm->vr }}" alt="Current VR" class="w-full rounded shadow object-contain max-h-64">
+                                @else
+                                    {{-- 画像がない場合はNo Imageを表示 --}}
+                                    <img src="{{ asset('storage/noimage.jpg') }}" alt="No Image" class="w-full rounded shadow object-contain max-h-64 opacity-50">
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -149,16 +168,6 @@
                 
                 <div class="-m-2">
                     <div class="p-4 w-full mx-auto">
-                        <div class="form-group">
-                            <h1 style="text-align: center;">牧場紹介 -Story-</h1>
-                            <div class="col-md-12">
-                                <textarea id="editor1" name="farm_info"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="-m-2">
-                    <div class="p-4 w-full mx-auto">
                         <div class="relative flex justify-around">
                             <div>
                                 <input type="radio" name="is_published" value="1" class="mr-2" checked>公開
@@ -176,20 +185,32 @@
             </form>
         </div>
     </div>
-    <!-- CKEditorの初期化コード -->
     <script>
-    CKEDITOR.replace('editor1', {
-        height: 350, // エディタの高さ
-        removeButtons: 'Image, Unlink,Anchor, NewPage,DocProps,Preview,Print,Templates,Cut,Copy,Paste,PasteText,PasteFromWord,Undo,Redo,Find,Replace,SelectAll,Scayt,RemoveFormat,Outdent,Indent,Blockquote,Styles,About',
-        allowedContent: true, // HTML要素を許可
-    });
+        function previewImage(input, previewId) {
+            // VR画像用に10MBまで許可する設定に変更
+            const maxFileSize = 10 * 1024 * 1024; 
 
-        // フォーム送信時にCKEditorの内容をtextareaに同期させる
-        document.querySelector('form').addEventListener('submit', function(e) {
-            for (const instance in CKEDITOR.instances) {
-                CKEDITOR.instances[instance].updateElement();
+            if (input.files && input.files[0]) {
+                // ファイルサイズチェック
+                if (input.files[0].size > maxFileSize) {
+                    // 10MBを超える場合
+                    alert('ファイルサイズは10MB以下にしてください。');
+                    input.value = ''; // 選択されたファイルをクリア
+                    
+                    // プレビューをデフォルト画像（No Image）にリセット
+                    // デザイン崩れを防ぐためクラスもTailwindに合わせる
+                    document.getElementById(previewId).innerHTML = '<img src="{{ asset('storage/noimage.jpg') }}" alt="No Image" class="w-full rounded shadow object-contain max-h-64 opacity-50">'; 
+                    return; 
+                }
+
+                // ファイルサイズがOKの場合、画像をプレビュー
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    // ここもTailwindのクラスを適用して、枠内にきれいに収まるように変更
+                    document.getElementById(previewId).innerHTML = '<img src="' + e.target.result + '" alt="Image preview" class="w-full rounded shadow object-contain max-h-64">';
+                };
+                reader.readAsDataURL(input.files[0]);
             }
-        });
-    </script>
-    
+        }
+    </script>  
 </x-admin-layout>

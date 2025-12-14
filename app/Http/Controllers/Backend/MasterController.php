@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class MasterController extends Controller
 {
@@ -51,13 +52,12 @@ class MasterController extends Controller
             'catchcopy' => 'nullable|string|max:500',
             'prefecture' => 'required|string|max:255',
             'address' => 'nullable|string',
-            'vr' => 'nullable|string',
+            'vr' => 'nullable|image|max:10240',
             'theme' => 'nullable|string|max:255',
             'kinds' => 'nullable|array',
             'kinds.*' => 'exists:kinds,id',
             'keywords' => 'nullable|array',
             'keywords.*' => 'exists:keywords,id',
-            'farm_info' => 'nullable|string',
             'is_published' => 'required|boolean',
         ]);
     
@@ -65,14 +65,29 @@ class MasterController extends Controller
             DB::beginTransaction();
     
             $farm = Farm::findOrFail($id);
+
+            // 通常のデータ更新
             $farm->farm_name = $validated['name'];
             $farm->catchcopy = $validated['catchcopy'];
             $farm->prefecture = $validated['prefecture'];
             $farm->address = $validated['address'];
-            $farm->vr = $validated['vr'];
             $farm->theme = $validated['theme'];
-            $farm->farm_info = $request->input('editor1'); // CKEditor からの入力
             $farm->is_published = $validated['is_published'];
+            
+            if ($request->hasFile('vr')) {
+                // ファイルを取得
+                $image = $request->file('vr');
+                
+                // ファイル名を生成
+                $fileName = 'farm_vr/' . uniqid() . '.jpg';
+
+                // S3に画像を保存
+                Storage::disk('s3')->put($fileName, file_get_contents($image), 'public');
+                
+                // データベースのURLを新しいものに更新
+                $farm->vr = Storage::disk('s3')->url($fileName);
+            }
+
             $farm->save();
     
             // kinds と keywords の関連付けを更新

@@ -122,7 +122,8 @@ Route::middleware('auth:admins')->group(function () {
         Route::post('/farms/{owner}', 'store')->name('backend.farms.store');
         Route::get('/farms/{id}/show', 'show')->name('backend.farms.show');
         Route::get('/farms/{id}/edit', 'edit')->name('backend.farms.edit');
-        Route::put('/farms/{id}', 'update')->name('backend.farms.update');
+        Route::post('/farms/{id}/update_post', 'update')->name('backend.farms.update_post');
+        // Route::put('/farms/{id}', 'update')->name('backend.farms.update');
         Route::delete('/farms/{id}', 'destroy')->name('backend.farms.destroy');
         Route::get('/farms/{id}/images', 'images')->name('backend.farms.images');
         Route::post('/farms/{id}/images', 'storeImages')->name('backend.farms.storeImages');
@@ -137,7 +138,8 @@ Route::middleware('auth:admins')->group(function () {
         Route::post('/animals/{farm}', 'store')->name('backend.animals.store');
         Route::get('/animals/{id}/show', 'show')->name('backend.animals.show');
         Route::get('/animals/{id}/edit', 'edit')->name('backend.animals.edit');
-        Route::put('/animals/{id}', 'update')->name('backend.animals.update');
+        Route::post('/animals/{id}/update', 'update')->name('backend.animals.update_post');
+        // Route::post('/animals/{id}', 'update')->name('backend.animals.update');
         Route::delete('/animals/{id}', 'destroy')->name('backend.animals.destroy');
         });
 

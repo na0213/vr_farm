@@ -12,14 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('animals', function (Blueprint $table) {
-            $table->id();
-            $table->uuid('farm_id');
-            $table->foreign('farm_id')->references('id')->on('farms')->onDelete('cascade');
+            // 1. ID (UUID)
+            $table->uuid('id')->primary();
+
+            // 2. Farm ID (これ1行で「カラム作成」と「紐付け」を両方やります)
+            // ※ 他に $table->uuid('farm_id'); と書いている行があれば消してください！
+            $table->foreignUuid('farm_id')
+                  ->constrained('farms')
+                  ->onUpdate('cascade')
+                  ->onDelete('cascade');
+
+            // 3. その他のカラム
             $table->string('animal_name')->nullable();
             $table->text('animal_info')->nullable();
             $table->string('animal_image')->nullable();
-            $table->datetime('created_at');
-            $table->datetime('updated_at');
+            
+            // 4. 作成日時・更新日時
+            $table->timestamps();
         });
     }
 

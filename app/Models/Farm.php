@@ -33,7 +33,6 @@ class Farm extends Model
         'has_experience',
         'prefecture',
         'address',
-        'farm_info',
         'instagram_link',
     ];
 

@@ -15,11 +15,17 @@ use Illuminate\Support\Str;
 
 class AnimalController extends Controller
 {
-    public function create($farmId)
+public function create($farmId)
     {
-        $farm = Farm::with('owner')->findOrFail($farmId); // Ownerの情報も一緒に取得
-        $owner = $farm->owner; // $farmに紐づく$ownerを取得
-        return view('backend.animals.create', compact('farm', 'owner'));
+        $farm = Farm::with('owner')->findOrFail($farmId);
+        $owner = $farm->owner;
+
+        // 追加: この牧場に紐付いている動物たちを取得する
+        // （登録後に一覧で表示するため）
+        $animals = Animal::where('farm_id', $farmId)->get();
+
+        // animals をビューに渡す
+        return view('backend.animals.create', compact('farm', 'owner', 'animals'));
     }
 
     public function store(Request $request, $farmId)

@@ -13,9 +13,16 @@ return new class extends Migration
     {
         Schema::create('animal_links', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('animal_id')->constrained('animals')->onDelete('cascade');
+
+            // ▼▼▼ 修正箇所：foreignId を foreignUuid に変更 ▼▼▼
+            $table->foreignUuid('animal_id')
+                  ->constrained('animals')
+                  ->onDelete('cascade');
+            
             $table->string('link_url');
             $table->string('description')->nullable();
+            
+            // datetime でも動きますが、timestamps() の方がLaravel標準で扱いやすいです（どちらでもOK）
             $table->datetime('created_at');
             $table->datetime('updated_at');
         });

@@ -1,4 +1,41 @@
 <x-top-layout>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+        .swiper-button-next, .swiper-button-prev {
+            color: #fff; 
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+        .swiper-pagination-bullet-active {
+            background: #fff;
+        }
+        .responsive-catchcopy {
+            font-size: 1.5rem; /* Mobile default */
+            line-height: 1.4;
+        }
+        @media (min-width: 768px) {
+            .responsive-catchcopy {
+                font-size: 2.5rem; /* Tablet/Desktop */
+            }
+        }
+        /* Scroll Animation */
+        .animate-on-scroll {
+            opacity: 0 !important;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1 !important;
+            transform: translateY(0);
+        }
+        /* Custom Hover Scale */
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+        .hover-scale:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+    </style>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
     <!-- パンくずリストの表示 -->
@@ -7,44 +44,72 @@
     </nav>
 
     <div class="mt-20 mb-5 flex items-center justify-center">
-        @if ($farm->vr)
-            {!! $farm->vr !!}
-        @elseif ($farm->farmImages->isNotEmpty())
-            <div class="imageshow-container">
-                @foreach ($farm->farmImages as $image)
-                    <div class="image">
-                        <img src="{{ $image->image_path }}" alt="{{ $farm->farm_name }}" class="image-image">
+            @if ($farm->vr)
+                {{-- VR画像がある場合：A-Frameで360度表示 --}}
+                <div class="w-full h-[50vh] relative z-0"> {{-- z-0を追加してメニュー等が隠れるのを防ぎます --}}
+                    <a-scene embedded class="w-full h-full">
+                        {{-- URLをそのままsrcに指定 --}}
+                        <a-sky src="{{ $farm->vr }}" rotation="0 -90 0"></a-sky>
+                    </a-scene>
+                </div>
+                
+            @elseif ($farm->farmImages->isNotEmpty())
+                <div class="swiper mySwiper w-full relative group">
+                    <div class="swiper-wrapper">
+                        @foreach ($farm->farmImages as $image)
+                            <div class="swiper-slide w-full h-full">
+                                <img src="{{ $image->image_path }}" alt="{{ $farm->farm_name }}" class="w-full h-full object-cover">
+                            </div>
+                        @endforeach
                     </div>
-                @endforeach
-    
-                <!-- 左右の矢印ボタン -->
-                <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
-                <a class="next" onclick="changeSlide(1)">&#10095;</a>
-            </div>
-        @else
-            <p>No Image</p>
-        @endif
-    </div>
+                    <div class="swiper-button-next !w-12 !h-12 !bg-black/20 hover:!bg-black/40 rounded-full backdrop-blur-sm transition-all after:!text-xl"></div>
+                    <div class="swiper-button-prev !w-12 !h-12 !bg-black/20 hover:!bg-black/40 rounded-full backdrop-blur-sm transition-all after:!text-xl"></div>
+                    <div class="swiper-pagination"></div>
+                </div>
+                
+            @else
+                {{-- 画像が何もない場合 --}}
+                <div class="w-full h-[50vh] bg-gray-200 flex items-center justify-center">
+                    <p class="text-gray-500 text-xl font-bold">No Image Available</p>
+                </div>
+            @endif
+        </div>
     
 
     <div class="flex items-center justify-center">
         <p>{{ $farm->theme }}</p>
     </div>
 
-    <div class="flex items-center justify-center">
-        <h2>{{ $farm->catchcopy }}</h2>
+    <div class="flex items-center justify-center mt-6 mb-4 px-4">
+        <h2 class="responsive-catchcopy font-bold text-stone-800">{{ $farm->catchcopy }}</h2>
     </div>
     <h2 class="heading06" data-en="{{ $farm->prefecture }}">{{ $farm->farm_name }}</h2>
 
-    <div class="flex items-center justify-center">
-        <div class="w-4/5 mt-20 p-5 rounded overflow-hidden shadow-lg">
-            <div class="cp_box">
-                <input id="cp01" type="checkbox">
-                <label for="cp01"></label>
-                <div class="cp_container">
-                    <p>{!! $farm->farm_info !!}</p>
+    <div class="story">
+        <p class="mt-20 text-[#e0db85]">GALLERY</p>
+    </div>
+    <div class="note-title">
+        <p>撮影一覧</p>
+    </div>
+    <div class="container mx-auto px-4 mb-20 max-w-5xl">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            @foreach ($farm->products as $key => $product)
+                <div class="group relative aspect-square bg-stone-100 rounded-xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl hover-scale animate-on-scroll"
+                     style="transition-delay: {{ $key * 100 }}ms;"
+                     onclick="openModal({{ json_encode([
+                        'image' => $product->product_image,
+                        'name' => $product->product_name,
+                        'info' => nl2br(e($product->product_info))
+                    ]) }})">
+                    <img src="{{ $product->product_image }}" alt="{{ $product->product_name }}" 
+                         class="w-full h-full object-cover">
+                    
+                    <!-- Overlay with Name -->
+                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center h-1/2">
+                        <p class="text-white font-bold text-sm tracking-wide text-center drop-shadow-md">{{ $product->product_name }}</p>
+                    </div>
                 </div>
-            </div>
+            @endforeach
         </div>
     </div>
 
@@ -118,27 +183,7 @@
             </tbody>
         </table>
     </div>
-    <div class="story">
-        <p class="mt-20 text-[#e0db85]">GALLERY</p>
-    </div>
-    <div class="note-title">
-        <p>撮影一覧</p>
-    </div>
-    <div class="products-wrap note-wrap">
-        <div class="note-wrap-in">
-            @foreach ($farm->products as $product)
-            <div class="note-item">
-                <div class="pic" onclick="openModal({{ json_encode([
-                    'image' => $product->product_image,
-                    'name' => $product->product_name,
-                    'info' => nl2br(e($product->product_info))
-                ]) }})">
-                    <img src="{{ $product->product_image }}" alt="{{ $product->product_name }}">
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
+
     
 <!-- モーダルウィンドウ -->
 <div id="modal" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 items-center justify-center z-50">
@@ -182,35 +227,52 @@
         </div>
     </div>
 
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        let slideIndex = 0;
-        showSlides(slideIndex);
-    
-        // スライドを切り替える関数
-        function showSlides(n) {
-            let slides = document.getElementsByClassName("image");
-    
-            // すべてのスライドを非表示にする
-            for (let i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
-            }
-    
-            // インデックスを正しい範囲内に収める
-            slideIndex = (n + slides.length) % slides.length;
-    
-            // 現在のスライドを表示
-            slides[slideIndex].style.display = "block";
-        }
-    
-        // 左右の矢印でスライドを切り替える
-        function changeSlide(n) {
-            showSlides(slideIndex + n);
-        }
-    
-        // 自動スライド (4秒ごとに次のスライド)
-        setInterval(function() {
-            changeSlide(1);
-        }, 4000);
+        var swiper = new Swiper(".mySwiper", {
+            spaceBetween: 0,
+            centeredSlides: true,
+            speed: 1000,
+            loop: true,
+            autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            effect: 'fade', 
+            fadeEffect: {
+                crossFade: true
+            },
+        });
+
+        // Scroll Animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        // オブザーバーを解除して一度だけアニメーションさせる場合
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px" // 少し入ったら発火
+            });
+
+            const elements = document.querySelectorAll('.animate-on-scroll');
+            elements.forEach((el) => {
+                observer.observe(el);
+            });
+        });
     </script>
     <script>
         function openModal(data) {

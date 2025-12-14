@@ -48,25 +48,6 @@ class ProductController extends Controller
                 Storage::disk('s3')->put($fileName, file_get_contents($image), 'public');
                 $url = Storage::disk('s3')->url($fileName);
             }
-            // if ($request->hasFile('product_image')) {
-            //     // ファイルから画像を読み込み
-            //     $image = $manager->read($request->file('product_image')->getPathName());
-    
-            //     // 画像をリサイズ (ここでは幅300pxに設定)
-            //     $image->scale(width: 300);
-    
-            //     // 画像を一時的なファイルとして保存
-            //     $tempPath = tempnam(sys_get_temp_dir(), 'productImage') . '.jpg';
-            //     $image->toPng()->save($tempPath);
-    
-            //     // 保存した一時ファイルをS3にアップロード
-            //     $fileName = 'product_images/' . uniqid() . '.jpg';
-            //     Storage::disk('s3')->put($fileName, file_get_contents($tempPath), 'public');
-            //     $url = Storage::disk('s3')->url($fileName);
-    
-            //     // 一時ファイルを削除
-            //     @unlink($tempPath);
-            // }
     
             // Storeインスタンスの作成と保存
             $product = new Product;
