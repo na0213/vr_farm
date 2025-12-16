@@ -1947,20 +1947,22 @@ h3 {
 
 @media (min-width: 768px) {
     .magazine-content {
-        text-align: left; /* PCは左揃え（reverseのときは右揃えにする場合もあり） */
+      text-align: left; /* PCは左揃え（reverseのときは右揃えにする場合もあり） */
     }
     .magazine-title {
-                font-size: 1.75rem; /* PC: 28px (大きく) */
-                margin-bottom: 1rem;
+      font-size: 1.25rem; /* PC: 28px (大きく) */
+      margin-bottom: 0.5rem;
             }
-            .magazine-desc {
-                font-size: 1rem; /* PC: 16px */
-                line-height: 1.8;
+    .magazine-desc {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: #555;
+      white-space: pre-wrap; /* 改行を反映 */
     }
 }
 
 .magazine-title {
-    font-size: 1.25rem;
+    font-size: 1.75rem;
     font-weight: 800;
     margin-bottom: 1rem;
     color: #333;
@@ -1978,16 +1980,14 @@ h3 {
     margin-top: 0.5rem;
     border-radius: 2px;
 }
+.magazine-desc {
+    font-size: 1rem; /* PC: 16px */
+    line-height: 1.6;
+}
 @media (max-width: 767px) {
     .magazine-title::after { margin-inline: auto; } /* スマホ中央揃え */
 }
 
-.magazine-desc {
-    font-size: 0.875rem;
-    line-height: 1.6;
-    color: #555;
-    white-space: pre-wrap; /* 改行を反映 */
-}
 
 /* --- Slide Animation --- */
 /* 左から入ってくるアニメーション */
