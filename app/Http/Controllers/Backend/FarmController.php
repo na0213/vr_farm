@@ -12,6 +12,7 @@ use App\Models\Keyword;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Exception;
 
 use Illuminate\Support\Str;
 // use App;
@@ -210,29 +211,68 @@ class FarmController extends Controller
 
     public function storeImages(Request $request, $id)
     {
-        // dd($request);
         $farm = Farm::findOrFail($id);
-    
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $index => $imageFile) {
-                // ファイルのアップロードが成功したか確認
-                if ($imageFile->isValid()) {
-                    // S3に直接アップロード
-                    $fileName = Str::uuid()->toString() . '.jpg'; // 'farms/' を削除
-                    Storage::disk('s3')->putFileAs('farms', $imageFile, $fileName, 'public'); // 第一引数はfarmsをそのままに
-                    $url = Storage::disk('s3')->url('farms/' . $fileName); // URL生成時にパスを指定
-    
-                    // データベースに画像の情報を登録
-                    FarmImage::create([
-                        'farm_id' => $farm->id,
-                        'image_path' => $url,
-                        'image_order' => $index + 1,
-                    ]);
+        
+        // アップロードしたファイルのパスを一時保存する配列（エラー時の削除用）
+        $uploadedPaths = [];
+
+        // トランザクション開始
+        DB::beginTransaction();
+
+        try {
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $index => $imageFile) {
+                    if ($imageFile->isValid()) {
+                        // 1. S3にアップロード
+                        $fileName = Str::uuid()->toString() . '.jpg';
+                        $dir = 'farms';
+                        
+                        // putFileAsは成功するとパスを返します
+                        $path = Storage::disk('s3')->putFileAs($dir, $imageFile, $fileName, 'public');
+                        
+                        if (!$path) {
+                            throw new Exception('S3へのアップロードに失敗しました。');
+                        }
+
+                        // エラー時に削除できるようにパスを記録しておく
+                        $uploadedPaths[] = $path;
+
+                        $url = Storage::disk('s3')->url($path);
+
+                        // 2. データベース保存
+                        FarmImage::create([
+                            'farm_id' => $farm->id,
+                            'image_path' => $url,
+                            'image_order' => $index + 1,
+                        ]);
+                    }
                 }
             }
+
+            // 全て成功したらコミット（確定）
+            DB::commit();
+
+            return redirect()->route('admin.backend.owners.show', ['id' => $farm->owner_id])
+                ->with('success', '画像が正常にアップロードされました。');
+
+        } catch (Exception $e) {
+            // エラーが発生した場合
+
+            // 1. データベースをロールバック（書き込みを取り消し）
+            DB::rollBack();
+
+            // 2. S3にアップロードしてしまった画像を削除
+            foreach ($uploadedPaths as $path) {
+                if (Storage::disk('s3')->exists($path)) {
+                    Storage::disk('s3')->delete($path);
+                }
+            }
+
+            // エラーログを残す（デバッグ用）
+            Log::error('画像アップロードエラー: ' . $e->getMessage());
+
+            return back()->withInput()->withErrors(['error' => '保存に失敗しました。もう一度お試しください。']);
         }
-        return redirect()->route('admin.backend.owners.show', ['id' => $farm->owner_id])
-        ->with('success', '画像が正常にアップロードされました。');
     }
 
     public function editImages($farmId)
@@ -248,29 +288,64 @@ class FarmController extends Controller
         $farm = Farm::findOrFail($farmId);
         $image = FarmImage::findOrFail($imageId);
         
-        // ファイルがアップロードされたか確認
-        if ($request->hasFile('image')) {
-            $imageFile = $request->file('image');
+        // 新しくアップロードされたファイルのパス（エラー時の削除用）
+        $newUploadedPath = null;
 
-            // 既存の画像をS3から削除
-            $existingImagePath = parse_url($image->image_path, PHP_URL_PATH);
-            Storage::disk('s3')->delete($existingImagePath);
+        DB::beginTransaction();
 
-            // 新しい画像をS3にアップロード
-            $fileName = Str::uuid()->toString() . '.jpg';
-            Storage::disk('s3')->putFileAs('farms', $imageFile, $fileName, 'public');
-            $url = Storage::disk('s3')->url('farms/' . $fileName); // URL生成時のパスを適切に指定
+        try {
+            if ($request->hasFile('image')) {
+                $imageFile = $request->file('image');
 
-            // データベースレコードを更新
-            $image->update([
-                'image_path' => $url,
-            ]);
+                // 1. 新しい画像をS3にアップロード
+                $fileName = Str::uuid()->toString() . '.jpg';
+                $dir = 'farms';
+                $path = Storage::disk('s3')->putFileAs($dir, $imageFile, $fileName, 'public');
 
-            return redirect()->route('admin.backend.owners.show', ['id' => $farm->owner_id])
-            ->with('success', '画像が更新されました。');
+                if (!$path) {
+                    throw new Exception('S3へのアップロードに失敗しました。');
+                }
+
+                $newUploadedPath = $path;
+                $url = Storage::disk('s3')->url($path);
+
+                // 古い画像のパスを取得（削除用だが、DB更新成功後に消す）
+                $oldImagePath = parse_url($image->image_path, PHP_URL_PATH);
+                // パスの先頭にスラッシュがある場合、削除調整が必要な場合があります（環境による）
+                $oldImagePath = ltrim($oldImagePath, '/'); 
+
+                // 2. データベース更新
+                $image->update([
+                    'image_path' => $url,
+                ]);
+
+                // 3. 成功したので、古い画像をS3から削除
+                // (重要: 更新処理より前に消すと、更新失敗時に画像がなくなるリスクがあるため最後に消す)
+                if ($oldImagePath && Storage::disk('s3')->exists($oldImagePath)) {
+                    Storage::disk('s3')->delete($oldImagePath);
+                }
+
+                DB::commit();
+
+                return redirect()->route('admin.backend.owners.show', ['id' => $farm->owner_id])
+                    ->with('success', '画像が更新されました。');
+            }
+
+            // 画像が選択されていない場合
+            return back()->withInput()->withErrors(['error' => '画像が選択されていません。']);
+
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            // エラー時は、今回アップロードしようとした「新しい画像」を削除
+            if ($newUploadedPath && Storage::disk('s3')->exists($newUploadedPath)) {
+                Storage::disk('s3')->delete($newUploadedPath);
+            }
+
+            Log::error('画像更新エラー: ' . $e->getMessage());
+
+            return back()->withInput()->withErrors(['error' => '画像の更新に失敗しました。']);
         }
-
-        return back()->withInput()->withErrors(['error' => '画像の更新に失敗しました。']);
     }
     
     public function deleteImage($farmId, $imageId)
