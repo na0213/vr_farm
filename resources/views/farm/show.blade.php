@@ -94,7 +94,7 @@
         </div>
 
         <div class="container mx-auto px-4 mb-20 max-w-6xl animal-section">
-            @foreach($farm->animals as $animal)
+            @foreach($farm->animals->sortBy('id') as $animal)
                 {{-- $loop->iteration が奇数なら「左から」、偶数なら「右から」 --}}
                 @php
                     $isEven = $loop->iteration % 2 === 0;
