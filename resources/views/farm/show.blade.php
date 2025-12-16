@@ -235,21 +235,19 @@
 
     
 <!-- モーダルウィンドウ -->
-<div id="modal" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 items-center justify-center z-50">
-    <div class="modal-content bg-white w-3/4 md:w-1/2 p-5 rounded-lg relative">
-        <!-- 閉じるボタン -->
-        <button onclick="closeModal()" class="close absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">×</button>
+<div id="modal" class="hidden fixed top-0 left-0 w-full h-full bg-black bg-opacity-70 items-center justify-center z-50 transition-opacity duration-300">
+    {{-- ↓ 幅を広げました（w-11/12 md:w-3/4 max-w-6xl） --}}
+    <div class="modal-content bg-white w-11/12 md:w-3/4 max-w-6xl p-6 rounded-xl relative shadow-2xl flex flex-col max-h-[90vh]">
+        <button onclick="closeModal()" class="close absolute top-3 right-4 text-gray-500 hover:text-gray-800 text-3xl font-light focus:outline-none">&times;</button>
 
-        <!-- 画像を表示するエリア -->
-        <div id="modal-image" class="mb-4">
-            <img src="" alt="Product Image" class="w-full h-auto max-h-60 object-contain mx-auto">
+        <div id="modal-image" class="mb-4 flex-1 flex items-center justify-center overflow-hidden">
+            {{-- ↓ 画像の高さを大きくしました（max-h-[75vh]） --}}
+            <img src="" alt="Product Image" class="w-full h-auto max-h-[75vh] object-contain mx-auto rounded">
         </div>
 
-        <!-- タイトル -->
-        <h2 id="modal-title" class="text-xl font-bold mb-4"></h2>
+        <h2 id="modal-title" class="text-2xl font-bold mb-2 text-center text-gray-800"></h2>
 
-        <!-- 説明 -->
-        <div id="modal-info" class="text-gray-700"></div>
+        <div id="modal-info" class="text-gray-600 text-center overflow-y-auto max-h-32"></div>
     </div>
 </div>
 
