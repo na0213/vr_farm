@@ -59,6 +59,7 @@ public function create($farmId)
             $animal->animal_name = $request->input('animal_name');
             $animal->animal_info = $request->input('animal_info');
             $animal->animal_image = $url;
+            $animal->is_vr = $request->has('is_vr');
             $animal->save();
 
             // トランザクションコミット
@@ -94,6 +95,7 @@ public function create($farmId)
             $animal = Animal::findOrFail($id);
             $animal->animal_name = $validated['animal_name'];
             $animal->animal_info = $validated['animal_info'];
+            $animal->is_vr = $request->has('is_vr');
 
             if ($request->hasFile('animal_image')) {
                 // 既存の画像をS3から削除

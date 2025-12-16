@@ -44,11 +44,19 @@
                 </div>
 
                 <div class="flex-container m-5">
-                    <div class="image-input">
+                    <div class="image-input w-4/5 mx-auto">
                         <label for="animal_image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">画像<span class="text-red-600">（3MB以下）</span></label>
                         <input type="file" name="animal_image" id="animal_image" accept="image/*" onchange="previewImage(this, 'preview_image')" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
+                        
+                        {{-- ▼▼▼ 追加: 360° VR画像のチェックボックス ▼▼▼ --}}
+                        <div class="mt-3 flex items-center">
+                            <input type="checkbox" id="is_vr" name="is_vr" value="1" class="w-4 h-4 text-yellow-600 bg-gray-100 border-gray-300 rounded focus:ring-yellow-500 focus:ring-2">
+                            <label for="is_vr" class="ml-2 text-sm font-medium text-gray-900">この画像を360°(VR)モードで表示する</label>
+                        </div>
+                        {{-- ▲▲▲ 追加ここまで ▲▲▲ --}}
+
                         <div class="image-preview mt-2" id="preview_image">
-                            <img src="{{ asset('storage/noimage.jpg') }}" alt="No Image" class="image-preview">
+                            <img src="{{ asset('storage/noimage.jpg') }}" alt="No Image" class="image-preview" style="width: 200px; height: auto;">
                         </div>
                     </div>
                 </div>
@@ -57,11 +65,18 @@
                     <button type="submit" class="text-white bg-yellow-500 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-600 rounded text-lg">登録</button>
                 </div>
             </form>
+
             <div class="mt-10 border-t pt-10">
                 <h3 class="text-lg font-bold text-gray-700 mb-4 text-center">登録済みの特徴一覧</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     @foreach($animals as $animal)
-                        <div class="bg-white p-4 rounded shadow">
+                        <div class="bg-white p-4 rounded shadow relative">
+                            {{-- ▼▼▼ 追加: VRの場合にバッジを表示 ▼▼▼ --}}
+                            @if($animal->is_vr)
+                                <span class="absolute top-2 right-2 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded z-10 shadow">360° VR</span>
+                            @endif
+                            {{-- ▲▲▲ 追加ここまで ▲▲▲ --}}
+
                             @if($animal->animal_image)
                                 <img src="{{ $animal->animal_image }}" alt="{{ $animal->animal_name }}" class="w-full h-40 object-cover rounded mb-2">
                             @else
@@ -97,7 +112,6 @@
             if (input.files && input.files[0]) {
                 // ファイルサイズチェック
                 if (input.files[0].size > maxFileSize) {
-                    // ★修正: アラート文言を3MBに変更
                     alert('ファイルサイズは3MB以下にしてください。');
                     input.value = ''; 
                     document.getElementById(previewId).innerHTML = '<img src="{{ asset('storage/noimage.jpg') }}" alt="No Image" style="width: 200px; height: auto;">';

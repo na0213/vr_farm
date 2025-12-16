@@ -16,6 +16,7 @@ class Animal extends Model
         'animal_name',
         'animal_info',
         'animal_image',
+        'is_vr'
     ];
 
     public $incrementing = false;
@@ -30,7 +31,7 @@ class Animal extends Model
             $model->{$model->getKeyName()} = (string) Str::uuid();
         });
     }
-    
+
     public function farm()
     {
         return $this->belongsTo(Farm::class);

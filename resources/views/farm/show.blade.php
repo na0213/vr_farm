@@ -106,8 +106,18 @@
                     {{-- 画像エリア --}}
                     <div class="w-full md:w-1/2 flex justify-center">
                         @if($animal->animal_image)
-                            <img src="{{ $animal->animal_image }}" alt="{{ $animal->animal_name }}" class="magazine-image">
-                        @else
+                            @if($animal->is_vr)
+                                {{-- 360°画像の場合 --}}
+                                {{-- magazine-imageのサイズに合わせたラッパー --}}
+                                <div class="w-full max-w-[500px] h-[350px] rounded-lg overflow-hidden shadow-xl relative z-0">
+                                    <a-scene embedded class="w-full h-full">
+                                        <a-sky src="{{ $animal->animal_image }}" rotation="0 -90 0"></a-sky>
+                                    </a-scene>
+                                </div>
+                            @else
+                                {{-- 普通の画像の場合 --}}
+                                <img src="{{ $animal->animal_image }}" alt="{{ $animal->animal_name }}" class="magazine-image">
+                            @endif                        @else
                             <div class="magazine-image bg-gray-200 flex items-center justify-center text-gray-500 font-bold text-xl">
                                 No Image
                             </div>

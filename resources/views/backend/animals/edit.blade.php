@@ -7,7 +7,7 @@
                 </h2>
             </a>
             <h2 class="pl-10 font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                飼育編集
+                特徴編集
             </h2>
         </div>
     </x-slot>
@@ -15,7 +15,8 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             {{-- 修正1: 画像送信のため POST メソッドを使用し、@method('PUT') は削除 --}}
-            <form action="{{ route('admin.backend.animals.update_post', ['id' => $animal->id]) }}" method="POST" enctype="multipart/form-data">                @csrf
+            <form action="{{ route('admin.backend.animals.update_post', ['id' => $animal->id]) }}" method="POST" enctype="multipart/form-data">
+                @csrf
                 {{-- @method('PUT') ← 削除しました --}}
 
                 @if ($errors->any())
@@ -51,6 +52,16 @@
                         <label for="animal_image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">画像<span class="text-red-600">（3MB以下）</span></label>
                         <input type="file" name="animal_image" id="animal_image" accept="image/*" onchange="previewImage(this, 'preview_image')" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
                         
+                        {{-- ▼▼▼ 追加: 360° VR画像のチェックボックス ▼▼▼ --}}
+                        <div class="mt-3 flex items-center">
+                            <input type="checkbox" id="is_vr" name="is_vr" value="1" 
+                                class="w-4 h-4 text-yellow-600 bg-gray-100 border-gray-300 rounded focus:ring-yellow-500 focus:ring-2"
+                                @if($animal->is_vr) checked @endif
+                            >
+                            <label for="is_vr" class="ml-2 text-sm font-medium text-gray-900">この画像を360°(VR)モードで表示する</label>
+                        </div>
+                        {{-- ▲▲▲ 追加ここまで ▲▲▲ --}}
+
                         {{-- 修正2: 画像がない場合も考慮したプレビュー表示 --}}
                         <div class="image-preview mt-2" id="preview_image">
                             @if($animal->animal_image)
