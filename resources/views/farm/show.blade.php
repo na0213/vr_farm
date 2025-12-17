@@ -45,13 +45,21 @@
 
     <div class="mt-20 mb-5 flex items-center justify-center">
             @if ($farm->vr)
-                {{-- VR画像がある場合：A-Frameで360度表示 --}}
-                <div class="w-full h-[50vh] relative z-0"> {{-- z-0を追加してメニュー等が隠れるのを防ぎます --}}
-                    <a-scene embedded class="w-full h-full">
-                        {{-- URLをそのままsrcに指定 --}}
-                        <a-sky src="{{ $farm->vr }}" rotation="0 -90 0"></a-sky>
-                    </a-scene>
-                </div>
+            {{-- Pannellum用のコンテナ --}}
+            <div id="panorama-main" class="w-full h-[50vh] relative z-0"></div>
+            {{-- 個別の設定スクリプト --}}
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        pannellum.viewer('panorama-main', {
+                            "type": "equirectangular",
+                            "panorama": "{{ $farm->vr }}", // 画像のURL
+                            "autoLoad": true,              // ページ読み込みと同時に表示（ここが魅力維持のポイント）
+                            "autoRotate": -2,              // 左へゆっくり自動回転（動きが出るのでリッチに見えます）
+                            "compass": false,
+                            "showControls": false          // コントローラーを隠してスッキリさせる場合（お好みでtrueに）
+                        });
+                    });
+                </script>
                 
             @elseif ($farm->farmImages->isNotEmpty())
                 <div class="swiper mySwiper w-full relative group">
@@ -104,23 +112,28 @@
 
                 <div class="magazine-row {{ $rowClass }} {{ $animClass }}">
                     {{-- 画像エリア --}}
-                    <div class="w-full md:w-1/2 flex justify-center">
+                <div class="w-full md:w-1/2 flex justify-center">
                         @if($animal->animal_image)
                             @if($animal->is_vr)
                                 {{-- 360°画像の場合 --}}
-                                {{-- magazine-imageのサイズに合わせたラッパー --}}
-                                <div class="w-full max-w-[500px] h-[350px] rounded-lg overflow-hidden shadow-xl relative z-0">
-                                    <a-scene embedded class="w-full h-full">
-                                        <a-sky src="{{ $animal->animal_image }}" rotation="0 -90 0"></a-sky>
-                                    </a-scene>
-                                </div>
+                                <div id="panorama-animal-{{ $animal->id }}" class="w-full max-w-[500px] h-[350px] rounded-lg overflow-hidden shadow-xl relative z-0"></div>
+                                
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        pannellum.viewer('panorama-animal-{{ $animal->id }}', {
+                                            "type": "equirectangular",
+                                            "panorama": "{{ $animal->animal_image }}",
+                                            "autoLoad": true,  // ★重要：リスト内の画像は「画面に入ったら読み込む」等の制御がないと重くなるため、最初は読み込まない設定が良いかもしれません
+                                            // もしすべて自動ロードしたい場合は true にしますが、数が多いと重くなります
+                                            "autoRotate": -2
+                                        });
+                                    });
+                                </script>
                             @else
-                                {{-- 普通の画像の場合 --}}
                                 <img src="{{ $animal->animal_image }}" alt="{{ $animal->animal_name }}" class="magazine-image">
-                            @endif                        @else
-                            <div class="magazine-image bg-gray-200 flex items-center justify-center text-gray-500 font-bold text-xl">
-                                No Image
-                            </div>
+                            @endif
+                        @else
+                            {{-- No Image --}}
                         @endif
                     </div>
 
