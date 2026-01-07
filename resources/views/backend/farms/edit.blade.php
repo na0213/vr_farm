@@ -95,9 +95,25 @@
                                     <img src="{{ asset('storage/noimage.jpg') }}" alt="No Image" class="w-full rounded shadow object-contain max-h-64 opacity-50">
                                 @endif
                             </div>
+                                {{-- ✅ここに置くのが正解（VRブロック内） --}}
+                                @if($farm->vr)
+                                    <div class="mt-2 flex items-center gap-4">
+                                    <label class="inline-flex items-center gap-2 text-sm text-red-600">
+                                        <input type="checkbox" name="delete_vr" value="1" id="delete_vr">
+                                        VR画像を削除する
+                                    </label>
+
+                                    <button type="button"
+                                        class="text-sm px-3 py-1 rounded border"
+                                        onclick="clearVr()">
+                                        画面上でも消す
+                                    </button>
+                                    </div>
+                                @endif
                         </div>
                     </div>
                 </div>
+                
                 <div class="-m-2">
                     <div class="p-2 w-4/5 mx-auto">
                         <div class="relative">
