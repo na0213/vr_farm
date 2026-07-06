@@ -19,7 +19,7 @@
         <!-- 構造化データ -->
         <script type="application/ld+json">
           {
-              "@context": "https://schema.org",
+              "@@context": "https://schema.org",
               "@type": "WebSite",
               "name": "ウェルフェアFARM",
               "url": "https://www.farm360.jp",
