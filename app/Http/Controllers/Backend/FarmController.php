@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Exception;
-
+use App\Services\ImageStorage;
 use Illuminate\Support\Str;
 // use App;
 // use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -238,21 +238,12 @@ public function update(Request $request, $id)
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $index => $imageFile) {
                     if ($imageFile->isValid()) {
-                        // 1. S3にアップロード
-                        $fileName = Str::uuid()->toString() . '.jpg';
-                        $dir = 'farms';
-                        
-                        // putFileAsは成功するとパスを返します
-                        $path = Storage::disk('s3')->putFileAs($dir, $imageFile, $fileName, 'public');
-                        
-                        if (!$path) {
-                            throw new Exception('S3へのアップロードに失敗しました。');
-                        }
+                        // 1. リサイズしてS3にアップロード
+                        $path = 'farms/' . Str::uuid()->toString() . '.jpg';
+                        $url = ImageStorage::storeResized($imageFile, $path);
 
                         // エラー時に削除できるようにパスを記録しておく
                         $uploadedPaths[] = $path;
-
-                        $url = Storage::disk('s3')->url($path);
 
                         // 2. データベース保存
                         FarmImage::create([
@@ -312,17 +303,11 @@ public function update(Request $request, $id)
             if ($request->hasFile('image')) {
                 $imageFile = $request->file('image');
 
-                // 1. 新しい画像をS3にアップロード
-                $fileName = Str::uuid()->toString() . '.jpg';
-                $dir = 'farms';
-                $path = Storage::disk('s3')->putFileAs($dir, $imageFile, $fileName, 'public');
-
-                if (!$path) {
-                    throw new Exception('S3へのアップロードに失敗しました。');
-                }
+                // 1. 新しい画像をリサイズしてS3にアップロード
+                $path = 'farms/' . Str::uuid()->toString() . '.jpg';
+                $url = ImageStorage::storeResized($imageFile, $path);
 
                 $newUploadedPath = $path;
-                $url = Storage::disk('s3')->url($path);
 
                 // 古い画像のパスを取得（削除用だが、DB更新成功後に消す）
                 $oldImagePath = parse_url($image->image_path, PHP_URL_PATH);

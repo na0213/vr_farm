@@ -10,8 +10,7 @@ use App\Models\Store;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
+use App\Services\ImageStorage;
 
 class ProductController extends Controller
 {
@@ -44,9 +43,8 @@ class ProductController extends Controller
                 // ファイル名を生成
                 $fileName = 'product_images/' . uniqid() . '.jpg';
 
-                // S3に画像を保存
-                Storage::disk('s3')->put($fileName, file_get_contents($image), 'public');
-                $url = Storage::disk('s3')->url($fileName);
+                // リサイズしてS3に画像を保存
+                $url = ImageStorage::storeResized($image, $fileName, maxWidth: 1200);
             }
     
             // Storeインスタンスの作成と保存
@@ -103,21 +101,11 @@ class ProductController extends Controller
                     Storage::disk('s3')->delete($existingImagePath);
                 }
     
-                // 新しい画像を処理
-                // $image = $manager->read($request->file('product_image')->getPathName());
-                // $image->scale(width: 300);
-                // $tempPath = tempnam(sys_get_temp_dir(), 'productImage') . '.jpg';
-                // $image->toPng()->save($tempPath);
-    
+                // 新しい画像をリサイズしてS3にアップロード
                 $image = $request->file('product_image');
-                // S3にアップロード
                 $fileName = 'product_images/' . uniqid() . '.jpg';
-                Storage::disk('s3')->put($fileName, file_get_contents($image), 'public');
-                $url = Storage::disk('s3')->url($fileName);
-    
-                // 一時ファイルを削除
-                // @unlink($image);
-    
+                $url = ImageStorage::storeResized($image, $fileName, maxWidth: 1200);
+
                 // データベースを更新
                 $product->product_image = $url;
             }

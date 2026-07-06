@@ -9,8 +9,7 @@ use App\Models\Animal;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
+use App\Services\ImageStorage;
 use Illuminate\Support\Str;
 
 class AnimalController extends Controller
@@ -48,9 +47,8 @@ public function create($farmId)
                 // ファイル名を生成
                 $fileName = 'animal_images/' . uniqid() . '.jpg';
 
-                // S3に画像を保存
-                Storage::disk('s3')->put($fileName, file_get_contents($image), 'public');
-                $url = Storage::disk('s3')->url($fileName);
+                // リサイズしてS3に画像を保存
+                $url = ImageStorage::storeResized($image, $fileName);
             }
 
             // Animalインスタンスの作成と保存
@@ -108,9 +106,8 @@ public function create($farmId)
                 $image = $request->file('animal_image');
                 $fileName = 'animal_images/' . uniqid() . '.jpg';
 
-                // S3にアップロード
-                Storage::disk('s3')->put($fileName, file_get_contents($image), 'public');
-                $url = Storage::disk('s3')->url($fileName);
+                // リサイズしてS3にアップロード
+                $url = ImageStorage::storeResized($image, $fileName);
 
                 // データベースを更新
                 $animal->animal_image = $url;

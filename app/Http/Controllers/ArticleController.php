@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use App\Models\Admin;
 use App\Models\Farm;
 use App\Models\Article;
+use App\Services\ImageStorage;
 
 class ArticleController extends Controller
 {
@@ -50,9 +51,8 @@ class ArticleController extends Controller
             if ($request->hasFile('article_images')) {
                 foreach ($request->file('article_images') as $image) {
                     if ($image) {
-                        $fileName = 'article_images/' . uniqid() . '.' . $image->getClientOriginalExtension();
-                        Storage::disk('s3')->put($fileName, file_get_contents($image), 'public');
-                        $uploadedImages[] = Storage::disk('s3')->url($fileName);
+                        $fileName = 'article_images/' . uniqid() . '.jpg';
+                        $uploadedImages[] = ImageStorage::storeResized($image, $fileName);
                     }
                 }
             }
@@ -133,9 +133,8 @@ class ArticleController extends Controller
                         }
 
                         // 新しい画像の保存
-                        $fileName = 'article_images/' . uniqid() . '.' . $image->getClientOriginalExtension();
-                        Storage::disk('s3')->put($fileName, file_get_contents($image), 'public');
-                        $uploadedImages[$index] = Storage::disk('s3')->url($fileName); // 新しい画像を配列の同じインデックスに格納
+                        $fileName = 'article_images/' . uniqid() . '.jpg';
+                        $uploadedImages[$index] = ImageStorage::storeResized($image, $fileName); // 新しい画像を配列の同じインデックスに格納
                     }
                 }
                 Log::info('Uploaded Images: ' . json_encode($uploadedImages)); // 新しい画像をログに出力
