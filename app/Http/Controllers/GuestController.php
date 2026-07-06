@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Farm;
-use App\Models\Post;
 use App\Models\Article;
 use App\Models\Keyword;
 use App\Models\Kind;
@@ -84,44 +83,6 @@ class GuestController extends Controller
         public function about()
     {
         return view('about');
-    }
-
-    
-    // コミュニティ
-    public function communityIndex(Farm $farm)
-    {
-        $ownerposts = $farm->ownerposts()->get()->map(function ($post) {
-            return [
-                'id' => $post->id,
-                'post_title' => $post->post_title,
-                'post_content' => $post->post_content,
-                'is_owner' => true,
-                'mypage' => null,
-                'created_at' => $post->created_at,
-                'image' => $post->owner_image ?? null,
-            ];
-        })->toArray();
-    
-        $posts = Post::with('mypage')->where('farm_id', $farm->id)->get()->map(function ($post) {
-            return [
-                'id' => $post->id,
-                'post_title' => $post->post_title,
-                'post_content' => $post->post_content,
-                'is_owner' => false,
-                'mypage' => $post->mypage,
-                'created_at' => $post->created_at,
-                'image' => optional($post->mypage)->my_image ?? null,
-            ];
-        })->toArray();
-    
-        $allPosts = array_merge($ownerposts, $posts);
-        usort($allPosts, function ($a, $b) {
-            return $a['created_at'] <=> $b['created_at'];
-        });
-    
-        $farmImages = $farm->farmImages()->orderBy('image_order')->get();
-
-        return view('farm.community', compact('farm', 'allPosts', 'farmImages'));
     }
 
     public function showArticle($id)

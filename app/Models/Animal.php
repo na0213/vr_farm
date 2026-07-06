@@ -36,8 +36,4 @@ class Animal extends Model
     {
         return $this->belongsTo(Farm::class);
     }
-    public function links()
-    {
-        return $this->hasMany(AnimalLink::class);
-    }
 }

@@ -44,14 +44,6 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
-        'owners' => [
-            'driver' => 'session',
-            'provider' => 'owners',
-        ],
-        'shops' => [
-            'driver' => 'session',
-            'provider' => 'shops',
-        ],
     ],
 
     /*
@@ -80,18 +72,6 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
-        'owners' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Owner::class,
-        ],
-        'shops' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Shop::class,
-        ],
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*
@@ -123,18 +103,6 @@ return [
         'admins' => [
             'provider' => 'admins',
             'table' => 'admin_password_reset_tokens',
-            'expire' => 60,
-            'throttle' => 60,
-        ],
-        'owners' => [
-            'provider' => 'owners',
-            'table' => 'owner_password_reset_tokens',
-            'expire' => 60,
-            'throttle' => 60,
-        ],
-        'shops' => [
-            'provider' => 'shops',
-            'table' => 'shop_password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,
         ],

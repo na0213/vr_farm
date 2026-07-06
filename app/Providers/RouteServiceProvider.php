@@ -17,10 +17,8 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/dashboard';
-    public const ADMIN_HOME = '/admin/dashboard';//追加
-    public const OWNER_HOME = '/owner/ownerdashboard';//追加
-    public const SHOP_HOME = '/shop/dashboard';//追加
+    public const HOME = '/';
+    public const ADMIN_HOME = '/admin/dashboard';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
@@ -40,16 +38,6 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('web')
             ->namespace($this->namespace)
             ->group(base_path('routes/admin.php'));
-
-            Route::prefix('owner')->as('owner.')
-            ->middleware('web')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/owner.php'));
-
-            Route::prefix('shop')->as('shop.')
-            ->middleware('web')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/shop.php'));
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));

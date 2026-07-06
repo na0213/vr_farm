@@ -16,10 +16,8 @@ use App\Http\Controllers\Backend\OwnerController;
 use App\Http\Controllers\Backend\FarmController;
 use App\Http\Controllers\Backend\AnimalController;
 use App\Http\Controllers\Backend\StoreController;
-use App\Http\Controllers\Backend\PointController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Backend\ProductController;
-use App\Http\Controllers\QrController;
 
 /*
 |--------------------------------------------------------------------------

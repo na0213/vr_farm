@@ -11,12 +11,8 @@ use App\Models\Store;
 use App\Models\Animal;
 use App\Models\FarmImage;
 use App\Models\StoreImage;
-use App\Models\Point;
 use App\Models\Keyword;
 use App\Models\Kind;
-use App\Models\Qr;
-use App\Models\Ownerpost;
-use App\Models\Dlshop;
 use App\Models\Article;
 
 class Farm extends Model
@@ -65,22 +61,6 @@ class Farm extends Model
     {
         return $this->hasMany(Animal::class);
     }
-    public function likes()
-    {
-        return $this->hasMany(Like::class);
-    }
-    public function posts()
-    {
-        return $this->hasMany(Post::class);
-    }
-    public function ownerposts()
-    {
-        return $this->hasMany(Ownerpost::class);
-    }
-    public function points()
-    {
-        return $this->hasMany(Point::class);
-    }
     public function kinds()
     {
         return $this->belongsToMany(Kind::class, 'farm_kind', 'farm_id', 'kind_id');
@@ -96,18 +76,6 @@ class Farm extends Model
     public function storeimages()
     {
         return $this->hasMany(StoreImage::class);
-    }
-    public function isFavoriteBy(User $user)
-    {
-        return $this->likes()->where('user_id', $user->id)->exists();
-    }
-    public function qr()
-    {
-        return $this->hasOne(Qr::class);
-    }
-    public function dlshops()
-    {
-        return $this->hasMany(Dlshop::class);
     }
     public function articles()
     {
