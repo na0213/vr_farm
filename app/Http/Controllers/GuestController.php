@@ -7,6 +7,7 @@ use App\Models\Farm;
 use App\Models\Article;
 use App\Models\Keyword;
 use App\Models\Kind;
+use App\Models\Product;
 
 class GuestController extends Controller
 {
@@ -15,7 +16,32 @@ class GuestController extends Controller
         $articles = Article::where('is_published', 1)
         ->select('id', 'title', 'article_images')
         ->paginate(8);
-        return view('home', compact('articles'));
+
+        // ECリンク付きの商品のみトップに表示(未整備なら非表示)
+        $products = Product::whereNotNull('product_link')->where('product_link', '!=', '')
+            ->with('farm:id,farm_name,prefecture')
+            ->latest()
+            ->take(4)
+            ->get();
+
+        return view('home', compact('articles', 'products'));
+    }
+
+    // お取り寄せ(商品一覧)
+    public function products()
+    {
+        $products = Product::whereNotNull('product_link')->where('product_link', '!=', '')
+            ->with('farm:id,farm_name,prefecture')
+            ->latest()
+            ->get();
+
+        return view('products.index', compact('products'));
+    }
+
+    // アニマルウェルフェアとは(入門ページ)
+    public function welfare()
+    {
+        return view('welfare');
     }
     
     public function index(Request $request)

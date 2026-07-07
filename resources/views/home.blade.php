@@ -41,11 +41,11 @@
 
     <!-- Hero overlay -->
     <div class="hero-overlay reveal" data-animate>
-      <p class="hero-eyebrow">牧場から、食を知る</p>
-      <h1 class="hero-title">人・動物・環境にやさしい牧場へ</h1>
+      <p class="hero-eyebrow">しあわせな牧場の、おいしいもの。</p>
+      <h1 class="hero-title">おいしいには、理由がある</h1>
       <div class="hero-cta">
-        <a href="{{ route('farm.index') }}" class="btn-primary" aria-label="牧場検索へ">
-          牧場検索へ
+        <a href="{{ route('farm.index') }}" class="btn-primary" aria-label="牧場を探す">
+          牧場を探す
         </a>
       </div>
       <div class="scroll-hint" aria-hidden="true">scroll</div>
@@ -59,6 +59,35 @@
       <span class="sparkle s4"></span>
     </div>
   </div>
+
+  @if ($products->isNotEmpty())
+  <div class="story reveal" data-animate>
+    <p class="mt-20 text-[#e09885] with-icon"><span class="icon-star" aria-hidden="true"></span>PRODUCTS</p>
+  </div>
+  <div class="note-title reveal" data-animate>
+    <p class="wavy-underline">お取り寄せ</p>
+  </div>
+  <div class="note-wrap reveal" data-animate>
+    <div class="note-wrap-in home-note-grid">
+      @foreach ($products as $product)
+        <div class="note-item">
+          <a href="{{ $product->product_link }}" target="_blank" rel="noopener">
+            <div class="pic">
+              <img src="{{ $product->product_image ?: asset('storage/noimage.jpg') }}" alt="{{ $product->product_name }}" loading="lazy">
+            </div>
+            <p>{{ $product->product_name }}</p>
+            @if ($product->farm)
+              <p class="text-sm text-stone-500">{{ $product->farm->prefecture }}・{{ $product->farm->farm_name }}</p>
+            @endif
+          </a>
+        </div>
+      @endforeach
+    </div>
+    <div class="pagination">
+      <a href="{{ route('products.index') }}">お取り寄せ一覧へ →</a>
+    </div>
+  </div>
+  @endif
 
   <div class="story reveal" data-animate>
     <p class="mt-20 text-[#e09885] with-icon"><span class="icon-leaf" aria-hidden="true"></span>STORY</p>
@@ -107,10 +136,27 @@
   </div>
 
   <div class="story reveal" data-animate>
+    <p class="mt-20 text-[#e09885] with-icon"><span class="icon-leaf" aria-hidden="true"></span>ABOUT</p>
+  </div>
+  <div class="note-title reveal" data-animate>
+    <p class="wavy-underline">はじめての方へ</p>
+  </div>
+  <div class="story story-panel reveal" data-animate>
+    <p class="con_text">
+      アニマルウェルフェアは、<br>
+      動物がその動物らしく暮らせるように<br>
+      配慮する、世界共通の考え方。<br><br>
+      むずかしいことは抜きにして、<br>
+      まずは5分で読める入門ページからどうぞ。<br><br>
+      <a href="{{ route('welfare.index') }}" class="btn-link more-link">アニマルウェルフェアって、なに? →</a>
+    </p>
+  </div>
+
+  <div class="story reveal" data-animate>
     <p class="mt-20 text-[#e09885] with-icon"><span class="icon-star" aria-hidden="true"></span>NOTE</p>
   </div>
   <div class="note-title reveal" data-animate>
-    <p class="wavy-underline">訪問記・取材</p>
+    <p class="wavy-underline">読みもの</p>
 </div>
 <div class="note-wrap reveal" data-animate>
   <div class="note-wrap-in home-note-grid">
