@@ -1,4 +1,9 @@
 <x-top-layout>
+    <x-slot name="title">{{ $farm->farm_name }}({{ $farm->prefecture }})</x-slot>
+    <x-slot name="metaDescription">{{ $farm->catchcopy ? $farm->catchcopy . ' — ' : '' }}{{ $farm->prefecture }}の{{ $farm->farm_name }}の紹介ページ。飼い方のこだわり、商品、お取り寄せ情報を掲載しています。</x-slot>
+    @if ($farm->farmImages->isNotEmpty())
+        <x-slot name="ogImage">{{ $farm->farmImages->first()->image_path }}</x-slot>
+    @endif
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
         .swiper-button-next, .swiper-button-prev {

@@ -19,6 +19,10 @@ Breadcrumbs::for('farm.show', function ($trail, $farm) {
 
 // Article details
 Breadcrumbs::for('article.show', function ($trail, $article) {
-    $trail->parent('farm.show', $article->farm); // farm.showのルートに関連するfarmデータを渡します
+    if ($article->farm) {
+        $trail->parent('farm.show', $article->farm); // 牧場に紐づく記事は牧場ページを親にする
+    } else {
+        $trail->parent('home'); // コラム記事(牧場に紐づかない)はホームを親にする
+    }
     $trail->push($article->title, route('article.show', $article->id));
 });

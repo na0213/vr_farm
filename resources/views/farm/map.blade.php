@@ -1,4 +1,6 @@
 <x-top-layout>
+    <x-slot name="title">牧場を探す</x-slot>
+    <x-slot name="metaDescription">全国の放牧・アニマルウェルフェアに取り組む牧場を、地域・キーワード・動物の種類から探せます。</x-slot>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
     <!-- パンくずリストの表示 -->
@@ -69,7 +71,7 @@
                             <!-- 左側の画像 -->
                             @if($farm->farmImages->isNotEmpty())
                                 <div class="farmimg w-1/3">
-                                    <img src="{{ $farm->farmImages->first()->image_path }}" alt="{{ $farm->farm_name }}">
+                                    <img src="{{ $farm->farmImages->first()->image_path }}" alt="{{ $farm->farm_name }}" loading="lazy">
                                 </div>
                             @else
                                 <div class="farmimg w-1/3">

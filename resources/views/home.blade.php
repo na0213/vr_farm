@@ -122,7 +122,7 @@
       <div class="note-item">
         <a href="{{ route('article.show', $article->id) }}">
           <div class="pic">
-            <img src="{{ $firstImage }}" alt="{{ $article->title }}">
+            <img src="{{ $firstImage }}" alt="{{ $article->title }}" loading="lazy">
           </div>
           <p>{{ $article->title }}</p>
           <a href="{{ route('article.show', ['id' => $article->id]) }}" class="more-link btn-link">もっとみる →</a>

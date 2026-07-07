@@ -59,8 +59,8 @@ class GuestController extends Controller
             });
         }
     
-        // 結果を取得
-        $farms = $query->get();
+        // 結果を取得(ビューで使う列のみ。farm_info等の大きなテキストは除外)
+        $farms = $query->select('id', 'farm_name', 'catchcopy', 'prefecture')->get();
     
         // 検索フォームで利用する選択肢を取得
         $prefectures = Farm::distinct()->pluck('prefecture');
@@ -73,10 +73,20 @@ class GuestController extends Controller
     
     public function show($id)
     {
-        // 関連するfarmとarticlesを取得
-        $farm = Farm::with('animals')->findOrFail($id);
-        $articles = Article::where('farm_id', $id)->where('is_published', true)->get(); // farm_idに一致する公開済みの記事を取得
-        
+        // ビューで使う関連をまとめて取得(N+1回避)
+        $farm = Farm::with([
+            'animals',
+            'products',
+            'stores',
+            'kinds',
+            'keywords',
+            'farmImages' => fn ($q) => $q->orderBy('image_order'),
+        ])->findOrFail($id);
+        $articles = Article::where('farm_id', $id)->where('is_published', true)
+            ->select('id', 'title', 'article_images', 'created_at')
+            ->latest()
+            ->get();
+
         return view('farm.show', compact('farm', 'articles'));
     }
 

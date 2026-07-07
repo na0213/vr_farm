@@ -6,14 +6,19 @@
         <link rel="icon" href="{{ asset('storage/favicon.png') }}" type="image/x-icon">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>ウェルフェアFARM - アニマルウェルフェア牧場検索サイト | 人にも動物にも環境にも優しい「放牧」「アニマルウェルフェア」「循環型」牧場を探す</title>
-        <meta name="description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場情報をお届け！全国のアニマルウェルフェア牧場を巡り、体験や取り組みを知ってみませんか？">
-        <meta name="keywords" content="牧場, 僕樹見学, 家族旅行　牧場, 牧場体験, 放牧, アニマルウェルフェア, 循環型, サステナブル, 牧場体験">
-        <meta property="og:title" content="ウェルフェアFARM - アニマルウェルフェア牧場検索サイト | 人にも動物にも環境にも優しい牧場情報をお届け">
-        <meta property="og:description" content="放牧やアニマルウェルフェアなど、人にも動物にも環境にも優しい牧場情報をお届け！全国のアニマルウェルフェア牧場を巡り、体験や取り組みを知ってみませんか？">
+        @php
+            // ページ側から <x-slot name="title"> 等で上書きできる(未指定ならサイト共通の既定値)
+            $pageTitle = isset($title) && trim($title) !== '' ? trim($title) . ' | ウェルフェアFARM' : 'ウェルフェアFARM | しあわせな牧場の、おいしいもの。';
+            $pageDescription = isset($metaDescription) && trim($metaDescription) !== '' ? trim($metaDescription) : '放牧卵、放牧豚、グラスフェッド乳製品。動物がのびのび育つ牧場の「おいしい理由」と、お取り寄せ情報をお届けします。';
+            $pageOgImage = isset($ogImage) && trim($ogImage) !== '' ? trim($ogImage) : asset('storage/sns.jpg');
+        @endphp
+        <title>{{ $pageTitle }}</title>
+        <meta name="description" content="{{ $pageDescription }}">
+        <meta property="og:title" content="{{ $pageTitle }}">
+        <meta property="og:description" content="{{ $pageDescription }}">
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ url()->current() }}">
-        <meta property="og:image" content="{{ asset('storage/sns.jpg') }}">
+        <meta property="og:image" content="{{ $pageOgImage }}">
         <link rel="canonical" href="{{ url()->current() }}">
         <meta name="robots" content="index, follow">
         <!-- 構造化データ -->

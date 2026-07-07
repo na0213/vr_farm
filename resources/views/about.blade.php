@@ -1,4 +1,5 @@
 <x-top-layout>
+  <x-slot name="title">事業者情報</x-slot>
   <div class="container mx-auto px-4 py-8">
       <h1 class="text-xl font-bold mb-6">事業者情報</h1>
       <div class="bg-white p-6 shadow-md rounded">

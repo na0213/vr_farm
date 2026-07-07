@@ -30,18 +30,29 @@ class ArticleController extends Controller
         return view('backend.article.create', compact('farms'));
     }
 
+    /**
+     * TinyMCE から本文中に挿入する画像のアップロード。
+     * 成功時は {"location": "画像URL"} を返す(TinyMCEの仕様)。
+     */
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|image|max:5120', // 5MBまで(保存時にリサイズされる)
+        ]);
+
+        $fileName = 'article_images/' . uniqid() . '.jpg';
+        $url = ImageStorage::storeResized($request->file('file'), $fileName, maxWidth: 1200);
+
+        return response()->json(['location' => $url]);
+    }
+
     public function store(Request $request)
     {
-        // dd($request);
-        Log::info('CKEditor Content: ' . $request->input('editor1'));
-
         $request->validate([
-            'farm_id' => 'required|string|max:255',
+            'farm_id' => 'nullable|string|max:255',
             'title' => 'required|string|max:500',
-            // 'content' => 'required|string',
             'is_published' => 'required|boolean',
             'article_images.*' => 'image|max:3072', // 各画像が3MBまで
-            // 'article_images' => 'required|image|max:3072', // 3MBまで
         ]);
 
         try {
@@ -58,7 +69,7 @@ class ArticleController extends Controller
             }
 
             $article = new Article;
-            $article->farm_id = $request['farm_id'];
+            $article->farm_id = $request->filled('farm_id') ? $request['farm_id'] : null;
             $article->title = $request['title'];
             $article->article_content = $request->input('editor1'); // CKEditorの内容をここで保存
             $article->is_published = $request['is_published'];
@@ -99,7 +110,7 @@ class ArticleController extends Controller
     {
         // バリデーション
         $request->validate([
-            'farm_id' => 'required|string|max:255',
+            'farm_id' => 'nullable|string|max:255',
             'title' => 'required|string|max:500',
             'article_images.*' => 'image|max:3072', // 各画像が3MBまで
             'is_published' => 'required|boolean',
@@ -141,7 +152,7 @@ class ArticleController extends Controller
             }
 
             // 記事情報の更新
-            $article->farm_id = $request['farm_id'];
+            $article->farm_id = $request->filled('farm_id') ? $request['farm_id'] : null;
             $article->title = $request['title'];
             $article->article_content = $request->input('editor1');
             $article->is_published = $request['is_published'];

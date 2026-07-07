@@ -10,7 +10,7 @@
           <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
               <div class="p-6 text-gray-900 dark:text-gray-100">
                   <!-- 牧場名 -->
-                  <h3 class="text-lg font-bold mb-4">牧場名: {{ $article->farm->farm_name }}</h3>
+                  <h3 class="text-lg font-bold mb-4">牧場名: {{ $article->farm->farm_name ?? 'コラム記事(牧場に紐づかない)' }}</h3>
 
                   <!-- タイトル -->
                   <h4 class="text-md font-bold mb-4">タイトル: {{ $article->title }}</h4>

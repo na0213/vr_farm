@@ -30,9 +30,7 @@ use App\Http\Controllers\Backend\ProductController;
 |
 */
 
-Route::get('/', function () {
-    return view('backend.welcome');
-});
+Route::view('/', 'backend.welcome');
 
 Route::middleware('guest')->group(function () {
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
@@ -156,6 +154,7 @@ Route::middleware('auth:admins')->group(function () {
     Route::controller(ArticleController::class)->group(function () {
         Route::get('/article', 'index')->name('backend.article.index');
         Route::get('/article/create', 'create')->name('backend.article.create');
+        Route::post('/article/upload-image', 'uploadImage')->name('backend.article.uploadImage');
         Route::post('/article', 'store')->name('backend.article.store');
         Route::get('/article/{id}/show', 'show')->name('backend.article.show');
         Route::get('/article/{id}/edit', 'edit')->name('backend.article.edit');

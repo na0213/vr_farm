@@ -1,4 +1,10 @@
 <x-top-layout>
+<x-slot name="title">{{ $article->title }}</x-slot>
+<x-slot name="metaDescription">{{ Str::limit(trim(strip_tags($article->article_content)), 110) }}</x-slot>
+@php $firstImage = collect(json_decode($article->article_images, true) ?: [])->filter()->first(); @endphp
+@if ($firstImage)
+    <x-slot name="ogImage">{{ $firstImage }}</x-slot>
+@endif
 <!-- Session Status -->
 <x-auth-session-status class="mb-4" :status="session('status')" />
 <nav aria-label="breadcrumb" class="breadcrumb-font mt-10">

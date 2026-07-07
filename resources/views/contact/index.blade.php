@@ -1,4 +1,5 @@
 <x-top-layout>
+<x-slot name="title">お問い合わせ</x-slot>
 <!-- Session Status -->
 <x-auth-session-status class="mb-4" :status="session('status')" />
 

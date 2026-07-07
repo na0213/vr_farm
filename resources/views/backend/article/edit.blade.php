@@ -13,8 +13,9 @@
 
                 <!-- 牧場選択 -->
                 <div class="mb-4">
-                    <label for="farm_id" class="block text-gray-700 text-sm font-bold mb-2">牧場を選択</label>
+                    <label for="farm_id" class="block text-gray-700 text-sm font-bold mb-2">牧場を選択(コラム記事の場合は「紐づけない」)</label>
                     <select name="farm_id" id="farm_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <option value="" {{ $article->farm_id ? '' : 'selected' }}>牧場に紐づけない(コラム記事)</option>
                         @foreach ($farms as $farm)
                             <option value="{{ $farm->id }}" {{ $farm->id == $article->farm_id ? 'selected' : '' }}>{{ $farm->farm_name }}</option>
                         @endforeach

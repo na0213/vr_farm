@@ -22,7 +22,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::defaultStringLength(191);
-        if (env('APP_ENV') === 'production') {
+        // env() は config:cache 有効時に null を返すため app()->environment() を使う
+        if ($this->app->environment('production')) {
             URL::forceScheme('https');
         }
     }
