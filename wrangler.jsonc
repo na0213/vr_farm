@@ -5,6 +5,10 @@
   "name": "farm360",
   "main": "worker/index.js",
   "compatibility_date": "2026-05-01",
+  // 本番は www.farm360.jp(Cloudflare DNS でプロキシ=オレンジの雲)。www なしは Cloudflare のリダイレクトルールで www へ転送する。
+  // workers.dev の確認用URLは、本番と同じ内容が検索に重複して出ないように止めている
+  "routes": [{ "pattern": "www.farm360.jp/*", "zone_name": "farm360.jp" }],
+  "workers_dev": false,
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",

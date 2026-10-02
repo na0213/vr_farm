@@ -34,7 +34,7 @@ return [
     // お問い合わせフォームのロボット対策(Cloudflare Turnstile)。
     // サイトキーは HTML に載る公開値。秘密キーは Worker 側(wrangler secret)にだけ置く。空なら表示しない
     'turnstile' => [
-        'site_key' => env('TURNSTILE_SITE_KEY', ''),
+        'site_key' => env('TURNSTILE_SITE_KEY', '0x4AAAAAAFLp2dFYRiiw5jaR'),
     ],
 
 ];
