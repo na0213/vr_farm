@@ -16,7 +16,6 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <form action="{{ route('admin.backend.farms.update_post', ['id' => $farm->id]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                {{-- @method('PUT') --}}
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>

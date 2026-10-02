@@ -6,7 +6,6 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('admin.dashboard') }}">
-                        {{-- FRAMTY --}}
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
                 </div>
@@ -16,11 +15,14 @@
                     <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('admin.backend.owners.index')" :active="request()->routeIs('admin.backend.owners.index')">
-                        オーナー管理
+                    <x-nav-link :href="route('admin.backend.farms.index')" :active="request()->routeIs('admin.backend.farms.*', 'admin.admin.backend.farms.*')">
+                        牧場
                     </x-nav-link>
-                    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
-                        ユーザー管理
+                    <x-nav-link :href="route('admin.backend.article.index')" :active="request()->routeIs('admin.backend.article.*')">
+                        記事
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin.backend.owners.index')" :active="request()->routeIs('admin.backend.owners.*')">
+                        オーナー
                     </x-nav-link>
                 </div>
             </div>
@@ -41,6 +43,9 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        <x-dropdown-link :href="route('admin.password.edit')">
+                            パスワード変更
+                        </x-dropdown-link>
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('admin.logout') }}">
@@ -74,6 +79,15 @@
             <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.backend.farms.index')" :active="request()->routeIs('admin.backend.farms.*', 'admin.admin.backend.farms.*')">
+                牧場
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.backend.article.index')" :active="request()->routeIs('admin.backend.article.*')">
+                記事
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.backend.owners.index')" :active="request()->routeIs('admin.backend.owners.*')">
+                オーナー
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
@@ -84,6 +98,9 @@
             </div>
 
             <div class="mt-3 space-y-1">
+                <x-responsive-nav-link :href="route('admin.password.edit')" :active="request()->routeIs('admin.password.edit')">
+                    パスワード変更
+                </x-responsive-nav-link>
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('admin.logout') }}">

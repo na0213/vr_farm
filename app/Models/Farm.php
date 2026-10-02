@@ -10,7 +10,6 @@ use App\Models\Product;
 use App\Models\Store;
 use App\Models\Animal;
 use App\Models\FarmImage;
-use App\Models\StoreImage;
 use App\Models\Keyword;
 use App\Models\Kind;
 use App\Models\Article;
@@ -45,6 +44,12 @@ class Farm extends Model
         });
     }
 
+    // 公開サイトに出してよい牧場だけに絞る
+    public function scopePublished($query)
+    {
+        return $query->where('is_published', true);
+    }
+
     public function Owner()
     {
         return $this->belongsTo(Owner::class);
@@ -72,10 +77,6 @@ class Farm extends Model
     public function farmImages()
     {
         return $this->hasMany(FarmImage::class);
-    }
-    public function storeimages()
-    {
-        return $this->hasMany(StoreImage::class);
     }
     public function articles()
     {

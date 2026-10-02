@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Mail\Mailable;
 use App\Mail\Contact;
 use Mail;
 
@@ -46,21 +45,6 @@ class ContactController extends Controller
             return redirect()->action([ContactController::class, 'formTop'])->withInput($input);
         }
     }
-    // public function SendProcess(Request $request)
-    // {
-    //     $action = $request->get('action', 'back');
-    //     $input = $request->except('action');
 
-
-    //     if($action === 'submit') {
-    //         $postarr = $request->all();
-    //         $mailto = array('farm360.info@gmail.com',$postarr["send_email"]);
-    //         Mail::to($mailto)->send(new Contact($postarr));//mailableクラス
-    //         $request->session()->regenerateToken();
-    //         return view('contact.complete');
-    //     } else {
-    //         return redirect()->action([ContactController::class, 'formTop'])->withInput($input);
-    // }
-    // }
     
 }

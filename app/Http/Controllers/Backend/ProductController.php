@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Farm;
 use App\Models\Product;
-use App\Models\Store;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -23,7 +22,6 @@ class ProductController extends Controller
 
     public function store(Request $request, $farmId)
     {
-        // dd($request);
         $request->validate([
             'product_name' => 'required|string|max:255',
             'product_info' => 'required|string',
@@ -83,8 +81,6 @@ class ProductController extends Controller
             'product_link' => 'nullable|string',
             'product_image' => 'nullable|image|max:3072', //1MBまで
         ]);
-    
-        $manager = new ImageManager(new Driver());
 
         try {
             DB::beginTransaction();
@@ -127,7 +123,7 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         $product = Product::findOrFail($id);
-        $farm = $product->farm->owner; // $farmに紐づく$ownerを取得
+        $farmId = $product->farm_id;
         // S3から画像を削除
         if ($product->product_image) {
             Storage::disk('s3')->delete(parse_url($product->product_image, PHP_URL_PATH));
@@ -136,6 +132,6 @@ class ProductController extends Controller
         // データベースから削除
         $product->delete();
     
-        return redirect()->route('admin.backend.products.create', ['farm' => $farm->id])->with('success', '販売店が削除されました。');
+        return redirect()->route('admin.backend.products.create', ['farm' => $farmId])->with('success', '商品が削除されました。');
     }
 }

@@ -8,10 +8,6 @@ use App\Models\Farm;
 use App\Models\Store;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
-use Illuminate\Support\Str;
 
 class StoreController extends Controller
 {
@@ -30,7 +26,6 @@ class StoreController extends Controller
             'store_link' => 'nullable|string',
         ]);
 
-        // $manager = new ImageManager(new Driver());
 
         try {
             // トランザクション開始
@@ -70,7 +65,6 @@ class StoreController extends Controller
             'store_link' => 'nullable|string',
         ]);
     
-        // $manager = new ImageManager(new Driver());
 
         try {
             DB::beginTransaction();
@@ -96,11 +90,11 @@ class StoreController extends Controller
     public function destroy(string $id)
     {
         $store = Store::findOrFail($id);
-        $owner = $store->farm->owner; // $farmに紐づく$ownerを取得
+        $farmId = $store->farm_id;
 
         // データベースから削除
         $store->delete();
-    
-        return redirect()->route('admin.backend.stores.show', ['id' => $owner->id])->with('success', '販売店が削除されました。');
+
+        return redirect()->route('admin.backend.stores.create', ['farm' => $farmId])->with('success', '販売店が削除されました。');
     }
 }

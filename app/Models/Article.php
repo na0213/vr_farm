@@ -17,7 +17,7 @@ class Article extends Model
     protected $fillable = [
         'farm_id',
         'title',
-        'content',
+        'article_content',
         'article_images',
         'is_published'
     ];

@@ -1,9 +1,10 @@
 <footer class="footer py-8">
+  <img class="footer-ornament" src="{{ asset('storage/favicon.png') }}" alt="" aria-hidden="true" loading="lazy">
   <div class="container mx-auto">
     <div class="flex flex-col items-start">
       <div class="mb-2">
         <a href="{{ route('index') }}">
-          <img src="{{ asset('storage/footer.png') }}" alt="牧場いきたい" class="w-24 md:w-32">
+          <x-application-logo />
         </a>
       </div>
       <ul class="list-none w-full space-y-5">
@@ -19,7 +20,7 @@
       </ul>
     </div>
     <p class="text-xs sm:text-sm mt-6 text-center footer-copy">
-      &copy; WelfareFarm. All rights reserved.
+      &copy; FARM360. All rights reserved.
     </p>
   </div>
 </footer>

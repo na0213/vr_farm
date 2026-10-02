@@ -1,7 +1,10 @@
 <x-top-layout>
 <x-slot name="title">{{ $article->title }}</x-slot>
 <x-slot name="metaDescription">{{ Str::limit(trim(strip_tags($article->article_content)), 110) }}</x-slot>
-@php $firstImage = collect(json_decode($article->article_images, true) ?: [])->filter()->first(); @endphp
+@php
+    $images = collect(json_decode($article->article_images, true) ?: [])->filter()->values();
+    $firstImage = $images->first();
+@endphp
 @if ($firstImage)
     <x-slot name="ogImage">{{ $firstImage }}</x-slot>
 @endif
@@ -11,18 +14,16 @@
   {!! Breadcrumbs::render('article.show', $article) !!}
 </nav>
 <div class="article-container">
-  <!-- 画像スライドショー -->
+  <!-- 画像スライドショー(画像があるときだけ表示) -->
+  @if ($images->isNotEmpty())
   <ul class="slideshow-fade">
-    @if($article->article_images)
-    @foreach(json_decode($article->article_images) as $image)
+    @foreach($images as $image)
     <li>
       <div class="image-container" style="background-image: url('{{ $image }}');"></div>
     </li>
     @endforeach
-    @else
-    <p>No images available</p>
-    @endif
   </ul>
+  @endif
   <!-- タイトルとテキストは画像スライドの外に表示 -->
   <div class="text-container">
     <h2>{{ $article->title }}</h2>
@@ -31,6 +32,7 @@
 </div>
     
 
+@if ($images->isNotEmpty())
 <script>
   $(function(){
   $(".slideshow-fade li").css({"position":"relative","overflow":"hidden"});
@@ -53,6 +55,7 @@
     }, 5000); // 切り替え間隔を短縮
 });
 </script>
+@endif
   
 </x-top-layout>
   

@@ -20,7 +20,8 @@ Route::get('/', [GuestController::class, 'top'])->name('index');
 Route::get('/farm/map', [GuestController::class, 'index'])->name('farm.index');
 Route::get('/farm/{id}', [GuestController::class, 'show'])->name('farm.show');
 Route::get('/products', [GuestController::class, 'products'])->name('products.index');
-Route::get('/animal-welfare', [GuestController::class, 'welfare'])->name('welfare.index');
+Route::get('/kodawari', [GuestController::class, 'kodawari'])->name('kodawari.index');
+Route::redirect('/animal-welfare', '/kodawari', 301); // 旧URL(被リンク・検索評価の引き継ぎ)
 Route::get('/article/{id}', [GuestController::class, 'showArticle'])->name('article.show');
 Route::get('/about', [GuestController::class, 'about'])->name('about.index');
 Route::get('/sitemap.xml', [SitemapController::class, 'index']);

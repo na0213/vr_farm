@@ -14,12 +14,12 @@
         @if ($products->isEmpty())
             <div class="text-center py-16">
                 <p class="text-stone-500 mb-6">商品情報はただいま準備中です。もうしばらくお待ちください。</p>
-                <a href="{{ route('farm.index') }}" class="inline-block text-white bg-yellow-500 hover:bg-yellow-600 rounded px-8 py-3">牧場を探してみる</a>
+                <a href="{{ route('farm.index') }}" class="btn-butter">牧場を探してみる</a>
             </div>
         @else
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 grid-stagger">
                 @foreach ($products as $product)
-                    <div class="bg-white rounded-lg shadow overflow-hidden flex flex-col">
+                    <div class="soft-card flex flex-col">
                         @if ($product->product_image)
                             <img src="{{ $product->product_image }}" alt="{{ $product->product_name }}" loading="lazy" class="w-full h-48 object-cover">
                         @endif
@@ -34,7 +34,7 @@
                                 <p class="text-sm text-stone-600 mt-2 flex-1">{{ Str::limit($product->product_info, 60) }}</p>
                             @endif
                             <a href="{{ $product->product_link }}" target="_blank" rel="noopener"
-                               class="mt-4 inline-block text-center text-white bg-yellow-500 hover:bg-yellow-600 rounded px-4 py-2">
+                               class="btn-butter mt-4 text-center">
                                 販売ページを見る
                             </a>
                         </div>

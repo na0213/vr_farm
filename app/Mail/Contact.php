@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -37,7 +36,7 @@ class Contact extends Mailable
     {
         return new Envelope(
             subject: 'お問合せ有難うございます',
-            from: new Address('farm360.info@gmail.com', '牧場へ行こう'),
+            from: new Address('farm360.info@gmail.com', 'FARM360'),
         );
     }
 

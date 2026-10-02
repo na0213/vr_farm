@@ -14,10 +14,8 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            {{-- 修正1: 画像送信のため POST メソッドを使用し、@method('PUT') は削除 --}}
             <form action="{{ route('admin.backend.animals.update_post', ['id' => $animal->id]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                {{-- @method('PUT') ← 削除しました --}}
 
                 @if ($errors->any())
                     <div class="alert alert-danger">

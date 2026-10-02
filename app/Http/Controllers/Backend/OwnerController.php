@@ -29,13 +29,19 @@ class OwnerController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:owners,email',
+            'password' => 'required|string|min:8',
+        ]);
+
         $owner = new Owner();
         $owner->name = $request->name;
         $owner->email = $request->email;
         $owner->password = Hash::make($request->password);
         $owner->save();
 
-        session()->flash('message', '種類が正常に登録されました。');
+        session()->flash('message', 'オーナーを登録しました。');
 
         return redirect()->route('admin.backend.owners.index');
     }
@@ -55,18 +61,23 @@ class OwnerController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:owners,email,' . $id,
+        ]);
+
         $owner = Owner::findOrFail($id);
         $owner->name = $request->name;
         $owner->email = $request->email;
         $owner->save();
 
-        return redirect()->route('admin.backend.owners.index')->with('message', '種類が更新されました');
+        return redirect()->route('admin.backend.owners.index')->with('message', 'オーナー情報を更新しました。');
     }
 
     public function destroy($id)
     {
         $owner = Owner::findOrFail($id);
         $owner->delete();
-        return redirect()->route('admin.backend.owners.index')->with('message', '種類が削除されました');
+        return redirect()->route('admin.backend.owners.index')->with('message', 'オーナーを削除しました。');
     }
 }

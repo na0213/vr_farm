@@ -2,7 +2,6 @@
   <!-- Session Status -->
   <x-auth-session-status class="mb-4" :status="session('status')" />
 
-  {{-- <div class="slide-title">牧場から<br>食を知る</div> --}}
   <div class="swiper home-hero">
     <div class="swiper-wrapper">
       <div class="swiper-slide">
@@ -39,6 +38,9 @@
     <!-- ページネーション -->
     <div class="swiper-pagination"></div>
 
+    <!-- 画像から本文へつなぐ丘 -->
+    <svg class="hero-wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0,44 C240,84 480,4 720,36 C960,68 1200,10 1440,44 L1440,80 L0,80 Z"/></svg>
+
     <!-- Hero overlay -->
     <div class="hero-overlay reveal" data-animate>
       <p class="hero-eyebrow">しあわせな牧場の、おいしいもの。</p>
@@ -62,7 +64,7 @@
 
   @if ($products->isNotEmpty())
   <div class="story reveal" data-animate>
-    <p class="mt-20 text-[#e09885] with-icon"><span class="icon-star" aria-hidden="true"></span>PRODUCTS</p>
+    <p class="mt-20 text-[#e09885] with-icon">PRODUCTS</p>
   </div>
   <div class="note-title reveal" data-animate>
     <p class="wavy-underline">お取り寄せ</p>
@@ -90,15 +92,19 @@
   @endif
 
   <div class="story reveal" data-animate>
-    <p class="mt-20 text-[#e09885] with-icon"><span class="icon-leaf" aria-hidden="true"></span>STORY</p>
+    <p class="mt-20 text-[#e09885] with-icon">STORY</p>
   </div>
   <div class="note-title reveal" data-animate>
     <p class="wavy-underline">思い</p>
   </div>
-    <div class="story story-panel reveal" data-animate>
+  <div class="feature reveal" data-animate>
+    <div class="feature-photo">
+      <img src="{{ asset('storage/top2.jpg') }}" alt="" loading="lazy">
+    </div>
+    <div class="story story-panel">
       <p class="con_text">
-        「アニマルウェルフェア」<br>
         「放牧」<br>
+        「平飼い」<br>
         「循環型」<br>
         人・動物・環境が循環する牧場を巡る<br><br>
         牧場ごとの味をたんのうし<br>
@@ -115,10 +121,10 @@
         <div class="circ circ4"></div>
       </div>
     </div>
-
+  </div>
 
   <div class="story reveal" data-animate>
-    <p class="mt-10 text-[#e09885] with-icon"><span class="icon-leaf" aria-hidden="true"></span>FARM</p>
+    <p class="mt-10 text-[#e09885] with-icon">FARM</p>
   </div>
   <div class="note-title reveal" data-animate>
     <p class="wavy-underline">牧場検索</p>
@@ -136,24 +142,29 @@
   </div>
 
   <div class="story reveal" data-animate>
-    <p class="mt-20 text-[#e09885] with-icon"><span class="icon-leaf" aria-hidden="true"></span>ABOUT</p>
+    <p class="mt-20 text-[#e09885] with-icon">ABOUT</p>
   </div>
   <div class="note-title reveal" data-animate>
     <p class="wavy-underline">はじめての方へ</p>
   </div>
-  <div class="story story-panel reveal" data-animate>
+  <div class="feature feature--reverse reveal" data-animate>
+    <div class="feature-photo">
+      <img src="{{ asset('storage/top3.jpg') }}" alt="" loading="lazy">
+    </div>
+    <div class="story story-panel">
     <p class="con_text">
-      アニマルウェルフェアは、<br>
-      動物がその動物らしく暮らせるように<br>
-      配慮する、世界共通の考え方。<br><br>
+      放牧、平飼い、牧草で育てる。<br>
+      牧場ごとの育て方が、<br>
+      ここでしか出せない味をつくります。<br><br>
       むずかしいことは抜きにして、<br>
       まずは5分で読める入門ページからどうぞ。<br><br>
-      <a href="{{ route('welfare.index') }}" class="btn-link more-link">アニマルウェルフェアって、なに? →</a>
+      <a href="{{ route('kodawari.index') }}" class="btn-link more-link">牧場のこだわりと、おいしい理由 →</a>
     </p>
+    </div>
   </div>
 
   <div class="story reveal" data-animate>
-    <p class="mt-20 text-[#e09885] with-icon"><span class="icon-star" aria-hidden="true"></span>NOTE</p>
+    <p class="mt-20 text-[#e09885] with-icon">NOTE</p>
   </div>
   <div class="note-title reveal" data-animate>
     <p class="wavy-underline">読みもの</p>

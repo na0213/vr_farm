@@ -1,58 +1,65 @@
 <x-admin-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            オーナー一覧
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            牧場一覧
         </h2>
     </x-slot>
 
-    <a href="{{ route('admin.backend.owners.create') }}">
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 dark:text-gray-100">
-                        新規登録
-                    </div>
-                </div>
+    <div class="py-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <p class="px-4 sm:px-0 mb-4 text-sm text-gray-600">
+                牧場の新規登録は、先に
+                <a href="{{ route('admin.backend.owners.index') }}" class="underline text-gray-800">オーナー管理</a>
+                でオーナーを登録し、オーナーの画面から行います。
+            </p>
+
+            <div class="bg-white shadow-sm sm:rounded-lg overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-600">
+                    <thead class="text-xs text-gray-700 bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-4 py-3 whitespace-nowrap">牧場名</th>
+                            <th scope="col" class="px-4 py-3 whitespace-nowrap">都道府県</th>
+                            <th scope="col" class="px-4 py-3 whitespace-nowrap">オーナー</th>
+                            <th scope="col" class="px-4 py-3 whitespace-nowrap">公開</th>
+                            <th scope="col" class="px-4 py-3 whitespace-nowrap">管理</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($farms as $farm)
+                            <tr class="border-t">
+                                <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{{ $farm->farm_name }}</td>
+                                <td class="px-4 py-3 whitespace-nowrap">{{ $farm->prefecture }}</td>
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    @if ($farm->owner)
+                                        <a href="{{ route('admin.backend.owners.show', $farm->owner->id) }}" class="underline">{{ $farm->owner->name }}</a>
+                                    @endif
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    @if ($farm->is_published)
+                                        <span class="inline-block px-2 py-0.5 rounded-full text-xs bg-green-100 text-green-800">公開中</span>
+                                    @else
+                                        <span class="inline-block px-2 py-0.5 rounded-full text-xs bg-gray-200 text-gray-600">非公開</span>
+                                    @endif
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap space-x-3">
+                                    <a href="{{ route('admin.backend.farms.edit', $farm->id) }}" class="underline">編集</a>
+                                    <a href="{{ route('admin.admin.backend.farms.editImages', ['farmId' => $farm->id]) }}" class="underline">画像</a>
+                                    <a href="{{ route('admin.backend.animals.create', ['farm' => $farm->id]) }}" class="underline">動物({{ $farm->animals_count }})</a>
+                                    <a href="{{ route('admin.backend.products.create', ['farm' => $farm->id]) }}" class="underline">商品({{ $farm->products_count }})</a>
+                                    <a href="{{ route('admin.backend.stores.create', ['farm' => $farm->id]) }}" class="underline">販売店({{ $farm->stores_count }})</a>
+                                    @if ($farm->is_published)
+                                        <a href="{{ route('farm.show', $farm->id) }}" target="_blank" rel="noopener" class="underline">公開ページ</a>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-4 py-8 text-center text-gray-500">まだ牧場が登録されていません。</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
-    </a>
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table class="w-11/12 mx-auto mb-10 text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                  <th scope="col" class="px-6 py-2 whitespace-nowrap">
-                    ID
-                  </th>
-                  <th scope="col" class="px-6 py-2 whitespace-nowrap">
-                    オーナー名</th>
-                  <th scope="col" class="px-6 py-2 whitespace-nowrap">
-                    編集
-                  </th>
-                  <th scope="col" class="px-6 py-2 whitespace-nowrap">
-                    詳細
-                  </th>
-              </tr>
-          </thead>
-          <tbody>
-            @forelse ($owners as $owner)
-              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                  <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {{ $owner->id }}
-                  </td>
-                  <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {{ $owner->name }}
-                  </td>
-                  <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      <a href="{{ route('admin.backend.owners.edit', $owner->id) }}" class="px-3 py-2 text-black bg-detail text-md hover:bg-yellow-500">編集</a>
-                  </td>
-                  <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <a href="{{ route('admin.backend.farms.show', ['id' => $farm->id]) }}" class="px-3 py-2 text-black bg-detail text-md hover:bg-yellow-500">詳細</a>
-                </td>
-              </tr>
-              @empty
-              <p class="p-5">まだ登録されていません。</p>
-          @endforelse
-          </tbody>
-        </table>
     </div>
 </x-admin-layout>

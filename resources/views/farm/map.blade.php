@@ -1,6 +1,6 @@
 <x-top-layout>
     <x-slot name="title">牧場を探す</x-slot>
-    <x-slot name="metaDescription">全国の放牧・アニマルウェルフェアに取り組む牧場を、地域・キーワード・動物の種類から探せます。</x-slot>
+    <x-slot name="metaDescription">全国の放牧・平飼いなど、こだわりの育て方をする牧場を、地域・キーワード・動物の種類から探せます。</x-slot>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
     <!-- パンくずリストの表示 -->
@@ -9,7 +9,7 @@
     </nav>
     <div class="wrap">
         <div class="container mx-auto px-4 py-6">
-            <h1 class="text-xl font-bold mb-4 with-icon"><span class="icon-leaf" aria-hidden="true"></span><span class="wavy-underline">牧場検索</span></h1>
+            <h1 class="text-xl font-bold mb-4 with-icon"><span class="wavy-underline">牧場検索</span></h1>
     
             <!-- 検索フォーム -->
             <form action="{{ route('farm.index') }}" method="GET" class="mb-6">

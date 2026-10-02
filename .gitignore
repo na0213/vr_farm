@@ -20,3 +20,6 @@ yarn-error.log
 /database/seeders/AdminSeeder.php
 .DS_Store
 *.sql
+/_ide_helper.php
+/_ide_helper_models.php
+/.phpstorm.meta.php
