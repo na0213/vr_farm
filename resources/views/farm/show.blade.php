@@ -1,6 +1,7 @@
 <x-top-layout>
     <x-slot name="title">{{ $farm->farm_name }}({{ $farm->prefecture }})</x-slot>
     <x-slot name="metaDescription">{{ $farm->catchcopy ? $farm->catchcopy . ' — ' : '' }}{{ $farm->prefecture }}の{{ $farm->farm_name }}の紹介ページ。飼い方のこだわり、商品、お取り寄せ情報を掲載しています。</x-slot>
+    <x-slot name="jsonLd">{!! \App\Services\StructuredData::json(\App\Services\StructuredData::farm($farm)) !!}</x-slot>
     @if ($farm->farmImages->isNotEmpty())
         <x-slot name="ogImage">{{ $farm->farmImages->first()->image_path }}</x-slot>
     @endif

@@ -23,19 +23,11 @@
         <link rel="canonical" href="{{ url()->current() }}">
         <meta name="robots" content="index, follow">
         <!-- 構造化データ -->
-        <script type="application/ld+json">
-          {
-              "@@context": "https://schema.org",
-              "@type": "WebSite",
-              "name": "FARM360",
-              "url": "https://www.farm360.jp",
-              "description": "放牧や平飼いなど、こだわりを持って育てる牧場の取り組みと、そこで生まれるおいしいものをお届け！",
-              "publisher": {
-                  "@type": "Organization",
-                  "name": "FARM360運営"
-              }
-          }
-          </script>
+        <script type="application/ld+json">{!! \App\Services\StructuredData::json(\App\Services\StructuredData::website()) !!}</script>
+        {{-- ページ固有の構造化データ(<x-slot name="jsonLd"> に JSON を渡す) --}}
+        @isset($jsonLd)
+        <script type="application/ld+json">{!! $jsonLd !!}</script>
+        @endisset
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
