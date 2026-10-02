@@ -11,45 +11,42 @@
         <div class="container mx-auto px-4 py-6">
             <h1 class="text-xl font-bold mb-4 with-icon"><span class="wavy-underline">牧場検索</span></h1>
     
-            <!-- 検索フォーム -->
-            <form action="{{ route('farm.index') }}" method="GET" class="mb-6">
+            <!-- 検索フォーム(絞り込みはページ下のスクリプトで行う。静的サイトなのでサーバーでは検索しない) -->
+            <form id="farm-search" action="{{ route('farm.index') }}" method="GET" class="mb-6">
                 <!-- キーワード検索 -->
                 <div class="mb-4">
                     <label for="keyword" class="block font-bold mb-2">キーワード検索</label>
-                    <input type="text" id="keyword" name="keyword" value="{{ request('keyword') }}" class="w-full border border-gray-300 p-2 rounded">
+                    <input type="text" id="keyword" name="keyword" class="w-full border border-gray-300 p-2 rounded">
                 </div>
-    
+
                 <!-- 都道府県検索 -->
                 <div class="mb-4">
                     <label class="block font-bold mb-2">都道府県</label>
                     @foreach ($prefectures as $prefecture)
                         <label class="inline-flex items-center mr-4">
-                            <input class="checkbox" type="checkbox" name="prefectures[]" value="{{ $prefecture }}" 
-                                {{ request()->has('prefectures') && in_array($prefecture, request('prefectures')) ? 'checked' : '' }}>
+                            <input class="checkbox" type="checkbox" name="prefectures[]" value="{{ $prefecture }}">
                             <span class="ml-2">{{ $prefecture }}</span>
                         </label>
                     @endforeach
                 </div>
-    
+
                 <!-- キーワード検索 -->
                 <div class="mb-4">
                     <label class="block font-bold mb-2">キーワード</label>
                     @foreach ($keywords as $keyword)
                         <label class="inline-flex items-center mr-4">
-                            <input class="checkbox" type="checkbox" name="keywords[]" value="{{ $keyword->id }}" 
-                                {{ request()->has('keywords') && in_array($keyword->id, request('keywords')) ? 'checked' : '' }}>
+                            <input class="checkbox" type="checkbox" name="keywords[]" value="{{ $keyword->id }}">
                             <span class="ml-2">{{ $keyword->keyword }}</span>
                         </label>
                     @endforeach
                 </div>
-    
+
                 <!-- 種別検索 -->
                 <div class="mb-4">
                     <label class="block font-bold mb-2">種別</label>
                     @foreach ($kinds as $kind)
                         <label class="inline-flex items-center mr-4">
-                            <input class="checkbox" type="checkbox" name="kinds[]" value="{{ $kind->id }}" 
-                                {{ request()->has('kinds') && in_array($kind->id, request('kinds')) ? 'checked' : '' }}>
+                            <input class="checkbox" type="checkbox" name="kinds[]" value="{{ $kind->id }}">
                             <span class="ml-2">{{ $kind->kind }}</span>
                         </label>
                     @endforeach
@@ -64,9 +61,21 @@
             </form>
     
             <!-- 検索結果 -->
-            <ul class="list-none space-y-4">
-                @forelse ($farms as $farm)
-                    <li class="card flex items-center rounded overflow-hidden shadow-lg bg-white p-4">
+            <ul id="farm-results" class="list-none space-y-4" aria-live="polite">
+                @foreach ($farms as $farm)
+                    @php
+                        // ブラウザ側の絞り込みに使う値(キーワード検索は牧場名・キャッチコピー・都道府県・紹介文・キーワード・種別の部分一致)
+                        $searchText = implode(' ', array_merge(
+                            [$farm->farm_name, $farm->catchcopy, $farm->prefecture, strip_tags((string) $farm->theme)],
+                            $farm->keywords->pluck('keyword')->all(),
+                            $farm->kinds->pluck('kind')->all(),
+                        ));
+                    @endphp
+                    <li class="card flex items-center rounded overflow-hidden shadow-lg bg-white p-4"
+                        data-prefecture="{{ $farm->prefecture }}"
+                        data-keywords="{{ $farm->keywords->pluck('id')->implode(',') }}"
+                        data-kinds="{{ $farm->kinds->pluck('id')->implode(',') }}"
+                        data-search="{{ $searchText }}">
                         <a href="{{ route('farm.show', ['id' => $farm->id]) }}" class="flex w-full">
                             <!-- 左側の画像 -->
                             @if($farm->farmImages->isNotEmpty())
@@ -111,9 +120,54 @@
                             </div>
                         </a>
                     </li>
-                @empty
-                    <p class="text-gray-500">該当する牧場が見つかりませんでした。</p>
-                @endforelse
+                @endforeach
             </ul>
+            <p id="farm-empty" class="text-gray-500" @if ($farms->isNotEmpty()) hidden @endif>該当する牧場が見つかりませんでした。</p>
     </div>
+    <script>
+        // 牧場の絞り込み(条件はすべて満たすものを表示。チェックは同じ欄の中のどれか1つに当てはまればよい)
+        (() => {
+            const form = document.getElementById('farm-search');
+            const items = Array.from(document.querySelectorAll('#farm-results > li'));
+            const empty = document.getElementById('farm-empty');
+            const normalize = (s) => (s || '').normalize('NFKC').toLowerCase();
+            const checked = (name) => Array.from(form.querySelectorAll(`input[name="${name}"]:checked`)).map((el) => el.value);
+
+            const apply = () => {
+                const keyword = normalize(form.keyword.value.trim());
+                const prefectures = checked('prefectures[]');
+                const keywords = checked('keywords[]');
+                const kinds = checked('kinds[]');
+                const hasAny = (list, wanted) => wanted.length === 0 || list.split(',').some((id) => wanted.includes(id));
+                let shown = 0;
+
+                items.forEach((li) => {
+                    const match = (keyword === '' || normalize(li.dataset.search).includes(keyword))
+                        && (prefectures.length === 0 || prefectures.includes(li.dataset.prefecture))
+                        && hasAny(li.dataset.keywords, keywords)
+                        && hasAny(li.dataset.kinds, kinds);
+                    li.style.display = match ? '' : 'none'; // .flex が hidden 属性より優先されるため style で消す
+                    if (match) shown++;
+                });
+                empty.hidden = shown > 0;
+            };
+
+            // URL の条件(?keyword=...&kinds[]=1)をフォームに反映する(共有されたリンクでも同じ結果になるように)
+            const params = new URLSearchParams(location.search);
+            form.keyword.value = params.get('keyword') || '';
+            ['prefectures[]', 'keywords[]', 'kinds[]'].forEach((name) => {
+                const values = params.getAll(name);
+                form.querySelectorAll(`input[name="${name}"]`).forEach((el) => { el.checked = values.includes(el.value); });
+            });
+            apply();
+
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const query = new URLSearchParams(new FormData(form));
+                if (!form.keyword.value.trim()) query.delete('keyword');
+                history.replaceState(null, '', query.toString() ? `?${query}` : location.pathname);
+                apply();
+            });
+        })();
+    </script>
 </x-top-layout>
