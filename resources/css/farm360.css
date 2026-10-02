@@ -245,6 +245,11 @@ button:focus-visible {
 }
 .note-title p.wavy-underline::after { display: block; position: static; width: 36px; height: 3px; margin: 14px auto 0; background: var(--butter-deep); }
 
+/* top.css の .grid は、スマホ幅で中身を中央寄せ・内容幅に縮める。カードやボタンの
+   グリッドは幅いっぱいに広げたいので、それを打ち消す */
+.grid.grid-stretch,
+.grid.grid-stagger { justify-items: stretch; }
+
 /* ---------- 「思い」「はじめての方へ」: アーチ写真 + 文章 ---------- */
 .feature {
   display: grid;

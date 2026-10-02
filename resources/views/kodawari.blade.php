@@ -62,7 +62,7 @@
 
         </section>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-12 reveal" data-animate>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-12 reveal grid-stretch" data-animate>
             <a href="{{ route('farm.index') }}" class="btn-butter block text-center">牧場を探してみる</a>
             <a href="{{ route('products.index') }}" class="btn-pasture block text-center">お取り寄せを見る</a>
         </div>
