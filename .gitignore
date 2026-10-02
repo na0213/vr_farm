@@ -3,6 +3,9 @@
 /public/build
 /public/hot
 /public/uploads
+/dist
+/.wrangler
+.dev.vars
 # /public/storage
 /storage/*.key
 /vendor

@@ -6,6 +6,12 @@
             "runtimeExecutable": "php",
             "runtimeArgs": ["artisan", "serve", "--port=8123"],
             "port": 8123
+        },
+        {
+            "name": "cloudflare",
+            "runtimeExecutable": "npx",
+            "runtimeArgs": ["wrangler", "dev", "--port=8787"],
+            "port": 8787
         }
     ]
 }
