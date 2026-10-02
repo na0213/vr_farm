@@ -23,6 +23,8 @@
             </p>
         </section>
 
+        <x-walking-animals />
+
         <section class="reveal" data-animate>
             <h2 class="text-xl font-bold text-stone-800 mt-12 mb-4">牧場の選び方</h2>
             <p>スーパーで見つけたものや、実際に訪ねた牧場を紹介しています。</p>

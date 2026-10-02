@@ -28,4 +28,11 @@ class AboutPageTest extends TestCase
             ->assertSee(route('contact.form'), false)        // 訂正・連絡はフォームへ
             ->assertSee('個人の趣味', false);                // meta description にも入る
     }
+
+    public function test_about_page_has_decorative_walking_animals_that_screen_readers_skip(): void
+    {
+        $this->get(route('about.index'))
+            ->assertOk()
+            ->assertSee('class="walkers" aria-hidden="true"', false);
+    }
 }
