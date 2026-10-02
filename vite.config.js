@@ -6,17 +6,11 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/app.css',
-                'resources/css/appfarm.css',
                 'resources/css/top.css',
                 'resources/css/farm360.css',
-                'resources/css/topshow.css',
-                'resources/css/farm.css',
-                'resources/css/owner.css',
                 'resources/js/app.js',
                 'resources/js/editor.js',
                 'resources/js/swiper.js',
-                'resources/js/swiperfarm.js',
-                'resources/js/swipershow.js',
             ],
             refresh: true,
         }),

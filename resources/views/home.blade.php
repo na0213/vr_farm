@@ -2,7 +2,6 @@
   <!-- Session Status -->
   <x-auth-session-status class="mb-4" :status="session('status')" />
 
-  {{-- <div class="slide-title">牧場から<br>食を知る</div> --}}
   <div class="swiper home-hero">
     <div class="swiper-wrapper">
       <div class="swiper-slide">

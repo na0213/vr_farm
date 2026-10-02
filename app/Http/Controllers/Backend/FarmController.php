@@ -15,11 +15,19 @@ use Illuminate\Support\Facades\Storage;
 use Exception;
 use App\Services\ImageStorage;
 use Illuminate\Support\Str;
-// use App;
-// use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class FarmController extends Controller
 {
+    public function index()
+    {
+        $farms = Farm::with('owner:id,name')
+            ->withCount(['animals', 'products', 'stores'])
+            ->orderBy('farm_name')
+            ->get();
+
+        return view('backend.farms.index', compact('farms'));
+    }
+
     public function create($ownerId)
     {
         $owner = Owner::findOrFail($ownerId);
@@ -97,28 +105,16 @@ class FarmController extends Controller
         }
     }
 
-    public function show($id)
-    {
-        $owner = Owner::with('farm')->findOrFail($id);
-        // $farm = $owner->farm;
-        // $farm = Farm::findOrFail($id);
-        $kinds = Kind::all();
-        $keywords = Keyword::all();
-    
-        return view('backend.farms.show', compact('owner', 'kinds', 'keywords'));
-    }
-
     public function edit(string $id)
     {
         $farm = Farm::with(['kinds', 'keywords'])->findOrFail($id);
-        $owner = $farm->owner; // 仮定すると、Farmモデルにはownerというリレーションが定義されている必要があります
-        $images = $farm->images; // タイプミスの修正: 'iamges' -> 'images'
+        $owner = $farm->owner;
         $selected_kinds = $farm->kinds->pluck('id')->toArray();
         $selected_keywords = $farm->keywords->pluck('id')->toArray();
         $kinds = Kind::all();
         $keywords = Keyword::all();
     
-        return view('backend.farms.edit', compact('owner', 'farm', 'images', 'kinds', 'keywords', 'selected_kinds', 'selected_keywords'));
+        return view('backend.farms.edit', compact('owner', 'farm', 'kinds', 'keywords', 'selected_kinds', 'selected_keywords'));
     }
 
 public function update(Request $request, $id)
@@ -216,14 +212,6 @@ public function update(Request $request, $id)
 }
 
     
-    // image
-    public function images($id)
-    {
-        $owner = Owner::with('farm')->findOrFail($id);
-        $farm = Farm::findOrFail($id);
-        return view('backend.farms.image', compact('owner', 'farm'));
-    }
-
     public function storeImages(Request $request, $id)
     {
         $farm = Farm::findOrFail($id);
@@ -283,9 +271,8 @@ public function update(Request $request, $id)
 
     public function editImages($farmId)
     {
-        // 'owner'リレーションを含めて$farmを取得
         $farm = Farm::with('farmImages', 'owner')->findOrFail($farmId);
-        $owner = $farm->owner; // $farmに紐づく$ownerを取得
+        $owner = $farm->owner;
         return view('backend.farms.edit-image', compact('farm', 'owner'));
     }
 
@@ -366,11 +353,6 @@ public function update(Request $request, $id)
                 ->decrement('image_order');
     
         return redirect()->route('admin.admin.backend.farms.editImages', ['farmId' => $farmId])->with('success', '画像が削除されました。');
-    }
-
-    public function destroy(string $id)
-    {
-        //
     }
 
 }

@@ -40,7 +40,7 @@
                           画像管理
                         </th>
                         <th scope="col" class="px-6 py-2 whitespace-nowrap">
-                          プレビュー
+                          公開ページ
                         </th>
                     </tr>
                 </thead>
@@ -63,7 +63,11 @@
                         <a href="{{ route('admin.admin.backend.farms.editImages', ['farmId' => $farm->id]) }}" class="px-3 py-2 text-black bg-detail text-md hover:bg-yellow-500">編集</a>
                       </td>
                       <td scope="row" class="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        <a href="{{ route('admin.backend.farms.show', ['id' => $farm->id]) }}" class="px-3 py-2 text-black bg-detail text-md hover:bg-yellow-500">詳細</a>
+                        @if ($farm->is_published)
+                          <a href="{{ route('farm.show', $farm->id) }}" target="_blank" rel="noopener" class="px-3 py-2 text-black bg-detail text-md hover:bg-yellow-500">公開ページ</a>
+                        @else
+                          <span class="text-gray-400">非公開</span>
+                        @endif
                       </td>
                     </tr>
                   @else
@@ -238,12 +242,6 @@
               <table class="w-11/12 mx-auto mb-10 text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        {{-- <th scope="col" class="px-6 py-2 whitespace-nowrap">
-                          ID
-                        </th>
-                        <th scope="col" class="px-6 py-2 whitespace-nowrap">
-                          タイトル
-                        </th> --}}
                         <th scope="col" class="px-6 py-2 whitespace-nowrap">
                           編集
                         </th>

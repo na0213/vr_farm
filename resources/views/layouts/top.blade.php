@@ -41,7 +41,6 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
-        {{-- <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script> --}}
         <!-- Scripts -->
         @vite(['resources/css/app.css','resources/css/top.css','resources/css/farm360.css', 'resources/js/app.js'])
         <script type="text/javascript"src="//code.typesquare.com/static/ZDbTe4IzCko%253D/ts106f.js"charset="utf-8"></script>
@@ -59,7 +58,6 @@
         </script>
     </head>
     <body>
-        {{-- <div class="min-h-screen bg-gray-100"> --}}
             @include('layouts.guest-navigation')
 
             <!-- Page Heading -->
@@ -75,7 +73,6 @@
             <main>
                 {{ $slot }}
             </main>
-        {{-- </div> --}}
 
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
         @if (Route::is('index'))

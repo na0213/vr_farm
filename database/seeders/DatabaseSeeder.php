@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,14 +11,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            AdminSeeder::class,
-        ]);
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // AdminSeeder は管理者の認証情報を含むためローカル専用(.gitignore 対象)。
+        // 無い環境では何もしない。管理者は tinker 等で作成する。
+        if (class_exists(AdminSeeder::class)) {
+            $this->call([AdminSeeder::class]);
+        }
     }
 }

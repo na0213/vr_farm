@@ -142,6 +142,44 @@ class AdminTest extends TestCase
             ->assertRedirect(route('admin.backend.stores.create', ['farm' => $farm->id]));
     }
 
+    public function test_farm_list_shows_publish_status_and_counts(): void
+    {
+        $open = $this->makeFarm();
+        $closed = new Farm(['owner_id' => $open->owner_id, 'farm_name' => '非公開牧場', 'catchcopy' => 'c', 'prefecture' => '宮崎県', 'address' => 'a', 'theme' => 't']);
+        $closed->is_published = false;
+        $closed->save();
+        Product::create(['farm_id' => $open->id, 'product_name' => '卵', 'product_info' => '説明', 'product_link' => null, 'product_image' => null]);
+
+        $this->actingAs($this->admin, 'admins')
+            ->get(route('admin.backend.farms.index'))
+            ->assertOk()
+            ->assertSee('テスト牧場')
+            ->assertSee('公開中')
+            ->assertSee('非公開牧場')
+            ->assertSee('非公開')
+            ->assertSee('商品(1)');
+    }
+
+    public function test_article_list_marks_drafts_and_links_published_ones(): void
+    {
+        foreach ([['公開の記事', true], ['下書きの記事', false]] as [$title, $published]) {
+            $a = new \App\Models\Article();
+            $a->title = $title;
+            $a->article_content = '<p>本文</p>';
+            $a->article_images = '[]';
+            $a->is_published = $published;
+            $a->save();
+        }
+
+        $this->actingAs($this->admin, 'admins')
+            ->get(route('admin.backend.article.index'))
+            ->assertOk()
+            ->assertSee('公開の記事')
+            ->assertSee('公開中')
+            ->assertSee('下書きの記事')
+            ->assertSee('下書き');
+    }
+
     public function test_owner_registration_is_validated(): void
     {
         $this->actingAs($this->admin, 'admins')

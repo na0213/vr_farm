@@ -4,12 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
-use App\Models\Admin;
 use App\Models\Farm;
 use App\Models\Article;
 use App\Services\ImageStorage;
@@ -18,10 +15,9 @@ class ArticleController extends Controller
 {
     public function index()
     {
-        $admin = Admin::find(Auth::guard('admins')->id());
-        $articles = Article::with('farm')->get();  // 記事と関連する牧場情報を取得
+        $articles = Article::with('farm:id,farm_name')->latest()->get();
 
-        return view('backend.article.index', compact('admin', 'articles'));
+        return view('backend.article.index', compact('articles'));
     }
 
     public function create()
@@ -74,7 +70,6 @@ class ArticleController extends Controller
             $article->article_content = $request->input('editor1'); // CKEditorの内容をここで保存
             $article->is_published = $request['is_published'];
             $article->article_images = json_encode($uploadedImages);
-            // $article->article_images = $url; // 画像URLをJSONで保存
             $article->save();
 
             // トランザクションコミット
@@ -123,7 +118,6 @@ class ArticleController extends Controller
 
             // 既存の画像を取得
             $existingImages = json_decode($article->article_images, true) ?: [];
-            Log::info('Existing Images: ' . json_encode($existingImages));
 
             $uploadedImages = $existingImages; // 既存の画像を保持
 
@@ -139,7 +133,6 @@ class ArticleController extends Controller
 
                             if (!empty($oldImageKey)) {
                                 Storage::disk('s3')->delete($oldImageKey); // S3から古い画像を削除
-                                Log::info('Deleted old image: ' . $oldImageKey);
                             }
                         }
 
@@ -148,7 +141,6 @@ class ArticleController extends Controller
                         $uploadedImages[$index] = ImageStorage::storeResized($image, $fileName); // 新しい画像を配列の同じインデックスに格納
                     }
                 }
-                Log::info('Uploaded Images: ' . json_encode($uploadedImages)); // 新しい画像をログに出力
             }
 
             // 記事情報の更新
@@ -183,7 +175,6 @@ class ArticleController extends Controller
                 $oldImageKey = ltrim($oldImagePath, '/');
                 if (!empty($oldImageKey)) {
                     Storage::disk('s3')->delete($oldImageKey); // S3から古い画像を削除
-                    Log::info('Deleted old image: ' . $oldImageKey);
                 }
             }
     

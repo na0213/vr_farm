@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Farm;
 use App\Models\Product;
-use App\Models\Store;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -23,7 +22,6 @@ class ProductController extends Controller
 
     public function store(Request $request, $farmId)
     {
-        // dd($request);
         $request->validate([
             'product_name' => 'required|string|max:255',
             'product_info' => 'required|string',
