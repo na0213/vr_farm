@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Farm;
 use App\Models\Article;
 use App\Models\Keyword;
@@ -45,50 +44,15 @@ class GuestController extends Controller
         return view('kodawari');
     }
     
-    public function index(Request $request)
+    public function index()
     {
-        // 基本的なクエリ
-        $query = Farm::published()->with(['kinds', 'keywords', 'farmImages']);
-    
-        // 「キーワード検索」: すべての内容から部分一致を検索
-        if ($request->filled('keyword')) {
-            $keyword = $request->keyword;
-            $query->where(function ($q) use ($keyword) {
-                $q->where('farm_name', 'like', '%' . $keyword . '%') // 牧場名
-                    ->orWhere('catchcopy', 'like', '%' . $keyword . '%') // キャッチコピー
-                    ->orWhere('prefecture', 'like', '%' . $keyword . '%') // 都道府県
-                    ->orWhere('farm_info', 'like', '%' . $keyword . '%') // farm_info を検索対象に追加
-                    ->orWhereHas('keywords', function ($q) use ($keyword) { // キーワード
-                        $q->where('keyword', 'like', '%' . $keyword . '%');
-                    })
-                    ->orWhereHas('kinds', function ($q) use ($keyword) { // 種別
-                        $q->where('kind', 'like', '%' . $keyword . '%');
-                    });
-            });
-        }
-    
-        // 「都道府県検索」
-        if ($request->filled('prefectures')) {
-            $query->whereIn('prefecture', $request->prefectures);
-        }
-    
-        // 「キーワード検索」: キーワードIDで検索
-        if ($request->filled('keywords')) {
-            $query->whereHas('keywords', function ($q) use ($request) {
-                $q->whereIn('keywords.id', $request->keywords);
-            });
-        }
-    
-        // 「種別検索」
-        if ($request->filled('kinds')) {
-            $query->whereHas('kinds', function ($q) use ($request) {
-                $q->whereIn('kinds.id', $request->kinds);
-            });
-        }
-    
-        // 結果を取得(ビューで使う列のみ。farm_info等の大きなテキストは除外)
-        $farms = $query->select('id', 'farm_name', 'catchcopy', 'prefecture')->get();
-    
+        // 公開中の牧場をすべて出し、絞り込みはブラウザ側で行う(静的サイトとして書き出すため)。
+        // theme(牧場の紹介文)はキーワード検索の対象なので含める
+        $farms = Farm::published()
+            ->with(['kinds', 'keywords', 'farmImages'])
+            ->select('id', 'farm_name', 'catchcopy', 'prefecture', 'theme')
+            ->get();
+
         // 検索フォームで利用する選択肢を取得
         $prefectures = Farm::published()->distinct()->pluck('prefecture');
         $keywords = Keyword::all();

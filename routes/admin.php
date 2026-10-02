@@ -57,6 +57,7 @@ Route::middleware('auth:admins')->group(function () {
         
     Route::controller(AdminController::class)->group(function () {
         Route::get('/dashboard', 'index')->name('dashboard');
+        Route::get('/system', 'system')->name('backend.system');
         });
     
     Route::controller(KindController::class)->group(function () {

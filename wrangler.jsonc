@@ -1,0 +1,31 @@
+// Cloudflare Workers の設定(公開サイトの配信とお問い合わせの受け取り)。
+// dist/ は php artisan site:export で作る。秘密の値(TURNSTILE_SECRET)はここに書かず、wrangler secret put で登録する。
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "farm360",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-05-01",
+  // 本番は www.farm360.jp(Cloudflare DNS でプロキシ=オレンジの雲)。www なしは Cloudflare のリダイレクトルールで www へ転送する。
+  // workers.dev の確認用URLは、本番と同じ内容が検索に重複して出ないように止めている
+  "routes": [{ "pattern": "www.farm360.jp/*", "zone_name": "farm360.jp" }],
+  "workers_dev": false,
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // /farm/1 → farm/1.html を返す
+    "html_handling": "auto-trailing-slash",
+    // 無いページは dist/404.html を 404 で返す
+    "not_found_handling": "404-page",
+    // お問い合わせの送信だけ Worker で受け取る
+    "run_worker_first": ["/api/*"]
+  },
+  // お問い合わせは、Email Routing で確認済みの運営アドレスにだけ送れる
+  "send_email": [
+    { "name": "CONTACT_MAIL", "destination_address": "farm360.info@gmail.com" }
+  ],
+  "vars": {
+    "MAIL_FROM": "form@farm360.jp",
+    "MAIL_TO": "farm360.info@gmail.com"
+  },
+  "observability": { "enabled": true }
+}

@@ -13,6 +13,7 @@
             ['route' => 'admin.backend.kinds.index', 'title' => '種類', 'text' => '牛・豚・鶏などのカテゴリー'],
             ['route' => 'admin.backend.keywords.index', 'title' => 'キーワード', 'text' => '放牧・平飼いなどの特徴タグ'],
             ['route' => 'admin.password.edit', 'title' => 'パスワード変更', 'text' => 'ログイン用のパスワード'],
+            ['route' => 'admin.backend.system', 'title' => 'サイトのしくみ', 'text' => 'データの置き場所・公開の流れ・ドメインの関係'],
         ];
     @endphp
 

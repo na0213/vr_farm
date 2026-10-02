@@ -76,8 +76,7 @@ class FarmController extends Controller
             if ($request->hasFile('vr')) {
                 $image = $request->file('vr');
                 $fileName = 'farm_vr/' . uniqid() . '.jpg';
-                Storage::disk('s3')->put($fileName, file_get_contents($image), 'public');
-                $farm->vr = Storage::disk('s3')->url($fileName);
+                $farm->vr = ImageStorage::storeOriginal($image, $fileName); // VRは画質が落ちるのでリサイズしない
             }
 
             $farm->save();
@@ -160,17 +159,10 @@ public function update(Request $request, $id)
         // ▼▼▼ VR画像処理（削除 → 置き換え） ▼▼▼
         $deleteVr = (bool) ($request->input('delete_vr') ?? false);
 
-        // 「削除」または「新規アップロード」がある場合は、まず既存を消す（URLの時だけ）
+        // 「削除」または「新規アップロード」がある場合は、まず既存を消す
         if ($deleteVr || $request->hasFile('vr')) {
 
-            if ($farm->vr && filter_var($farm->vr, FILTER_VALIDATE_URL)) {
-                $existingImagePath = parse_url($farm->vr, PHP_URL_PATH);
-                $existingImagePath = ltrim($existingImagePath, '/');
-
-                if (Storage::disk('s3')->exists($existingImagePath)) {
-                    Storage::disk('s3')->delete($existingImagePath);
-                }
-            }
+            ImageStorage::delete($farm->vr);
 
             // 削除チェックが入っているならDB上もnullにする
             if ($deleteVr) {
@@ -185,9 +177,7 @@ public function update(Request $request, $id)
                 $ext = $image->getClientOriginalExtension() ?: 'jpg';
                 $fileName = 'farm_vr/' . uniqid() . '.' . $ext;
 
-                Storage::disk('s3')->put($fileName, file_get_contents($image), 'public');
-
-                $farm->vr = Storage::disk('s3')->url($fileName);
+                $farm->vr = ImageStorage::storeOriginal($image, $fileName); // VRは画質が落ちるのでリサイズしない
             }
         }
         // ▲▲▲ VR画像処理ここまで ▲▲▲
@@ -226,7 +216,7 @@ public function update(Request $request, $id)
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $index => $imageFile) {
                     if ($imageFile->isValid()) {
-                        // 1. リサイズしてS3にアップロード
+                        // 1. リサイズして保存
                         $path = 'farms/' . Str::uuid()->toString() . '.jpg';
                         $url = ImageStorage::storeResized($imageFile, $path);
 
@@ -255,12 +245,8 @@ public function update(Request $request, $id)
             // 1. データベースをロールバック（書き込みを取り消し）
             DB::rollBack();
 
-            // 2. S3にアップロードしてしまった画像を削除
-            foreach ($uploadedPaths as $path) {
-                if (Storage::disk('s3')->exists($path)) {
-                    Storage::disk('s3')->delete($path);
-                }
-            }
+            // 2. 保存してしまった画像を削除
+            Storage::disk(ImageStorage::DISK)->delete($uploadedPaths);
 
             // エラーログを残す（デバッグ用）
             Log::error('画像アップロードエラー: ' . $e->getMessage());
@@ -290,27 +276,23 @@ public function update(Request $request, $id)
             if ($request->hasFile('image')) {
                 $imageFile = $request->file('image');
 
-                // 1. 新しい画像をリサイズしてS3にアップロード
+                // 1. 新しい画像をリサイズして保存
                 $path = 'farms/' . Str::uuid()->toString() . '.jpg';
                 $url = ImageStorage::storeResized($imageFile, $path);
 
                 $newUploadedPath = $path;
 
-                // 古い画像のパスを取得（削除用だが、DB更新成功後に消す）
-                $oldImagePath = parse_url($image->image_path, PHP_URL_PATH);
-                // パスの先頭にスラッシュがある場合、削除調整が必要な場合があります（環境による）
-                $oldImagePath = ltrim($oldImagePath, '/'); 
+                // 古い画像のURL（削除用だが、DB更新成功後に消す）
+                $oldImageUrl = $image->image_path;
 
                 // 2. データベース更新
                 $image->update([
                     'image_path' => $url,
                 ]);
 
-                // 3. 成功したので、古い画像をS3から削除
+                // 3. 成功したので、古い画像を削除
                 // (重要: 更新処理より前に消すと、更新失敗時に画像がなくなるリスクがあるため最後に消す)
-                if ($oldImagePath && Storage::disk('s3')->exists($oldImagePath)) {
-                    Storage::disk('s3')->delete($oldImagePath);
-                }
+                ImageStorage::delete($oldImageUrl);
 
                 DB::commit();
 
@@ -325,8 +307,8 @@ public function update(Request $request, $id)
             DB::rollBack();
 
             // エラー時は、今回アップロードしようとした「新しい画像」を削除
-            if ($newUploadedPath && Storage::disk('s3')->exists($newUploadedPath)) {
-                Storage::disk('s3')->delete($newUploadedPath);
+            if ($newUploadedPath) {
+                Storage::disk(ImageStorage::DISK)->delete($newUploadedPath);
             }
 
             Log::error('画像更新エラー: ' . $e->getMessage());
@@ -339,7 +321,7 @@ public function update(Request $request, $id)
     {
         $image = FarmImage::findOrFail($imageId);
         
-        Storage::disk('s3')->delete(parse_url($image->image_path, PHP_URL_PATH));
+        ImageStorage::delete($image->image_path);
 
         // データベースから削除前に image_order を取得
         $deletedOrder = $image->image_order;

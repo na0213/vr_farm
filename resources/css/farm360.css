@@ -493,3 +493,108 @@ button:focus-visible {
   .feature-photo img { transform: none; transition: none; }
   .note-item, .note-item .pic img, .soft-card, .card, .btn-primary, .btn-butter, .btn-pasture { transition: none; }
 }
+
+/* ---------- てくてく歩く動物(<x-walking-animals>。運営者ページだけ) ---------- */
+:root { --blush-deep: #e39a84; }
+
+.walkers {
+  position: relative;
+  height: 68px;
+  margin: 3.5rem 0 0;
+  overflow: hidden;
+}
+/* 足もとの小さな点線の道 */
+.walkers::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 3px;
+  border-top: 2px dotted rgba(233, 185, 73, 0.55);
+}
+.walker {
+  position: absolute;
+  bottom: 1px;
+  left: -90px;
+  width: 72px;
+  animation: walk-across 34s linear infinite;
+  animation-delay: var(--walk-delay, 0s);
+}
+.walker.chick { width: 58px; }
+
+/* 色: 輪郭(--walker-color)とパステルの塗り(--walker-fill) */
+.walker.cow   { --walker-color: var(--pasture-deep); --walker-fill: var(--milk); --blink-delay: -3s; }
+.walker.pig   { --walker-color: var(--blush-deep);   --walker-fill: #ffd9cc;     --blink-delay: -0.5s; }
+.walker.egg   { --walker-color: var(--butter-deep);  --walker-fill: #fff1cf;     --blink-delay: -2s; }
+.walker.chick { --walker-color: #e0a62f;             --walker-fill: #fbe08a;     --blink-delay: -4s; }
+
+.walker svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  animation: walk-bob 0.6s ease-in-out infinite;
+}
+.walker.chick svg { animation-duration: 0.45s; }
+.walker svg * {
+  fill: none;
+  stroke: var(--walker-color);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.walker .fill   { fill: var(--walker-fill); }
+.walker .dot    { fill: var(--walker-color); stroke: none; }
+.walker.pig .dot { fill: #c9776a; }
+.walker .cheek  { fill: #ffb8a8; stroke: none; opacity: 0.75; }
+.walker .tuft   { fill: var(--walker-color); }
+.walker .spot   { fill: var(--pasture); stroke: none; }
+.walker .horn   { fill: var(--butter); }
+.walker .muzzle { fill: #ffd6c9; }
+.walker .snout  { fill: #ffbfae; }
+.walker .wing   { fill: #f7cf63; }
+.walker .beak   { fill: #f4a94e; stroke: #e8923a; }
+.walker .gloss  { stroke: #fff; stroke-width: 3; opacity: 0.85; }
+.walker .smile  { stroke: var(--ink-900); stroke-width: 1.6; }
+.walker .leg.orange { stroke: #f0a04b; }
+
+/* 大きな丸い目(ときどきまばたき) */
+.walker .eye {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: blink 5s ease-in-out infinite;
+  animation-delay: var(--blink-delay, 0s);
+}
+.walker .eye * { fill: var(--ink-900); stroke: none; }
+.walker .eye .shine { fill: #fff; }
+
+/* 足は付け根を軸に、前後で交互に振る */
+.walker .leg {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: leg-swing 0.6s ease-in-out infinite alternate;
+}
+.walker.chick .leg { animation-duration: 0.45s; }
+.walker .leg.b { animation-direction: alternate-reverse; }
+
+@keyframes walk-across { from { left: -90px; } to { left: 100%; } }
+@keyframes walk-bob {
+  0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+  50% { transform: translateY(-3px) rotate(1.5deg); }
+}
+@keyframes leg-swing {
+  from { transform: rotate(-18deg); }
+  to { transform: rotate(18deg); }
+}
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+
+/* 動きを減らす設定の人には歩かせず、並べて見せる */
+@media (prefers-reduced-motion: reduce) {
+  .walkers { display: flex; justify-content: center; align-items: flex-end; gap: 20px; height: auto; overflow: visible; }
+  .walkers::after { display: none; }
+  .walker { position: static; animation: none; }
+  .walker svg, .walker .leg, .walker .eye { animation: none; }
+}

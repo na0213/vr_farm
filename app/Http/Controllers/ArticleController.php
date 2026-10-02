@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use App\Models\Farm;
 use App\Models\Article;
@@ -127,13 +126,7 @@ class ArticleController extends Controller
                     if ($image) {
                         // 既存の画像があれば削除
                         if (isset($existingImages[$index]) && !empty($existingImages[$index])) {
-                            // S3 URLからキーを抽出して削除
-                            $oldImagePath = parse_url($existingImages[$index], PHP_URL_PATH);
-                            $oldImageKey = ltrim($oldImagePath, '/');
-
-                            if (!empty($oldImageKey)) {
-                                Storage::disk('s3')->delete($oldImageKey); // S3から古い画像を削除
-                            }
+                            ImageStorage::delete($existingImages[$index]);
                         }
 
                         // 新しい画像の保存
@@ -167,15 +160,10 @@ class ArticleController extends Controller
     
             $article = Article::findOrFail($id);
     
-            // S3に保存された画像を削除
+            // 保存された画像を削除
             $existingImages = json_decode($article->article_images, true) ?: [];
             foreach ($existingImages as $imageUrl) {
-                // S3 URLからキーを抽出して削除
-                $oldImagePath = parse_url($imageUrl, PHP_URL_PATH);
-                $oldImageKey = ltrim($oldImagePath, '/');
-                if (!empty($oldImageKey)) {
-                    Storage::disk('s3')->delete($oldImageKey); // S3から古い画像を削除
-                }
+                ImageStorage::delete($imageUrl);
             }
     
             // 記事自体の削除
