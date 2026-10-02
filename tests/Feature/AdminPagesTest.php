@@ -48,6 +48,7 @@ class AdminPagesTest extends TestCase
 
         $pages = [
             'admin.dashboard' => [],
+            'admin.backend.system' => [],
             'admin.password.edit' => [],
             'admin.backend.owners.index' => [],
             'admin.backend.owners.create' => [],

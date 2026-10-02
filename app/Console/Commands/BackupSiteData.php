@@ -18,9 +18,15 @@ class BackupSiteData extends Command
 
     protected $description = 'データベースとアップロード画像を iCloud Drive にバックアップする';
 
+    /** 既定のバックアップ先(iCloud Drive の FARM360-backup) */
+    public static function defaultDestination(): string
+    {
+        return getenv('HOME').'/Library/Mobile Documents/com~apple~CloudDocs/FARM360-backup';
+    }
+
     public function handle(): int
     {
-        $to = rtrim((string) ($this->option('to') ?: getenv('HOME').'/Library/Mobile Documents/com~apple~CloudDocs/FARM360-backup'), '/');
+        $to = rtrim((string) ($this->option('to') ?: self::defaultDestination()), '/');
         $db = config('database.connections.'.config('database.default'));
 
         if (($db['driver'] ?? null) !== 'mysql') {
