@@ -8,7 +8,6 @@ use App\Models\Farm;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use App\Services\ImageStorage;
 
 class ProductController extends Controller
@@ -41,7 +40,7 @@ class ProductController extends Controller
                 // ファイル名を生成
                 $fileName = 'product_images/' . uniqid() . '.jpg';
 
-                // リサイズしてS3に画像を保存
+                // リサイズして画像を保存
                 $url = ImageStorage::storeResized($image, $fileName, maxWidth: 1200);
             }
     
@@ -91,13 +90,10 @@ class ProductController extends Controller
             $product->product_link = $validated['product_link'];
 
             if ($request->hasFile('product_image')) {
-                // 既存の画像をS3から削除
-                if ($product->product_image) {
-                    $existingImagePath = parse_url($product->product_image, PHP_URL_PATH);
-                    Storage::disk('s3')->delete($existingImagePath);
-                }
-    
-                // 新しい画像をリサイズしてS3にアップロード
+                // 既存の画像を削除
+                ImageStorage::delete($product->product_image);
+
+                // 新しい画像をリサイズして保存
                 $image = $request->file('product_image');
                 $fileName = 'product_images/' . uniqid() . '.jpg';
                 $url = ImageStorage::storeResized($image, $fileName, maxWidth: 1200);
@@ -124,10 +120,8 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $farmId = $product->farm_id;
-        // S3から画像を削除
-        if ($product->product_image) {
-            Storage::disk('s3')->delete(parse_url($product->product_image, PHP_URL_PATH));
-        }
+        // 画像を削除
+        ImageStorage::delete($product->product_image);
     
         // データベースから削除
         $product->delete();

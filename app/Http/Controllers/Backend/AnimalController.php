@@ -8,7 +8,6 @@ use App\Models\Farm;
 use App\Models\Animal;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use App\Services\ImageStorage;
 
 class AnimalController extends Controller
@@ -46,7 +45,7 @@ public function create($farmId)
                 // ファイル名を生成
                 $fileName = 'animal_images/' . uniqid() . '.jpg';
 
-                // リサイズしてS3に画像を保存
+                // リサイズして画像を保存
                 $url = ImageStorage::storeResized($image, $fileName);
             }
 
@@ -95,17 +94,14 @@ public function create($farmId)
             $animal->is_vr = $request->has('is_vr');
 
             if ($request->hasFile('animal_image')) {
-                // 既存の画像をS3から削除
-                if ($animal->animal_image) {
-                    $existingImagePath = parse_url($animal->animal_image, PHP_URL_PATH);
-                    Storage::disk('s3')->delete($existingImagePath);
-                }
+                // 既存の画像を削除
+                ImageStorage::delete($animal->animal_image);
 
                 // 新しい画像を処理
                 $image = $request->file('animal_image');
                 $fileName = 'animal_images/' . uniqid() . '.jpg';
 
-                // リサイズしてS3にアップロード
+                // リサイズして保存
                 $url = ImageStorage::storeResized($image, $fileName);
 
                 // データベースを更新
@@ -129,10 +125,8 @@ public function create($farmId)
     {
         $animal = Animal::findOrFail($id);
         $owner = $animal->farm->owner; // $farmに紐づく$ownerを取得
-        // S3から画像を削除
-        if ($animal->animal_image) {
-            Storage::disk('s3')->delete(parse_url($animal->animal_image, PHP_URL_PATH));
-        }
+        // 画像を削除
+        ImageStorage::delete($animal->animal_image);
     
         // データベースから削除
         $animal->delete();
