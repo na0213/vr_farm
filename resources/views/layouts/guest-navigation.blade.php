@@ -12,7 +12,7 @@
         <div class="primary-links hidden space-x-3 lg:flex lg:items-center">
             <x-nav-link class="nav-pill" :href="route('farm.index') " :active="request()->routeIs('farm.index')">牧場検索</x-nav-link>
             <x-nav-link class="nav-pill" :href="route('products.index')" :active="request()->routeIs('products.index')">お取り寄せ</x-nav-link>
-            <x-nav-link class="nav-pill" :href="route('welfare.index')" :active="request()->routeIs('welfare.index')">アニマルウェルフェアとは</x-nav-link>
+            <x-nav-link class="nav-pill" :href="route('kodawari.index')" :active="request()->routeIs('kodawari.index')">おいしい理由</x-nav-link>
             <x-nav-link class="nav-pill" :href="route('contact.form')" :active="request()->routeIs('contact.form')">問い合わせ</x-nav-link>
         </div>
 
@@ -36,8 +36,8 @@
             <x-responsive-nav-link class="nav-sheet-link" :href="route('products.index')" :active="request()->routeIs('products.index')">
                 お取り寄せ
             </x-responsive-nav-link>
-            <x-responsive-nav-link class="nav-sheet-link" :href="route('welfare.index')" :active="request()->routeIs('welfare.index')">
-                アニマルウェルフェアとは
+            <x-responsive-nav-link class="nav-sheet-link" :href="route('kodawari.index')" :active="request()->routeIs('kodawari.index')">
+                おいしい理由
             </x-responsive-nav-link>
             <x-responsive-nav-link class="nav-sheet-link" :href="route('contact.form')" :active="request()->routeIs('contact.form')">
                 問い合わせ

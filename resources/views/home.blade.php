@@ -97,8 +97,8 @@
   </div>
     <div class="story story-panel reveal" data-animate>
       <p class="con_text">
-        「アニマルウェルフェア」<br>
         「放牧」<br>
+        「平飼い」<br>
         「循環型」<br>
         人・動物・環境が循環する牧場を巡る<br><br>
         牧場ごとの味をたんのうし<br>
@@ -143,12 +143,12 @@
   </div>
   <div class="story story-panel reveal" data-animate>
     <p class="con_text">
-      アニマルウェルフェアは、<br>
-      動物がその動物らしく暮らせるように<br>
-      配慮する、世界共通の考え方。<br><br>
+      放牧、平飼い、牧草で育てる。<br>
+      牧場ごとの育て方が、<br>
+      ここでしか出せない味をつくります。<br><br>
       むずかしいことは抜きにして、<br>
       まずは5分で読める入門ページからどうぞ。<br><br>
-      <a href="{{ route('welfare.index') }}" class="btn-link more-link">アニマルウェルフェアって、なに? →</a>
+      <a href="{{ route('kodawari.index') }}" class="btn-link more-link">牧場のこだわりと、おいしい理由 →</a>
     </p>
   </div>
 

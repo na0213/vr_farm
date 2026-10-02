@@ -38,10 +38,10 @@ class GuestController extends Controller
         return view('products.index', compact('products'));
     }
 
-    // アニマルウェルフェアとは(入門ページ)
-    public function welfare()
+    // 牧場のこだわりと、おいしい理由(入門ページ)
+    public function kodawari()
     {
-        return view('welfare');
+        return view('kodawari');
     }
     
     public function index(Request $request)

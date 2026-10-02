@@ -1,6 +1,6 @@
 <x-top-layout>
     <x-slot name="title">牧場を探す</x-slot>
-    <x-slot name="metaDescription">全国の放牧・アニマルウェルフェアに取り組む牧場を、地域・キーワード・動物の種類から探せます。</x-slot>
+    <x-slot name="metaDescription">全国の放牧・平飼いなど、こだわりの育て方をする牧場を、地域・キーワード・動物の種類から探せます。</x-slot>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
     <!-- パンくずリストの表示 -->
