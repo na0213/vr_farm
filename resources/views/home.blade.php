@@ -39,6 +39,9 @@
     <!-- ページネーション -->
     <div class="swiper-pagination"></div>
 
+    <!-- 画像から本文へつなぐ丘 -->
+    <svg class="hero-wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0,44 C240,84 480,4 720,36 C960,68 1200,10 1440,44 L1440,80 L0,80 Z"/></svg>
+
     <!-- Hero overlay -->
     <div class="hero-overlay reveal" data-animate>
       <p class="hero-eyebrow">しあわせな牧場の、おいしいもの。</p>
@@ -62,7 +65,7 @@
 
   @if ($products->isNotEmpty())
   <div class="story reveal" data-animate>
-    <p class="mt-20 text-[#e09885] with-icon"><span class="icon-star" aria-hidden="true"></span>PRODUCTS</p>
+    <p class="mt-20 text-[#e09885] with-icon">PRODUCTS</p>
   </div>
   <div class="note-title reveal" data-animate>
     <p class="wavy-underline">お取り寄せ</p>
@@ -90,12 +93,16 @@
   @endif
 
   <div class="story reveal" data-animate>
-    <p class="mt-20 text-[#e09885] with-icon"><span class="icon-leaf" aria-hidden="true"></span>STORY</p>
+    <p class="mt-20 text-[#e09885] with-icon">STORY</p>
   </div>
   <div class="note-title reveal" data-animate>
     <p class="wavy-underline">思い</p>
   </div>
-    <div class="story story-panel reveal" data-animate>
+  <div class="feature reveal" data-animate>
+    <div class="feature-photo">
+      <img src="{{ asset('storage/top2.jpg') }}" alt="" loading="lazy">
+    </div>
+    <div class="story story-panel">
       <p class="con_text">
         「放牧」<br>
         「平飼い」<br>
@@ -115,10 +122,10 @@
         <div class="circ circ4"></div>
       </div>
     </div>
-
+  </div>
 
   <div class="story reveal" data-animate>
-    <p class="mt-10 text-[#e09885] with-icon"><span class="icon-leaf" aria-hidden="true"></span>FARM</p>
+    <p class="mt-10 text-[#e09885] with-icon">FARM</p>
   </div>
   <div class="note-title reveal" data-animate>
     <p class="wavy-underline">牧場検索</p>
@@ -136,12 +143,16 @@
   </div>
 
   <div class="story reveal" data-animate>
-    <p class="mt-20 text-[#e09885] with-icon"><span class="icon-leaf" aria-hidden="true"></span>ABOUT</p>
+    <p class="mt-20 text-[#e09885] with-icon">ABOUT</p>
   </div>
   <div class="note-title reveal" data-animate>
     <p class="wavy-underline">はじめての方へ</p>
   </div>
-  <div class="story story-panel reveal" data-animate>
+  <div class="feature feature--reverse reveal" data-animate>
+    <div class="feature-photo">
+      <img src="{{ asset('storage/top3.jpg') }}" alt="" loading="lazy">
+    </div>
+    <div class="story story-panel">
     <p class="con_text">
       放牧、平飼い、牧草で育てる。<br>
       牧場ごとの育て方が、<br>
@@ -150,10 +161,11 @@
       まずは5分で読める入門ページからどうぞ。<br><br>
       <a href="{{ route('kodawari.index') }}" class="btn-link more-link">牧場のこだわりと、おいしい理由 →</a>
     </p>
+    </div>
   </div>
 
   <div class="story reveal" data-animate>
-    <p class="mt-20 text-[#e09885] with-icon"><span class="icon-star" aria-hidden="true"></span>NOTE</p>
+    <p class="mt-20 text-[#e09885] with-icon">NOTE</p>
   </div>
   <div class="note-title reveal" data-animate>
     <p class="wavy-underline">読みもの</p>

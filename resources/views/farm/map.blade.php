@@ -9,7 +9,7 @@
     </nav>
     <div class="wrap">
         <div class="container mx-auto px-4 py-6">
-            <h1 class="text-xl font-bold mb-4 with-icon"><span class="icon-leaf" aria-hidden="true"></span><span class="wavy-underline">牧場検索</span></h1>
+            <h1 class="text-xl font-bold mb-4 with-icon"><span class="wavy-underline">牧場検索</span></h1>
     
             <!-- 検索フォーム -->
             <form action="{{ route('farm.index') }}" method="GET" class="mb-6">

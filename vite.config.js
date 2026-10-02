@@ -8,6 +8,7 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/css/appfarm.css',
                 'resources/css/top.css',
+                'resources/css/farm360.css',
                 'resources/css/topshow.css',
                 'resources/css/farm.css',
                 'resources/css/owner.css',

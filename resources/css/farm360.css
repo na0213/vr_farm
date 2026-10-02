@@ -1,0 +1,490 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&display=swap');
+
+/*
+ * FARM360 デザインレイヤー(バター&牧草)
+ * top.css の後に読み込み、色・形・動きを上書きする。
+ * 戻したいときは top.blade.php の @vite からこのファイルを外すだけ。
+ */
+
+/* ---------- トークン ---------- */
+:root {
+  --cream: #fffaf0;
+  --milk: #fffdf8;
+  --butter: #f6d58a;
+  --butter-deep: #e9b949;
+  --pasture: #a9cf9a;
+  --pasture-deep: #4f7a46;
+  --blush: #ffe3d6;
+  --ink-900: #3b2f26;
+  --ink-700: #5a4a3e;
+  --ink-500: #7d6d5f;
+  --line: rgba(74, 53, 36, 0.12);
+  --radius-lg: 28px;
+  --radius-md: 20px;
+  --shadow-soft: 0 12px 32px rgba(120, 85, 40, 0.12);
+  --font-heading: 'Zen Maru Gothic', 'M PLUS Rounded 1c', 'M PLUS 1p', sans-serif;
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  /* top.css の既存変数をこの配色に差し替え */
+  --brand-primary: var(--butter-deep);
+  --brand-surface-a: #fbf0da;
+  --brand-surface-b: #f8e8c8;
+}
+
+/* ---------- 全体 ---------- */
+body {
+  color: var(--ink-900);
+  background-color: var(--cream);
+}
+h1, h2, h3,
+.hero-title, .hero-eyebrow,
+.note-title p, .story p.with-icon {
+  font-family: var(--font-heading);
+}
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid rgba(233, 185, 73, 0.7);
+  outline-offset: 2px;
+}
+
+/* ---------- ヘッダー ---------- */
+.header-nav {
+  background: rgba(255, 250, 240, 0.85);
+  border-bottom-color: var(--line);
+}
+.header-nav::after {
+  background: linear-gradient(90deg, rgba(255,250,240,0), var(--butter) 30%, var(--pasture) 65%, rgba(255,250,240,0));
+  opacity: 0.8;
+}
+.primary-links a.nav-pill { color: var(--ink-700); font-family: var(--font-heading); font-weight: 500; }
+.primary-links a.nav-pill:hover { background: rgba(246, 213, 138, 0.35); color: var(--ink-900); }
+.primary-links a.nav-pill:focus-visible { outline-color: rgba(233, 185, 73, 0.7); }
+.primary-links a.nav-pill.is-active {
+  background: rgba(246, 213, 138, 0.5);
+  box-shadow: none;
+}
+.nav-toggle button { color: var(--ink-700); }
+.nav-toggle button:hover { background: rgba(246, 213, 138, 0.35); color: var(--ink-900); }
+.mobile-sheet { background: rgba(255, 250, 240, 0.96); }
+.mobile-sheet .nav-sheet-link { color: var(--ink-700); font-family: var(--font-heading); }
+.mobile-sheet .nav-sheet-link:hover { background: rgba(246, 213, 138, 0.3); color: var(--ink-900); }
+
+/* ---------- ボタン ---------- */
+.btn-primary,
+.btn-butter {
+  display: inline-block;
+  padding: 0.7rem 1.6rem;
+  border-radius: 9999px;
+  background: var(--butter-deep);
+  color: var(--ink-900);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  box-shadow: 0 8px 20px rgba(233, 185, 73, 0.35);
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), background 0.2s ease;
+}
+.btn-primary:hover,
+.btn-butter:hover {
+  background: #efc45f;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(233, 185, 73, 0.42);
+}
+.btn-primary:active,
+.btn-butter:active { transform: translateY(0); }
+.btn-pasture {
+  display: inline-block;
+  padding: 0.7rem 1.6rem;
+  border-radius: 9999px;
+  background: var(--pasture-deep);
+  color: #fff;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  box-shadow: 0 8px 20px rgba(79, 122, 70, 0.28);
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), background 0.2s ease;
+}
+.btn-pasture:hover { background: #5b8a51; transform: translateY(-2px); }
+.btn-link { color: var(--ink-700); }
+.btn-link:hover { color: var(--ink-900); }
+
+/* ---------- ヒーロー ---------- */
+.home-hero { border-radius: 0; }
+.home-hero::after {
+  background: linear-gradient(180deg, rgba(40, 28, 18, 0.38) 0%, rgba(40, 28, 18, 0.28) 45%, rgba(40, 28, 18, 0.16) 100%);
+}
+.hero-overlay { padding-bottom: clamp(2.5rem, 7vw, 5rem); }
+.hero-eyebrow {
+  font-size: clamp(0.85rem, 0.6rem + 0.7vw, 1.1rem);
+  letter-spacing: 0.22em;
+  text-transform: none;
+  font-weight: 500;
+  text-shadow: 0 2px 12px rgba(40, 28, 18, 0.45);
+}
+.hero-title {
+  font-size: clamp(1.75rem, 1rem + 3.6vw, 3.25rem);
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+  text-shadow: 0 3px 24px rgba(40, 28, 18, 0.5);
+}
+.hero-cta { margin-top: 1.5rem; }
+
+/* コピーとボタンを順番に、ふわっと */
+.hero-overlay .hero-eyebrow,
+.hero-overlay .hero-title,
+.hero-overlay .hero-cta { animation: hero-rise 1s var(--ease-out) both; }
+.hero-overlay .hero-eyebrow { animation-delay: 0.25s; }
+.hero-overlay .hero-title { animation-delay: 0.55s; }
+.hero-overlay .hero-cta { animation-delay: 0.95s; }
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* 下端のゆるい丘。画像から本文へつなぐ */
+.hero-wave {
+  position: absolute;
+  left: -2%;
+  bottom: -1px;
+  width: 104%;
+  height: clamp(28px, 6vw, 72px);
+  z-index: 3;
+  fill: var(--cream);
+  display: block;
+  animation: wave-sway 16s ease-in-out infinite alternate;
+}
+@keyframes wave-sway {
+  from { transform: translateX(0); }
+  to { transform: translateX(-1.6%); }
+}
+.scroll-hint { display: none; }
+.home-hero .swiper-pagination {
+  bottom: clamp(40px, 7vw, 84px) !important;
+  z-index: 6;
+  --swiper-pagination-color: var(--butter);
+  --swiper-pagination-bullet-inactive-color: #fff;
+  --swiper-pagination-bullet-inactive-opacity: 0.7;
+}
+.home-hero .swiper-pagination-bullet { box-shadow: 0 0 6px rgba(40, 28, 18, 0.45); }
+
+/* 木漏れ日のようなやわらかい光。ゆっくり漂う */
+.play-deco .sparkle {
+  border-radius: 50%;
+  filter: blur(1px);
+  opacity: 0.8;
+}
+.play-deco .s1 { width: 18px; height: 18px; background: radial-gradient(circle, rgba(255,246,214,0.95), rgba(255,246,214,0) 70%); animation: drift 11s ease-in-out infinite alternate; }
+.play-deco .s2 { width: 12px; height: 12px; background: radial-gradient(circle, rgba(255,246,214,0.95), rgba(255,246,214,0) 70%); animation: drift 13s ease-in-out -3s infinite alternate; }
+.play-deco .s3 { width: 22px; height: 22px; background: radial-gradient(circle, rgba(255,240,196,0.9), rgba(255,240,196,0) 70%); animation: drift 15s ease-in-out -6s infinite alternate; }
+.play-deco .s4 { width: 14px; height: 14px; background: radial-gradient(circle, rgba(255,255,255,0.95), rgba(255,255,255,0) 70%); animation: drift 12s ease-in-out -2s infinite alternate; }
+@keyframes drift {
+  from { transform: translate(0, 0); }
+  to { transform: translate(14px, -22px); }
+}
+
+/* ---------- スクロールで現れる動き ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.9s ease, transform 0.9s var(--ease-out);
+}
+.reveal.is-visible { opacity: 1; transform: none; }
+
+/* カードは1枚ずつ順番に */
+.reveal.is-visible .home-note-grid .note-item,
+.reveal.is-visible .grid-stagger > * { animation: card-rise 0.8s var(--ease-out) both; animation-delay: calc(var(--i, 0) * 110ms); }
+.home-note-grid .note-item:nth-child(2), .grid-stagger > :nth-child(2) { --i: 1; }
+.home-note-grid .note-item:nth-child(3), .grid-stagger > :nth-child(3) { --i: 2; }
+.home-note-grid .note-item:nth-child(4), .grid-stagger > :nth-child(4) { --i: 3; }
+.home-note-grid .note-item:nth-child(5), .grid-stagger > :nth-child(5) { --i: 4; }
+.home-note-grid .note-item:nth-child(6), .grid-stagger > :nth-child(6) { --i: 5; }
+.home-note-grid .note-item:nth-child(n+7), .grid-stagger > :nth-child(n+7) { --i: 6; }
+@keyframes card-rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- セクション見出し ---------- */
+/* 英字ラベル: 小さく控えめに。両脇に細い線 */
+.story p.with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.75rem;
+  line-height: 1;
+  letter-spacing: 0.32em;
+  font-weight: 500;
+  color: var(--ink-500);
+}
+.story p.with-icon::before,
+.story p.with-icon::after {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.45;
+}
+/* 日本語の見出し: 字間を詰め、下に短い線を1本だけ */
+.note-title p.wavy-underline {
+  font-size: clamp(1.4rem, 1.1rem + 1.2vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  color: var(--ink-900);
+  padding-bottom: 0;
+  background: none;
+}
+.wavy-underline { background: none; padding-bottom: 0; }
+.wavy-underline::after {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 3px;
+  margin-top: 14px;
+  border-radius: 9999px;
+  background: var(--butter-deep);
+}
+.note-title p.wavy-underline::after { display: block; position: static; width: 36px; height: 3px; margin: 14px auto 0; background: var(--butter-deep); }
+
+/* ---------- 「思い」「はじめての方へ」: アーチ写真 + 文章 ---------- */
+.feature {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.75rem;
+  align-items: center;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding-inline: min(5vw, 32px);
+}
+.feature-photo {
+  position: relative;
+  width: min(100%, 300px);
+  aspect-ratio: 4 / 5;
+  margin-inline: auto;
+  overflow: hidden;
+  border-radius: 999px 999px var(--radius-lg) var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  background: var(--brand-surface-a);
+}
+.feature-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.06);
+  transition: transform 1.4s var(--ease-out);
+}
+.feature.is-visible .feature-photo img { transform: scale(1); }
+.feature .story-panel {
+  margin-inline: 0;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(160deg, var(--brand-surface-a), var(--milk));
+  border: 1px solid var(--line);
+}
+.feature .story-panel { letter-spacing: 0.04em; }
+.feature .con_text { padding: clamp(8px, 2vw, 20px); text-align: left; font-weight: 500; line-height: 2.1; font-size: 1rem; color: var(--ink-700); }
+@media (min-width: 768px) {
+  .feature { grid-template-columns: 5fr 6fr; gap: 3rem; }
+  .feature--reverse { grid-template-columns: 6fr 5fr; }
+  .feature--reverse .feature-photo { order: 2; }
+  .feature-photo { width: 100%; max-width: 360px; }
+  .feature .con_text { font-size: 1.0625rem; }
+}
+.story-panel .circ1 { background-color: var(--butter); opacity: 0.45; }
+.story-panel .circ2 { background-color: var(--pasture); opacity: 0.3; }
+.story-panel .circ3 { background-color: var(--blush); opacity: 0.7; }
+.story-panel .circ4 { background-color: #f3e3c4; opacity: 0.6; }
+
+/* ---------- 牧場検索の入口(360°の丸) ---------- */
+.concept { margin-left: 0; }
+.concept-accent {
+  border: 6px solid rgba(246, 213, 138, 0.55);
+  box-shadow: var(--shadow-soft);
+}
+/* 写真は丸の中でゆっくり回る(360°のイメージ) */
+.bg-image-1 { background-image: none; background-color: var(--brand-surface-a); }
+.bg-image-1::after {
+  content: "";
+  position: absolute;
+  inset: -3%;
+  background: url('../../public/storage/story.jpg') 47% 50% / cover no-repeat;
+  animation: planet-spin 120s linear infinite;
+  z-index: 0;
+}
+@keyframes planet-spin { to { transform: rotate(360deg); } }
+.bg-image-1::before { background-color: rgba(59, 47, 38, 0.2); }
+.concept .center-text .line-1 { color: #fff; text-shadow: 0 2px 12px rgba(40, 28, 18, 0.5); }
+.concept .center-text .line-2 {
+  background: none;
+  -webkit-text-fill-color: #fff;
+  color: #fff;
+  filter: none;
+  text-shadow: 0 2px 14px rgba(40, 28, 18, 0.5);
+}
+.concept .center-text .line-2::after { background: rgba(246, 213, 138, 0.9); height: 6px; }
+.concept-badge {
+  background: conic-gradient(from 220deg, var(--butter-deep), var(--butter), var(--butter-deep));
+}
+.concept-badge::after { color: var(--ink-900); }
+
+/* ---------- カード ---------- */
+.note-item {
+  background-color: var(--milk);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: 0 6px 18px rgba(120, 85, 40, 0.1);
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+}
+.note-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(120, 85, 40, 0.16);
+}
+.note-item .pic img { transition: transform 0.9s var(--ease-out); }
+.note-item:hover .pic img { transform: scale(1.06); }
+.note-item p { color: var(--ink-700); font-family: var(--font-heading); font-weight: 500; }
+.more-link { color: var(--pasture-deep); }
+.card {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  background-color: var(--milk);
+  box-shadow: 0 6px 18px rgba(120, 85, 40, 0.1);
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+}
+.card:hover { transform: translateY(-3px); box-shadow: 0 14px 28px rgba(120, 85, 40, 0.15); }
+.farmimg { border-radius: 14px; background-color: var(--brand-surface-a); }
+.pref { color: var(--ink-500); }
+
+/* ---------- ページネーション ---------- */
+.pagination a {
+  border-color: var(--line);
+  color: var(--ink-700);
+  border-radius: 9999px;
+  padding: 8px 14px;
+}
+.pagination a:hover { background-color: rgba(246, 213, 138, 0.35); border-color: rgba(233, 185, 73, 0.7); }
+.pagination .active {
+  background-color: var(--butter-deep);
+  border-color: var(--butter-deep);
+  color: var(--ink-900);
+  border-radius: 9999px;
+  padding: 8px 14px;
+  font-weight: 700;
+}
+.pagination .disabled { color: var(--ink-500); opacity: 0.6; }
+
+/* ---------- 入門ページ・お取り寄せなど、Blade側の部品 ---------- */
+.tint-box {
+  background: linear-gradient(160deg, var(--brand-surface-a), var(--milk));
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+.soft-card {
+  background: var(--milk);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: 0 6px 18px rgba(120, 85, 40, 0.1);
+  overflow: hidden;
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+}
+.soft-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(120, 85, 40, 0.16); }
+.page-heading { font-family: var(--font-heading); }
+.page-heading { letter-spacing: 0.05em; }
+
+/* ---------- 記事ページ(読みもの) ---------- */
+/* タイトルは中央・大きく、本文中の見出しは左寄せで一段小さく */
+.article-container { max-width: 760px; }
+.text-container { margin-top: 24px; padding: 20px clamp(16px, 4vw, 28px); }
+.text-container > h2 {
+  font-size: clamp(1.4rem, 1.1rem + 1.4vw, 1.9rem);
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  text-align: center;
+  margin-bottom: 36px;
+}
+.text-container > h2::after {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 3px;
+  margin: 18px auto 0;
+  border-radius: 9999px;
+  background: var(--butter-deep);
+}
+.text-container > div { color: var(--ink-700); font-size: 1rem; line-height: 2; }
+.text-container > div p { font-size: 1rem; line-height: 2; margin-bottom: 1.4em; }
+.text-container > div h2,
+.text-container > div h3 {
+  font-family: var(--font-heading);
+  color: var(--ink-900);
+  text-align: left;
+  line-height: 1.5;
+  margin: 2.4em 0 0.9em;
+}
+.text-container > div h2 {
+  font-size: 1.35rem;
+  padding-left: 0.7em;
+  border-left: 5px solid var(--butter-deep);
+  border-radius: 2px;
+}
+.text-container > div h3 { font-size: 1.15rem; }
+/* Tailwind の初期化で消えている「・」と番号を戻す */
+.text-container > div ul { list-style: disc; padding-left: 1.6em; margin: 0 0 1.4em; }
+.text-container > div ol { list-style: decimal; padding-left: 1.6em; margin: 0 0 1.4em; }
+.text-container > div li { margin-bottom: 0.4em; }
+.text-container > div li::marker { color: var(--pasture-deep); }
+.text-container > div a { color: var(--pasture-deep); text-decoration: underline; text-underline-offset: 3px; }
+.text-container > div strong { font-weight: 700; color: var(--ink-900); }
+.text-container > div blockquote {
+  margin: 1.6em 0;
+  padding: 1em 1.2em;
+  border-left: 4px solid var(--pasture);
+  background: var(--brand-surface-a);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+.text-container > div img { max-width: 100%; height: auto; border-radius: var(--radius-md); margin: 1.4em auto; display: block; }
+
+/* ---------- フッター ---------- */
+.footer {
+  margin-top: 56px;
+  background: linear-gradient(to bottom, var(--brand-surface-a), var(--brand-surface-b));
+  border-top: 0;
+}
+/* 上端を丘のかたちに */
+.footer::before {
+  top: -39px;
+  height: 40px;
+  opacity: 1;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 40' preserveAspectRatio='none'%3E%3Cpath fill='%23fbf0da' d='M0,40 L0,24 C240,-6 480,34 720,16 C960,0 1200,30 1440,10 L1440,40 Z'/%3E%3C/svg%3E") center bottom / 100% 100% no-repeat;
+}
+.footer .footer-ornament {
+  position: absolute;
+  top: -34px;
+  right: clamp(16px, 8vw, 120px);
+  width: 64px;
+  max-width: none;
+  margin: 0;
+  opacity: 0.9;
+  animation: peek 7s ease-in-out infinite;
+}
+@keyframes peek {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.footer a.footer-link { color: var(--ink-700); }
+.footer a.footer-link:hover { background: rgba(246, 213, 138, 0.4); color: var(--ink-900); }
+.footer a.footer-link:focus-visible { outline-color: rgba(233, 185, 73, 0.7); }
+.footer p, .footer .footer-copy { color: var(--ink-500); }
+
+/* ---------- 動きを減らす設定の人には止める ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .hero-overlay .hero-eyebrow,
+  .hero-overlay .hero-title,
+  .hero-overlay .hero-cta,
+  .hero-wave,
+  .play-deco .sparkle,
+  .bg-image-1::after,
+  .footer .footer-ornament,
+  .reveal.is-visible .home-note-grid .note-item,
+  .reveal.is-visible .grid-stagger > * { animation: none; }
+  .reveal, .reveal.is-visible { transition: none; transform: none; opacity: 1; }
+  .feature-photo img { transform: none; transition: none; }
+  .note-item, .note-item .pic img, .soft-card, .card, .btn-primary, .btn-butter, .btn-pasture { transition: none; }
+}

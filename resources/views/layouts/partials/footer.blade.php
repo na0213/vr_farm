@@ -1,4 +1,5 @@
 <footer class="footer py-8">
+  <img class="footer-ornament" src="{{ asset('storage/favicon.png') }}" alt="" aria-hidden="true" loading="lazy">
   <div class="container mx-auto">
     <div class="flex flex-col items-start">
       <div class="mb-2">
