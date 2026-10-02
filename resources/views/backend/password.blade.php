@@ -16,6 +16,9 @@
                     @csrf
                     @method('PUT')
 
+                    {{-- パスワードマネージャーが、どのログインの更新かを判別するための欄(画面には出さない) --}}
+                    <input type="text" name="username" value="{{ Auth::user()->email }}" autocomplete="username" readonly tabindex="-1" aria-hidden="true" class="sr-only">
+
                     <div>
                         <x-input-label for="current_password" value="現在のパスワード" />
                         <x-text-input id="current_password" name="current_password" type="password" class="block mt-1 w-full" autocomplete="current-password" required />
@@ -24,7 +27,7 @@
 
                     <div class="mt-4">
                         <x-input-label for="password" value="新しいパスワード(8文字以上)" />
-                        <x-text-input id="password" name="password" type="password" class="block mt-1 w-full" autocomplete="new-password" required />
+                        <x-text-input id="password" name="password" type="password" class="block mt-1 w-full" autocomplete="new-password" minlength="8" required />
                         <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
                     </div>
 

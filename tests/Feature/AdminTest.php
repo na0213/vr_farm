@@ -77,6 +77,28 @@ class AdminTest extends TestCase
         $this->assertTrue(Hash::check('old-password-1', $this->admin->fresh()->password));
     }
 
+    /**
+     * スマホ・ブラウザが「強力なパスワード」を自動で提案するには、
+     * 新しいパスワード欄に autocomplete="new-password"、ログインの識別に username が必要。
+     */
+    public function test_password_change_form_carries_the_attributes_for_strong_password_suggestions(): void
+    {
+        $this->actingAs($this->admin, 'admins')
+            ->get(route('admin.password.edit'))
+            ->assertOk()
+            ->assertSee('autocomplete="username"', false)
+            ->assertSee('autocomplete="current-password"', false)
+            ->assertSeeInOrder(['autocomplete="new-password"', 'autocomplete="new-password"'], false);
+    }
+
+    public function test_password_reset_form_carries_the_attributes_for_strong_password_suggestions(): void
+    {
+        $this->get(route('admin.password.reset', ['token' => 'dummy', 'email' => 'admin@example.com']))
+            ->assertOk()
+            ->assertSee('autocomplete="username"', false)
+            ->assertSeeInOrder(['autocomplete="new-password"', 'autocomplete="new-password"'], false);
+    }
+
     public function test_forgot_password_sends_a_link_that_points_to_the_admin_route(): void
     {
         Notification::fake();
