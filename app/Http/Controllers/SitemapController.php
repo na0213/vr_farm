@@ -19,7 +19,7 @@ class SitemapController extends Controller
 
         // 動的ページを追加
         $sitemap->add(Url::create(route('farm.index'))->setPriority(0.9)); // 牧場検索ページ
-        $farms = Farm::all(); // 牧場データを取得
+        $farms = Farm::published()->get(); // 公開中の牧場データを取得
         foreach ($farms as $farm) {
             $sitemap->add(
                 Url::create(route('farm.show', $farm->id))

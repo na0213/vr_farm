@@ -15,10 +15,11 @@ class GuestController extends Controller
     {
         $articles = Article::where('is_published', 1)
         ->select('id', 'title', 'article_images')
+        ->latest()
         ->paginate(8);
 
         // ECリンク付きの商品のみトップに表示(未整備なら非表示)
-        $products = Product::whereNotNull('product_link')->where('product_link', '!=', '')
+        $products = Product::listed()
             ->with('farm:id,farm_name,prefecture')
             ->latest()
             ->take(4)
@@ -30,7 +31,7 @@ class GuestController extends Controller
     // お取り寄せ(商品一覧)
     public function products()
     {
-        $products = Product::whereNotNull('product_link')->where('product_link', '!=', '')
+        $products = Product::listed()
             ->with('farm:id,farm_name,prefecture')
             ->latest()
             ->get();
@@ -47,7 +48,7 @@ class GuestController extends Controller
     public function index(Request $request)
     {
         // 基本的なクエリ
-        $query = Farm::query()->with(['kinds', 'keywords', 'farmImages']);
+        $query = Farm::published()->with(['kinds', 'keywords', 'farmImages']);
     
         // 「キーワード検索」: すべての内容から部分一致を検索
         if ($request->filled('keyword')) {
@@ -89,7 +90,7 @@ class GuestController extends Controller
         $farms = $query->select('id', 'farm_name', 'catchcopy', 'prefecture')->get();
     
         // 検索フォームで利用する選択肢を取得
-        $prefectures = Farm::distinct()->pluck('prefecture');
+        $prefectures = Farm::published()->distinct()->pluck('prefecture');
         $keywords = Keyword::all();
         $kinds = Kind::all();
     
@@ -100,7 +101,7 @@ class GuestController extends Controller
     public function show($id)
     {
         // ビューで使う関連をまとめて取得(N+1回避)
-        $farm = Farm::with([
+        $farm = Farm::published()->with([
             'animals',
             'products',
             'stores',
@@ -123,8 +124,8 @@ class GuestController extends Controller
 
     public function showArticle($id)
     {
-        // 記事のIDで記事を検索
-        $article = Article::findOrFail($id);
+        // 公開中の記事だけ表示(下書きはURLが分かっても404)
+        $article = Article::where('is_published', true)->findOrFail($id);
 
         // 記事詳細ビューにデータを渡して表示
         return view('article.show', compact('article'));

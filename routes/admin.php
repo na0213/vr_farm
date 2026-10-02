@@ -32,7 +32,7 @@ use App\Http\Controllers\Backend\ProductController;
 
 Route::view('/', 'backend.welcome');
 
-Route::middleware('guest')->group(function () {
+Route::middleware('guest:admins')->group(function () {
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 
@@ -69,6 +69,7 @@ Route::middleware('auth:admins')->group(function () {
 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
+    Route::get('password', [PasswordController::class, 'edit'])->name('password.edit');
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])

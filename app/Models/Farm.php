@@ -45,6 +45,12 @@ class Farm extends Model
         });
     }
 
+    // 公開サイトに出してよい牧場だけに絞る
+    public function scopePublished($query)
+    {
+        return $query->where('is_published', true);
+    }
+
     public function Owner()
     {
         return $this->belongsTo(Owner::class);

@@ -96,11 +96,11 @@ class StoreController extends Controller
     public function destroy(string $id)
     {
         $store = Store::findOrFail($id);
-        $owner = $store->farm->owner; // $farmに紐づく$ownerを取得
+        $farmId = $store->farm_id;
 
         // データベースから削除
         $store->delete();
-    
-        return redirect()->route('admin.backend.stores.show', ['id' => $owner->id])->with('success', '販売店が削除されました。');
+
+        return redirect()->route('admin.backend.stores.create', ['farm' => $farmId])->with('success', '販売店が削除されました。');
     }
 }
