@@ -14,7 +14,7 @@
 - `php artisan migrate`: Apply database migrations.
 - `php artisan serve`: Run locally at http://127.0.0.1:8000.
 - `npm run dev`: Vite dev server with HMR.
-- `npm run build`: Production build to `public/build`.
+- `npm run build`: Production build to `public/build`. Also run it after using a new Tailwind class locally, otherwise the style is missing.
 - `php artisan test` or `./vendor/bin/phpunit`: Run tests.
 - `./vendor/bin/pint`: Format PHP code (PSR-12).
 
@@ -30,6 +30,8 @@
 - Location: `tests/Feature` for HTTP flows; `tests/Unit` for pure logic.
 - Naming: `*Test.php` (e.g., `UserLoginTest.php`).
 - Data: Use factories/seeders; prefer `RefreshDatabase` where safe.
+- `phpunit.xml` runs tests on in-memory SQLite. Do not point tests at the local MySQL: `RefreshDatabase` would wipe the dev database.
+- Feature tests cover the main public pages and every admin screen. After removing or changing a screen, run the suite.
 - Run: `php artisan test` locally before opening a PR.
 
 ## Commit & Pull Request Guidelines
@@ -37,11 +39,19 @@
 - Branches: `feature/short-topic`, `fix/issue-123`.
 - PRs: clear description, linked issues, repro steps; screenshots for UI changes.
 - Checks: tests pass, Pint formatted, Vite build succeeds; no secrets or `.env` in diffs.
+- Pint: older files still contain unformatted code, so check only the files you changed instead of reformatting everything.
+- Split unrelated changes into separate commits (one theme per commit).
 
 ## Security & Configuration Tips
 - Never commit secrets. Configure `.env` (set `APP_URL`, `DB_*`).
 - `php artisan storage:link` to expose user uploads.
 - Restrict `public/` write paths at deploy; ensure correct file permissions.
+
+## Deployment (Heroku)
+- Production is the Heroku app `farm360` (https://www.farm360.jp). Deploy by merging to `main`, then `git push heroku main`. Buildpacks: `heroku/nodejs` then `heroku/php` (Vite is built on deploy).
+- Ask for explicit confirmation before any production-changing action: config vars, database migrations or drops. Take a database backup before running migrations.
+- `heroku rollback` also restores the config vars of the target release; re-apply any config changed since.
+- This repository is **public**. Never commit credentials, admin account details, or production values. `database/seeders/AdminSeeder.php` is local-only (gitignored).
 
 ## Design Agent Guidelines
 
@@ -54,7 +64,9 @@
 ### Constraints
 - No visual regressions: show diffs and ask approval before large edits.
 - Keep dependencies minimal; avoid new UI libs unless approved.
-- Follow existing brand hints: primary `#3be7ed`, surfaces `#f6eeff` / `#ffe6e6`.
+- Follow the design tokens in `resources/css/farm360.css` (loaded after `top.css`): cream `#fffaf0`, butter `#e9b949`, pasture `#4f7a46`, warm-brown text `#3b2f26`; headings in Zen Maru Gothic.
+- Tone: adult, appetizing, soft and round. Avoid childish cartoon mascots; thin line-art animals only, used sparingly. Keep motion small and slow, and respect `prefers-reduced-motion`.
+- Copy: describe farm practices (grazing, free-range) through taste and scenery. Do not use the term "animal welfare" in site copy.
 
 ### Review Checklist
 - Typography: heading hierarchy, line-height, letter-spacing.
