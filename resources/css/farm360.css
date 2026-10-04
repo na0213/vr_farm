@@ -600,6 +600,11 @@ button:focus-visible {
 }
 
 /* ---------- 牧場ページ ---------- */
+/* 撮影一覧: top.css の .grid は 768px 以下で1列にするので、スマホでは2列に戻す */
+@media (max-width: 768px) {
+  .grid.gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); justify-items: stretch; }
+}
+
 /* 「買ってみた」: 横にスライド。次のカードを少しのぞかせて、横に動くと分かるようにする */
 .product-slider { position: relative; }
 .product-slider-track {

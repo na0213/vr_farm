@@ -159,7 +159,7 @@
         <p>撮影一覧</p>
     </div>
     <div class="container mx-auto px-4 mb-20 max-w-5xl">
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+        <div class="grid gallery-grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             @foreach ($farm->products as $key => $product)
                 <div class="group relative aspect-square bg-stone-100 rounded-xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl hover-scale animate-on-scroll"
                      style="transition-delay: {{ $key * 100 }}ms;"
