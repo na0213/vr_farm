@@ -6,7 +6,7 @@ use App\Models\Farm;
 use App\Models\Article;
 use App\Models\Keyword;
 use App\Models\Kind;
-use App\Models\Product;
+use App\Models\PurchasedItem;
 
 class GuestController extends Controller
 {
@@ -17,25 +17,27 @@ class GuestController extends Controller
         ->latest()
         ->paginate(8);
 
-        // ECリンク付きの商品のみトップに表示(未整備なら非表示)
-        $products = Product::listed()
+        // 購入した商品の新しいもの4件(未登録なら非表示)
+        $products = PurchasedItem::listed()
             ->with('farm:id,farm_name,prefecture')
-            ->latest()
+            ->latest('id')
             ->take(4)
             ->get();
 
         return view('home', compact('articles', 'products'));
     }
 
-    // お取り寄せ(商品一覧)
+    // お取り寄せ(購入した商品を、牧場ごとに)
     public function products()
     {
-        $products = Product::listed()
-            ->with('farm:id,farm_name,prefecture')
-            ->latest()
+        $farms = Farm::published()
+            ->whereHas('purchasedItems')
+            ->with('purchasedItems')
+            ->select('id', 'farm_name', 'prefecture')
+            ->orderBy('created_at')
             ->get();
 
-        return view('products.index', compact('products'));
+        return view('products.index', compact('farms'));
     }
 
     // 牧場のこだわりと、おいしい理由(入門ページ)
@@ -68,6 +70,7 @@ class GuestController extends Controller
         $farm = Farm::published()->with([
             'animals',
             'products',
+            'purchasedItems',
             'stores',
             'kinds',
             'keywords',

@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Farm;
 use App\Models\Owner;
 use App\Models\Product;
+use App\Models\PurchasedItem;
 use App\Models\Store;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -171,6 +172,7 @@ class AdminTest extends TestCase
         $closed->is_published = false;
         $closed->save();
         Product::create(['farm_id' => $open->id, 'product_name' => '卵', 'product_info' => '説明', 'product_link' => null, 'product_image' => null]);
+        PurchasedItem::create(['farm_id' => $open->id, 'item_name' => '牛乳', 'item_image' => '/uploads/purchased_item_images/a.jpg']);
 
         $this->actingAs($this->admin, 'admins')
             ->get(route('admin.backend.farms.index'))
@@ -179,7 +181,8 @@ class AdminTest extends TestCase
             ->assertSee('公開中')
             ->assertSee('非公開牧場')
             ->assertSee('非公開')
-            ->assertSee('商品(1)');
+            ->assertSee('撮影一覧(1)')
+            ->assertSee('購入した商品(1)');
     }
 
     public function test_article_list_marks_drafts_and_links_published_ones(): void

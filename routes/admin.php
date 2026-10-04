@@ -14,6 +14,7 @@ use App\Http\Controllers\Backend\AnimalController;
 use App\Http\Controllers\Backend\StoreController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Backend\ProductController;
+use App\Http\Controllers\Backend\PurchasedItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,6 +116,14 @@ Route::middleware('auth:admins')->group(function () {
         Route::get('/products/{id}/edit', 'edit')->name('backend.products.edit');
         Route::put('/products/{id}', 'update')->name('backend.products.update');
         Route::delete('/products/{id}', 'destroy')->name('backend.products.destroy');
+        });
+
+    Route::controller(PurchasedItemController::class)->group(function () {
+        Route::get('/purchased-items/create/{farm}', 'create')->name('backend.purchased-items.create');
+        Route::post('/purchased-items/{farm}', 'store')->name('backend.purchased-items.store');
+        Route::get('/purchased-items/{id}/edit', 'edit')->name('backend.purchased-items.edit');
+        Route::put('/purchased-items/{id}', 'update')->name('backend.purchased-items.update');
+        Route::delete('/purchased-items/{id}', 'destroy')->name('backend.purchased-items.destroy');
         });
 
     Route::controller(StoreController::class)->group(function () {

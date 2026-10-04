@@ -21,7 +21,7 @@ class FarmController extends Controller
     public function index()
     {
         $farms = Farm::with('owner:id,name')
-            ->withCount(['animals', 'products', 'stores'])
+            ->withCount(['animals', 'products', 'purchasedItems', 'stores'])
             ->orderBy('farm_name')
             ->get();
 

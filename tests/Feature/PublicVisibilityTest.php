@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use App\Models\Article;
 use App\Models\Farm;
 use App\Models\Owner;
-use App\Models\Product;
+use App\Models\PurchasedItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -86,19 +86,20 @@ class PublicVisibilityTest extends TestCase
         $closed = $this->makeFarm('非公開牧場', false);
 
         foreach ([[$open, '公開の卵'], [$closed, '非公開の卵']] as [$farm, $name]) {
-            Product::create([
+            PurchasedItem::create([
                 'farm_id' => $farm->id,
-                'product_name' => $name,
-                'product_info' => '説明',
-                'product_link' => 'https://example.com/' . $farm->id,
-                'product_image' => 'https://example.com/a.jpg',
+                'item_name' => $name,
+                'item_link' => 'https://example.com/' . $farm->id,
+                'item_image' => '/uploads/purchased_item_images/a.jpg',
             ]);
         }
 
-        $this->get(route('products.index'))
-            ->assertOk()
-            ->assertSee('公開の卵')
-            ->assertDontSee('非公開の卵');
+        foreach ([route('products.index'), route('index')] as $url) {
+            $this->get($url)
+                ->assertOk()
+                ->assertSee('公開の卵')
+                ->assertDontSee('非公開の卵');
+        }
     }
 
     public function test_draft_article_returns_404_but_published_article_is_visible(): void

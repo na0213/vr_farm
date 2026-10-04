@@ -73,14 +73,12 @@
     <div class="note-wrap-in home-note-grid">
       @foreach ($products as $product)
         <div class="note-item">
-          <a href="{{ $product->product_link }}" target="_blank" rel="noopener">
+          <a href="{{ route('farm.show', $product->farm->id) }}#products">
             <div class="pic">
-              <img src="{{ $product->product_image ?: asset('storage/noimage.jpg') }}" alt="{{ $product->product_name }}" loading="lazy">
+              <img src="{{ $product->item_image }}" alt="{{ $product->item_name }}" loading="lazy">
             </div>
-            <p>{{ $product->product_name }}</p>
-            @if ($product->farm)
-              <p class="text-sm text-stone-500">{{ $product->farm->prefecture }}・{{ $product->farm->farm_name }}</p>
-            @endif
+            <p>{{ $product->item_name }}</p>
+            <p class="text-sm text-stone-500">{{ $product->farm->prefecture }}・{{ $product->farm->farm_name }}</p>
           </a>
         </div>
       @endforeach

@@ -7,7 +7,7 @@
                 </h2>
             </a>
             <h2 class="pl-10 font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                商品登録
+                撮影一覧の登録
             </h2>
         </div>
     </x-slot>

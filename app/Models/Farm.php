@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use App\Models\Owner;
 use App\Models\Product;
+use App\Models\PurchasedItem;
 use App\Models\Store;
 use App\Models\Animal;
 use App\Models\FarmImage;
@@ -54,9 +55,15 @@ class Farm extends Model
     {
         return $this->belongsTo(Owner::class);
     }
+    // 撮影一覧(牧場ページの GALLERY)
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+    // 運営者が購入して撮影した商品(登録順)
+    public function purchasedItems()
+    {
+        return $this->hasMany(PurchasedItem::class)->orderBy('id');
     }
     public function stores()
     {

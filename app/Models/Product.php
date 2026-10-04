@@ -22,12 +22,4 @@ class Product extends Model
     {
         return $this->belongsTo(Farm::class);
     }
-
-    // 公開サイトに出す商品: ECリンクがあり、牧場が公開中のもの
-    public function scopeListed($query)
-    {
-        return $query->whereNotNull('product_link')
-            ->where('product_link', '!=', '')
-            ->whereHas('farm', fn ($q) => $q->published());
-    }
 }

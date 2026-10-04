@@ -45,7 +45,8 @@
                                     <a href="{{ route('admin.backend.farms.edit', $farm->id) }}" class="underline">編集</a>
                                     <a href="{{ route('admin.admin.backend.farms.editImages', ['farmId' => $farm->id]) }}" class="underline">画像</a>
                                     <a href="{{ route('admin.backend.animals.create', ['farm' => $farm->id]) }}" class="underline">動物({{ $farm->animals_count }})</a>
-                                    <a href="{{ route('admin.backend.products.create', ['farm' => $farm->id]) }}" class="underline">商品({{ $farm->products_count }})</a>
+                                    <a href="{{ route('admin.backend.products.create', ['farm' => $farm->id]) }}" class="underline">撮影一覧({{ $farm->products_count }})</a>
+                                    <a href="{{ route('admin.backend.purchased-items.create', ['farm' => $farm->id]) }}" class="underline">購入した商品({{ $farm->purchased_items_count }})</a>
                                     <a href="{{ route('admin.backend.stores.create', ['farm' => $farm->id]) }}" class="underline">販売店({{ $farm->stores_count }})</a>
                                     @if ($farm->is_published)
                                         <a href="{{ route('farm.show', $farm->id) }}" target="_blank" rel="noopener" class="underline">公開ページ</a>

@@ -270,6 +270,28 @@
     </div>
 </div>
 
+    @if ($farm->purchasedItems->isNotEmpty())
+        <div id="products" class="story">
+            <p class="mt-20 text-[#e0db85]">PRODUCTS</p>
+        </div>
+        <div class="note-title">
+            <p>買ってみた</p>
+        </div>
+        <div class="container mx-auto px-4 mb-10 max-w-5xl">
+            <p class="text-center text-sm text-stone-500 mb-6">運営者が自分で買って、撮影したものです。</p>
+            {{-- 横にスライド(スマホは指で、パソコンは左右のボタンでも動かせる) --}}
+            <div class="product-slider" data-slider>
+                <ul class="product-slider-track" tabindex="0" aria-label="買ってみた商品(横にスクロールできます)">
+                    @foreach ($farm->purchasedItems as $item)
+                        <li class="product-slide"><x-purchased-item-card :item="$item" /></li>
+                    @endforeach
+                </ul>
+                <button type="button" class="product-slider-btn is-prev" data-dir="-1" aria-label="前の商品へ" hidden>&lsaquo;</button>
+                <button type="button" class="product-slider-btn is-next" data-dir="1" aria-label="次の商品へ" hidden>&rsaquo;</button>
+            </div>
+        </div>
+    @endif
+
     <!-- farm_idに一致する記事の内容を表示 -->
     <div class="story">
         <p class="mt-20 text-[#e0db85]">NOTE</p>
@@ -348,6 +370,32 @@
             magazineRows.forEach((el) => {
                 observer.observe(el);
             });
+        });
+    </script>
+
+    <script>
+        // 購入した商品の横スライド: 左右のボタンで1枚ずつ動かす。端ではボタンを隠す
+        document.querySelectorAll('[data-slider]').forEach(function (slider) {
+            const track = slider.querySelector('.product-slider-track');
+            const buttons = slider.querySelectorAll('.product-slider-btn');
+            const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function update() {
+                const max = track.scrollWidth - track.clientWidth;
+                buttons[0].hidden = track.scrollLeft <= 8;
+                buttons[1].hidden = track.scrollLeft >= max - 8;
+            }
+
+            buttons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    const slide = track.querySelector('.product-slide');
+                    const step = slide.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0);
+                    track.scrollBy({ left: step * Number(button.dataset.dir), behavior: smooth ? 'smooth' : 'auto' });
+                });
+            });
+            track.addEventListener('scroll', update, { passive: true });
+            window.addEventListener('resize', update);
+            update();
         });
     </script>
 
