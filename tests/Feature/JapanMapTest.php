@@ -58,6 +58,30 @@ class JapanMapTest extends TestCase
         $this->assertSame(2, substr_count($html, 'class="pref has-farm'));
     }
 
+    public function test_each_prefecture_has_floating_farm_photos_that_open_a_modal(): void
+    {
+        $withImage = $this->makeFarm('A牧場', '北海道');
+        $withImage->farmImages()->create(['image_path' => '/uploads/farms/a.jpg', 'image_order' => 1]);
+        $withoutImage = $this->makeFarm('B牧場', '北海道');
+        $other = $this->makeFarm('C牧場', '青森県');
+        $closed = $this->makeFarm('非公開の牧場', '北海道', false);
+
+        $html = $this->get(route('farm.index'))->assertOk()->getContent();
+
+        // 県ごとに、その県の公開中の牧場の丸(写真・名前・牧場ページへのリンク)がある
+        $this->assertStringContainsString('data-bubble-set="北海道"', $html);
+        $this->assertStringContainsString('data-farm-name="A牧場"', $html);
+        $this->assertStringContainsString('data-farm-image="/uploads/farms/a.jpg"', $html);
+        $this->assertStringContainsString('data-farm-url="' . route('farm.show', $withImage->id) . '"', $html);
+        // 写真が無い牧場は、代わりの画像
+        $this->assertMatchesRegularExpression('/data-farm-name="B牧場"[^>]*data-farm-image="[^"]*noimage\.jpg"/u', $html);
+        $this->assertStringContainsString('data-farm-name="C牧場"', $html);
+        $this->assertStringNotContainsString('非公開の牧場', $html);
+        // 丸を押したときのポップアップ
+        $this->assertStringContainsString('data-farm-dialog', $html);
+        $this->assertSame(3, substr_count($html, 'class="japan-bubble"'));
+    }
+
     public function test_map_is_hidden_when_there_are_no_published_farms(): void
     {
         $this->makeFarm('非公開の牧場', '北海道', false);
