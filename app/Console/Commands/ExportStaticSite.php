@@ -39,6 +39,17 @@ class ExportStaticSite extends Command
             return self::FAILURE;
         }
 
+        // 「ここに書く」の目印が残った記事は、公開サイトに出さない
+        $unfinished = Article::where('is_published', true)->get()->filter->hasDraftMarker();
+        if ($unfinished->isNotEmpty()) {
+            $this->error('書きかけの目印(【ここに書く:…】)が残った、公開中の記事があります。書き足して目印を消すか、非公開に戻してください。');
+            foreach ($unfinished as $article) {
+                $this->line("  - {$article->title}");
+            }
+
+            return self::FAILURE;
+        }
+
         if (rtrim((string) $this->option('url'), '/') === self::PRODUCTION_URL && ! config('services.turnstile.site_key')) {
             $this->error('Turnstile のサイトキーが未設定です(config/services.php)。このままではお問い合わせが送れません。');
 
