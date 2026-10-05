@@ -685,6 +685,34 @@ button:focus-visible {
 @media (min-width: 768px) { .product-slider-btn { display: flex; } }
 .product-slider-btn[hidden] { display: none; }
 
+/* トップの「読みもの」: スマホ(768px以下)では横一列にして、指で横にスライドする。
+   次のカードを少しのぞかせて、横に動くと分かるようにする(パソコンは今までどおり並べる) */
+@media (max-width: 768px) {
+  .note-wrap-in.home-note-grid {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+    padding: 0.5rem 1rem 1.5rem; /* カードの影と、浮き上がりが切れないように */
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1rem; /* 左右の余白の分だけ、吸着の位置をずらす */
+    scrollbar-width: thin;
+    scrollbar-color: var(--butter) transparent;
+  }
+  .home-note-grid .note-item {
+    flex: 0 0 72%;
+    max-width: none;
+    margin: 0;
+    scroll-snap-align: start;
+  }
+  /* 枚数が少なくて横に余るときは中央に寄せる(あふれるときは左端から) */
+  .home-note-grid .note-item:first-child { margin-left: auto; }
+  .home-note-grid .note-item:last-child { margin-right: auto; }
+}
+@media (min-width: 540px) and (max-width: 768px) {
+  .home-note-grid .note-item { flex-basis: calc((100% - 2rem - 1rem) / 2.25); }
+}
+
 /* ---------- 購入した商品のカード(<x-purchased-item-card>) ---------- */
 /* 写真が2枚以上のとき: 小さい写真を押すと、上の大きい写真が切り替わる */
 .item-thumbs { display: flex; gap: 0.5rem; margin-bottom: 0.875rem; }
