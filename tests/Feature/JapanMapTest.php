@@ -82,6 +82,19 @@ class JapanMapTest extends TestCase
         $this->assertSame(3, substr_count($html, 'class="japan-bubble"'));
     }
 
+    public function test_prefecture_checkboxes_are_in_the_usual_order_not_registration_order(): void
+    {
+        // 登録は、南から・順不同
+        foreach ([['A', '宮崎県'], ['B', '千葉県'], ['C', '北海道'], ['D', '青森県']] as [$name, $prefecture]) {
+            $this->makeFarm($name . '牧場', $prefecture);
+        }
+
+        $html = $this->get(route('farm.index'))->assertOk()->getContent();
+        preg_match_all('/name="prefectures\[\]" value="([^"]+)"/u', $html, $m);
+
+        $this->assertSame(['北海道', '青森県', '千葉県', '宮崎県'], $m[1]);
+    }
+
     public function test_map_is_hidden_when_there_are_no_published_farms(): void
     {
         $this->makeFarm('非公開の牧場', '北海道', false);

@@ -7,6 +7,7 @@ use App\Models\Article;
 use App\Models\Keyword;
 use App\Models\Kind;
 use App\Models\PurchasedItem;
+use App\Services\Prefectures;
 
 class GuestController extends Controller
 {
@@ -54,7 +55,8 @@ class GuestController extends Controller
             ->get();
 
         // 検索フォームで利用する選択肢を取得
-        $prefectures = Farm::published()->distinct()->pluck('prefecture');
+        // 都道府県は、登録順ではなく、北海道から沖縄までの一般的な順に並べる
+        $prefectures = Prefectures::sort(Farm::published()->distinct()->pluck('prefecture'));
         $keywords = Keyword::all();
         $kinds = Kind::all();
 
