@@ -151,12 +151,20 @@
     </div>
     <div class="story story-panel">
     <p class="con_text">
-      放牧、平飼い、牧草で育てる。<br>
-      牧場ごとの育て方が、<br>
-      ここでしか出せない味をつくります。<br><br>
-      むずかしいことは抜きにして、<br>
-      まずは5分で読める入門ページからどうぞ。<br><br>
-      <a href="{{ route('kodawari.index') }}" class="btn-link more-link">牧場のこだわりと、おいしい理由 →</a>
+      スーパーで、平飼い卵を<br>
+      見かけることが増えました。<br>
+      「平飼いではない卵と、<br>
+      どう違うんだろう?」<br><br>
+      調べるうちに、平飼いや放牧は<br>
+      生産者さんにとって<br>
+      簡単ではないことも<br>
+      分かってきました。<br><br>
+      それなら、<br>
+      まずは自分の目で見てみよう。<br>
+      そう思って、牧場を訪ね、<br>
+      見たこと、知ったことを<br>
+      伝えています。<br><br>
+      <a href="{{ route('about.index') }}" class="btn-link more-link">このサイトをはじめたきっかけ →</a>
     </p>
     </div>
   </div>

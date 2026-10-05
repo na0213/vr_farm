@@ -39,11 +39,11 @@
                 </div>
                 <div class="flex">
                     <dt class="font-bold w-20 sm:w-28 shrink-0">運営</dt>
-                    <dd class="flex-1">個人(趣味)</dd>
+                    <dd class="flex-1">個人</dd>
                 </div>
                 <div class="flex">
                     <dt class="font-bold w-20 sm:w-28 shrink-0">メール</dt>
-                    <dd class="flex-1 break-all">natomi.work@gmail.com</dd>
+                    <dd class="flex-1 break-all">info@natomi.work</dd>
                 </div>
             </dl>
             <p class="mt-6">掲載内容の誤りや、変更のご連絡は、お問い合わせフォームからお願いします。</p>

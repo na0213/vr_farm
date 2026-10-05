@@ -24,7 +24,7 @@ class AboutPageTest extends TestCase
             ->assertSeeText('個人の趣味')
             ->assertSeeText('スーパー')                      // 始めたきっかけ
             ->assertSeeText('実際に訪ねた')                  // 牧場の選び方
-            ->assertSee('natomi.work@gmail.com')             // 既存の連絡先は残す
+            ->assertSee('info@natomi.work')                   // 連絡先のメール
             ->assertSee(route('contact.form'), false)        // 訂正・連絡はフォームへ
             ->assertSee('個人の趣味', false);                // meta description にも入る
     }
