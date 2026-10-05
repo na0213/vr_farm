@@ -207,14 +207,17 @@
                         @endforeach
                     </td>
                 </tr>
-                <tr>
-                    <th class="px-4 py-2 bg-gray-200 text-left font-medium text-gray-600">こだわり</th>
-                    <td class="px-4 py-2">
-                        @foreach ($farm->keywords as $keyword)
-                            <span class="text-xs font-semibold px-2 py-1 rounded">#{{ $keyword->keyword }}</span>
-                        @endforeach
-                    </td>
-                </tr>
+                {{-- キーワードが1つも付いていない牧場では、空の欄を出さない --}}
+                @if ($farm->keywords->isNotEmpty())
+                    <tr>
+                        <th class="px-4 py-2 bg-gray-200 text-left font-medium text-gray-600">こだわり</th>
+                        <td class="px-4 py-2">
+                            @foreach ($farm->keywords as $keyword)
+                                <span class="text-xs font-semibold px-2 py-1 rounded">#{{ $keyword->keyword }}</span>
+                            @endforeach
+                        </td>
+                    </tr>
+                @endif
                 <tr>
                     <th class="px-4 py-2 bg-gray-200 text-left font-medium text-gray-600">体験可否</th>
                     <td class="px-4 py-2">
