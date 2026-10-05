@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use App\Models\Owner;
 use App\Models\Product;
 use App\Models\PurchasedItem;
 use App\Models\Store;
@@ -20,7 +19,6 @@ class Farm extends Model
     use HasFactory;
 
     protected $fillable = [
-        'owner_id',
         'farm_name',
         'catchcopy',
         'vr',
@@ -51,10 +49,6 @@ class Farm extends Model
         return $query->where('is_published', true);
     }
 
-    public function Owner()
-    {
-        return $this->belongsTo(Owner::class);
-    }
     // 撮影一覧(牧場ページの GALLERY)
     public function products()
     {

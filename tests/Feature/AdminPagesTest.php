@@ -8,7 +8,6 @@ use App\Models\Article;
 use App\Models\Farm;
 use App\Models\Keyword;
 use App\Models\Kind;
-use App\Models\Owner;
 use App\Models\Product;
 use App\Models\PurchasedItem;
 use App\Models\Store;
@@ -31,8 +30,7 @@ class AdminPagesTest extends TestCase
 
     public function test_admin_pages_render(): void
     {
-        $owner = Owner::create(['name' => 'owner', 'email' => 'owner@example.com', 'password' => 'secret-pass']);
-        $farm = new Farm(['owner_id' => $owner->id, 'farm_name' => 'テスト牧場', 'catchcopy' => 'c', 'prefecture' => '北海道', 'address' => 'a', 'theme' => 't']);
+        $farm = new Farm(['farm_name' => 'テスト牧場', 'catchcopy' => 'c', 'prefecture' => '北海道', 'address' => 'a', 'theme' => 't']);
         $farm->is_published = true;
         $farm->save();
         $kind = Kind::create(['kind' => '牛']);
@@ -52,11 +50,7 @@ class AdminPagesTest extends TestCase
             'admin.dashboard' => [],
             'admin.backend.system' => [],
             'admin.password.edit' => [],
-            'admin.backend.owners.index' => [],
-            'admin.backend.owners.create' => [],
-            'admin.backend.owners.show' => ['id' => $owner->id],
-            'admin.backend.owners.edit' => ['id' => $owner->id],
-            'admin.backend.farms.create' => ['owner' => $owner->id],
+            'admin.backend.farms.create' => [],
             'admin.backend.farms.edit' => ['id' => $farm->id],
             'admin.backend.farms.index' => [],
             'admin.admin.backend.farms.editImages' => ['farmId' => $farm->id],

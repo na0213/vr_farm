@@ -14,15 +14,14 @@ class AnimalController extends Controller
 {
 public function create($farmId)
     {
-        $farm = Farm::with('owner')->findOrFail($farmId);
-        $owner = $farm->owner;
+        $farm = Farm::findOrFail($farmId);
 
         // 追加: この牧場に紐付いている動物たちを取得する
         // （登録後に一覧で表示するため）
         $animals = Animal::where('farm_id', $farmId)->get();
 
         // animals をビューに渡す
-        return view('backend.animals.create', compact('farm', 'owner', 'animals'));
+        return view('backend.animals.create', compact('farm', 'animals'));
     }
 
     public function store(Request $request, $farmId)
@@ -71,10 +70,9 @@ public function create($farmId)
 
     public function edit($id)
     {
-        $animal = Animal::with('farm.owner')->findOrFail($id);
-        $owner = optional($animal->farm)->owner;
+        $animal = Animal::findOrFail($id);
     
-        return view('backend.animals.edit', compact('animal', 'owner'));
+        return view('backend.animals.edit', compact('animal'));
     }
 
     public function update(Request $request, string $id)
@@ -124,13 +122,13 @@ public function create($farmId)
     public function destroy(string $id)
     {
         $animal = Animal::findOrFail($id);
-        $owner = $animal->farm->owner; // $farmに紐づく$ownerを取得
+        $farmId = $animal->farm_id;
         // 画像を削除
         ImageStorage::delete($animal->animal_image);
-    
+
         // データベースから削除
         $animal->delete();
     
-        return redirect()->route('admin.backend.owners.show', ['id' => $owner->id])->with('success', '動物が削除されました。');
+        return redirect()->route('admin.backend.animals.create', ['farm' => $farmId])->with('success', '動物が削除されました。');
     }
 }

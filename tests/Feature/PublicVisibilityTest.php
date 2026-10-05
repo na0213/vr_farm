@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Article;
 use App\Models\Farm;
-use App\Models\Owner;
 use App\Models\PurchasedItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -15,10 +14,7 @@ class PublicVisibilityTest extends TestCase
 
     private function makeFarm(string $name, bool $published): Farm
     {
-        $owner = Owner::create(['name' => 'owner', 'email' => $name . '@example.com', 'password' => 'secret-pass']);
-
         $farm = new Farm([
-            'owner_id' => $owner->id,
             'farm_name' => $name,
             'catchcopy' => 'キャッチ',
             'prefecture' => '北海道',

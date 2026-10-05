@@ -8,7 +8,6 @@ use App\Http\Controllers\Auth\Admin\PasswordResetLinkController;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\KindController;
 use App\Http\Controllers\Backend\KeywordController;
-use App\Http\Controllers\Backend\OwnerController;
 use App\Http\Controllers\Backend\FarmController;
 use App\Http\Controllers\Backend\AnimalController;
 use App\Http\Controllers\Backend\StoreController;
@@ -79,20 +78,10 @@ Route::middleware('auth:admins')->group(function () {
         Route::delete('/keywords/{id}', 'destroy')->name('backend.keywords.destroy');
         });
 
-    Route::controller(OwnerController::class)->group(function () {
-        Route::get('/owners', 'index')->name('backend.owners.index');
-        Route::get('/owners/create', 'create')->name('backend.owners.create');
-        Route::post('/owners', 'store')->name('backend.owners.store');
-        Route::get('/owners/{id}/show', 'show')->name('backend.owners.show');
-        Route::get('/owners/{id}/edit', 'edit')->name('backend.owners.edit');
-        Route::put('/owners/{id}', 'update')->name('backend.owners.update');
-        Route::delete('/owners/{id}', 'destroy')->name('backend.owners.destroy');
-        });
-
     Route::controller(FarmController::class)->group(function () {
         Route::get('/farms', 'index')->name('backend.farms.index');
-        Route::get('/farms/create/{owner}', 'create')->name('backend.farms.create');
-        Route::post('/farms/{owner}', 'store')->name('backend.farms.store');
+        Route::get('/farms/create', 'create')->name('backend.farms.create');
+        Route::post('/farms', 'store')->name('backend.farms.store');
         Route::get('/farms/{id}/edit', 'edit')->name('backend.farms.edit');
         Route::post('/farms/{id}/update_post', 'update')->name('backend.farms.update_post');
         Route::post('/farms/{id}/images', 'storeImages')->name('backend.farms.storeImages');

@@ -14,9 +14,8 @@ class ProductController extends Controller
 {
     public function create($farmId)
     {
-        $farm = Farm::with('owner')->findOrFail($farmId); // Ownerの情報も一緒に取得
-        $owner = $farm->owner; // $farmに紐づく$ownerを取得
-        return view('backend.products.create', compact('farm', 'owner'));
+        $farm = Farm::findOrFail($farmId);
+        return view('backend.products.create', compact('farm'));
     }
 
     public function store(Request $request, $farmId)
@@ -66,10 +65,9 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $product = Product::with('farm.owner')->findOrFail($id);
-        $owner = optional($product->farm)->owner;
+        $product = Product::findOrFail($id);
     
-        return view('backend.products.edit', compact('product', 'owner'));
+        return view('backend.products.edit', compact('product'));
     }
 
     public function update(Request $request, string $id)

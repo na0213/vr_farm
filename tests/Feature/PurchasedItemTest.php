@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Admin;
 use App\Models\Farm;
-use App\Models\Owner;
 use App\Models\PurchasedItem;
 use App\Services\ImageStorage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,8 +30,7 @@ class PurchasedItemTest extends TestCase
 
     private function makeFarm(string $name, bool $published = true): Farm
     {
-        $owner = Owner::create(['name' => 'owner', 'email' => $name.'@example.com', 'password' => 'secret-pass']);
-        $farm = new Farm(['owner_id' => $owner->id, 'farm_name' => $name, 'catchcopy' => 'c', 'prefecture' => '北海道', 'address' => 'a', 'theme' => 't']);
+        $farm = new Farm(['farm_name' => $name, 'catchcopy' => 'c', 'prefecture' => '北海道', 'address' => 'a', 'theme' => 't']);
         $farm->is_published = $published;
         $farm->save();
 

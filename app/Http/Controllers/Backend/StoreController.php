@@ -13,9 +13,8 @@ class StoreController extends Controller
 {
     public function create($farmId)
     {
-        $farm = Farm::with('owner')->findOrFail($farmId); // Ownerの情報も一緒に取得
-        $owner = $farm->owner; // $farmに紐づく$ownerを取得
-        return view('backend.stores.create', compact('farm', 'owner'));
+        $farm = Farm::findOrFail($farmId);
+        return view('backend.stores.create', compact('farm'));
     }
 
     public function store(Request $request, $farmId)
@@ -51,10 +50,9 @@ class StoreController extends Controller
 
     public function edit($id)
     {
-        $store = Store::with('farm.owner')->findOrFail($id);
-        $owner = optional($store->farm)->owner;
+        $store = Store::findOrFail($id);
     
-        return view('backend.stores.edit', compact('store', 'owner'));
+        return view('backend.stores.edit', compact('store'));
     }
 
     public function update(Request $request, string $id)

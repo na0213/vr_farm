@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Article;
 use App\Models\Farm;
-use App\Models\Owner;
 use App\Services\ImageStorage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -39,10 +38,7 @@ class StaticSiteTest extends TestCase
 
     private function makeFarm(string $name, bool $published, string $theme = 'テーマ'): Farm
     {
-        $owner = Owner::create(['name' => 'owner', 'email' => uniqid().'@example.com', 'password' => 'secret-pass']);
-
         $farm = new Farm([
-            'owner_id' => $owner->id,
             'farm_name' => $name,
             'catchcopy' => 'キャッチ',
             'prefecture' => '北海道',

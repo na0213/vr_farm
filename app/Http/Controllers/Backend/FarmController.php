@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Owner;
 use App\Models\Farm;
 use App\Models\FarmImage;
 use App\Models\Kind;
@@ -20,23 +19,21 @@ class FarmController extends Controller
 {
     public function index()
     {
-        $farms = Farm::with('owner:id,name')
-            ->withCount(['animals', 'products', 'purchasedItems', 'stores'])
+        $farms = Farm::withCount(['animals', 'products', 'purchasedItems', 'stores'])
             ->orderBy('farm_name')
             ->get();
 
         return view('backend.farms.index', compact('farms'));
     }
 
-    public function create($ownerId)
+    public function create()
     {
-        $owner = Owner::findOrFail($ownerId);
         $kinds = Kind::all();
         $keywords = Keyword::all();
-        return view('backend.farms.create', compact('owner', 'kinds', 'keywords'));
+        return view('backend.farms.create', compact('kinds', 'keywords'));
     }
 
-    public function store(Request $request, $ownerId)
+    public function store(Request $request)
     {
         // バリデーション
         $validated = $request->validate([
@@ -60,17 +57,15 @@ class FarmController extends Controller
             // トランザクション開始
             DB::beginTransaction();
     
-            $owner = Owner::findOrFail($ownerId);
             $farm = new Farm();
-            $farm->owner_id = $owner->id;
             $farm->farm_name = $validated['name'];
-            $farm->catchcopy = $validated['catchcopy'];
+            $farm->catchcopy = $validated['catchcopy'] ?? null;
             $farm->prefecture = $validated['prefecture'];
-            $farm->address = $validated['address'];
-            $farm->theme = $validated['theme'];
-            $farm->hp_link = $validated['hp_link'];
+            $farm->address = $validated['address'] ?? null;
+            $farm->theme = $validated['theme'] ?? null;
+            $farm->hp_link = $validated['hp_link'] ?? null;
             $farm->has_experience = $validated['has_experience'] ?? false;
-            $farm->instagram_link = $validated['instagram_link'];
+            $farm->instagram_link = $validated['instagram_link'] ?? null;
             $farm->is_published = $validated['is_published'];
 
             if ($request->hasFile('vr')) {
@@ -94,8 +89,8 @@ class FarmController extends Controller
             // トランザクションコミット
             DB::commit();
     
-            return redirect()->route('admin.backend.owners.show', ['id' => $ownerId])
-                ->with('message', '牧場が登録されました');
+            return redirect()->route('admin.backend.farms.index')
+                ->with('success', '牧場を登録しました。');
         } catch (\Exception $e) {
             // エラーが発生した場合はロールバック
             DB::rollback();
@@ -107,13 +102,12 @@ class FarmController extends Controller
     public function edit(string $id)
     {
         $farm = Farm::with(['kinds', 'keywords'])->findOrFail($id);
-        $owner = $farm->owner;
         $selected_kinds = $farm->kinds->pluck('id')->toArray();
         $selected_keywords = $farm->keywords->pluck('id')->toArray();
         $kinds = Kind::all();
         $keywords = Keyword::all();
     
-        return view('backend.farms.edit', compact('owner', 'farm', 'kinds', 'keywords', 'selected_kinds', 'selected_keywords'));
+        return view('backend.farms.edit', compact('farm', 'kinds', 'keywords', 'selected_kinds', 'selected_keywords'));
     }
 
 public function update(Request $request, $id)
@@ -190,8 +184,8 @@ public function update(Request $request, $id)
 
         DB::commit();
 
-        return redirect()->route('admin.backend.owners.show', ['id' => $farm->owner_id])
-            ->with('message', '牧場の情報が更新されました');
+        return redirect()->route('admin.backend.farms.index')
+            ->with('success', '牧場の情報を更新しました。');
 
     } catch (\Exception $e) {
         DB::rollback();
@@ -236,7 +230,7 @@ public function update(Request $request, $id)
             // 全て成功したらコミット（確定）
             DB::commit();
 
-            return redirect()->route('admin.backend.owners.show', ['id' => $farm->owner_id])
+            return redirect()->route('admin.backend.farms.index')
                 ->with('success', '画像が正常にアップロードされました。');
 
         } catch (Exception $e) {
@@ -257,9 +251,8 @@ public function update(Request $request, $id)
 
     public function editImages($farmId)
     {
-        $farm = Farm::with('farmImages', 'owner')->findOrFail($farmId);
-        $owner = $farm->owner;
-        return view('backend.farms.edit-image', compact('farm', 'owner'));
+        $farm = Farm::with('farmImages')->findOrFail($farmId);
+        return view('backend.farms.edit-image', compact('farm'));
     }
 
     public function updateImage(Request $request, $farmId, $imageId)
@@ -296,7 +289,7 @@ public function update(Request $request, $id)
 
                 DB::commit();
 
-                return redirect()->route('admin.backend.owners.show', ['id' => $farm->owner_id])
+                return redirect()->route('admin.backend.farms.index')
                     ->with('success', '画像が更新されました。');
             }
 

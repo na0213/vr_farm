@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Article;
 use App\Models\Farm;
 use App\Models\FarmImage;
-use App\Models\Owner;
 use App\Services\StructuredData;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -26,10 +25,7 @@ class StructuredDataTest extends TestCase
 
     private function makeFarm(array $overrides = []): Farm
     {
-        $owner = Owner::create(['name' => 'owner', 'email' => uniqid().'@example.com', 'password' => 'secret-pass']);
-
         $farm = new Farm(array_merge([
-            'owner_id' => $owner->id,
             'farm_name' => '松浦牧場',
             'catchcopy' => '命が循環する牧場',
             'prefecture' => '宮崎県',
