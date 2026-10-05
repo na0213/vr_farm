@@ -17,14 +17,12 @@ class GuestController extends Controller
         ->latest()
         ->paginate(8);
 
-        // 購入した商品の新しいもの4件(未登録なら非表示)
-        $products = PurchasedItem::listed()
-            ->with('farm:id,farm_name,prefecture')
+        // 商品検索の入口に使う、購入した商品の新しい1件の写真(未登録なら入口ごと非表示)
+        $latestProduct = PurchasedItem::listed()
             ->latest('id')
-            ->take(4)
-            ->get();
+            ->first(['id', 'item_image']);
 
-        return view('home', compact('articles', 'products'));
+        return view('home', compact('articles', 'latestProduct'));
     }
 
     // お取り寄せ(購入した商品を、牧場ごとに)

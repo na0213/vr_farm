@@ -201,6 +201,30 @@ class PurchasedItemTest extends TestCase
         }
     }
 
+    public function test_top_page_has_a_product_search_entry_that_links_to_the_products_page(): void
+    {
+        $farm = $this->makeFarm('鈴木牧場');
+        PurchasedItem::create(['farm_id' => $farm->id, 'item_name' => 'A2ミルク', 'item_image' => '/uploads/purchased_item_images/a.jpg']);
+
+        $this->get(route('index'))
+            ->assertOk()
+            ->assertSeeInOrder(['牧場検索', '商品検索'])
+            ->assertSee('href="' . route('products.index') . '"', false)
+            ->assertSee('src="/uploads/purchased_item_images/a.jpg"', false)
+            // 商品を並べる欄はやめた(増えても、トップが長くならない)
+            ->assertDontSee('A2ミルク');
+    }
+
+    public function test_top_page_hides_the_product_search_entry_when_nothing_is_registered(): void
+    {
+        $this->makeFarm('鈴木牧場');
+
+        $this->get(route('index'))
+            ->assertOk()
+            ->assertDontSee('商品検索')
+            ->assertDontSee('concept--products', false);
+    }
+
     public function test_products_page_groups_items_by_farm(): void
     {
         $suzuki = $this->makeFarm('鈴木牧場');

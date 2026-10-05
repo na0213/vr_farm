@@ -62,33 +62,6 @@
     </div>
   </div>
 
-  @if ($products->isNotEmpty())
-  <div class="story reveal" data-animate>
-    <p class="mt-20 text-[#e09885] with-icon">PRODUCTS</p>
-  </div>
-  <div class="note-title reveal" data-animate>
-    <p class="wavy-underline">お取り寄せ</p>
-  </div>
-  <div class="note-wrap reveal" data-animate>
-    <div class="note-wrap-in home-note-grid">
-      @foreach ($products as $product)
-        <div class="note-item">
-          <a href="{{ route('farm.show', $product->farm->id) }}#products">
-            <div class="pic">
-              <img src="{{ $product->item_image }}" alt="{{ $product->item_name }}" loading="lazy">
-            </div>
-            <p>{{ $product->item_name }}</p>
-            <p class="text-sm text-stone-500">{{ $product->farm->prefecture }}・{{ $product->farm->farm_name }}</p>
-          </a>
-        </div>
-      @endforeach
-    </div>
-    <div class="pagination">
-      <a href="{{ route('products.index') }}">お取り寄せ一覧へ →</a>
-    </div>
-  </div>
-  @endif
-
   <div class="story reveal" data-animate>
     <p class="mt-20 text-[#e09885] with-icon">STORY</p>
   </div>
@@ -138,6 +111,26 @@
     </div>
     </a>
   </div>
+
+  @if ($latestProduct)
+  <div class="story reveal" data-animate>
+    <p class="mt-10 text-[#e09885] with-icon">PRODUCTS</p>
+  </div>
+  <div class="note-title reveal" data-animate>
+    <p class="wavy-underline">商品検索</p>
+  </div>
+  <div class="circle reveal" data-animate>
+    <a href="{{ route('products.index') }}">
+    <div class="concept bg-image-1 concept-accent concept--products">
+        <img class="concept-photo" src="{{ $latestProduct->item_image }}" alt="" loading="lazy">
+        <p class="center-text">
+            <span class="line-1">おいしいものを</span>
+            <span class="line-2">さがそう！</span>
+        </p>
+    </div>
+    </a>
+  </div>
+  @endif
 
   <div class="story reveal" data-animate>
     <p class="mt-20 text-[#e09885] with-icon">ABOUT</p>

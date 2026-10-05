@@ -331,6 +331,31 @@ button:focus-visible {
 }
 .concept-badge::after { color: var(--ink-900); }
 
+/* 商品検索の入口: 回る写真のかわりに、購入した商品の新しい写真を丸に敷く */
+.concept--products::after { display: none; }
+.concept-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+/* 写真は暗くせず、文字はクリーム色の札にのせる(どんな写真でも読める) */
+.concept--products::before { background-color: transparent; }
+.concept--products .center-text {
+  padding: 0.9rem 1.5rem 1.1rem;
+  background: rgba(255, 253, 248, 0.92);
+  border-radius: var(--radius-md);
+  box-shadow: 0 6px 18px rgba(59, 47, 38, 0.18);
+}
+.concept--products .center-text .line-1 { color: var(--ink-900); text-shadow: none; }
+.concept--products .center-text .line-2 {
+  -webkit-text-fill-color: var(--ink-900);
+  color: var(--ink-900);
+  text-shadow: none;
+}
+
 /* ---------- カード ---------- */
 .note-item {
   background-color: var(--milk);
