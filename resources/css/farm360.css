@@ -752,6 +752,46 @@ button:focus-visible {
     box-shadow: 0 4px 12px rgba(233, 185, 73, 0.3);
   }
 }
+/* 牧場名で絞り込むボタン: スマホは横にスクロール、広い画面は折り返して中央に */
+.farm-chips {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0 -1rem 2rem;
+  padding: 0.25rem 1rem 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-margin-top: 5rem; /* 上に貼り付いたヘッダーに隠れないように */
+}
+.farm-chips::-webkit-scrollbar { display: none; }
+.farm-chips[hidden] { display: none; }
+@media (min-width: 640px) {
+  .farm-chips { flex-wrap: wrap; justify-content: center; margin-inline: 0; padding-inline: 0; overflow: visible; }
+}
+.farm-chip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 9999px;
+  background: var(--milk);
+  color: var(--ink-700);
+  font-size: 0.875rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.farm-chip:hover { background: rgba(246, 213, 138, 0.35); }
+.farm-chip:focus-visible { outline: 2px solid var(--butter-deep); outline-offset: 2px; }
+.farm-chip[aria-pressed="true"] { background: var(--butter); border-color: var(--butter-deep); color: var(--ink-900); font-weight: 700; }
+.farm-chip-count { font-size: 0.75rem; color: var(--ink-500); }
+/* 牧場ごとに、新しい4件だけ見せる(古いぶんは絞り込みで出す) */
+.product-section.is-collapsed .product-extra { display: none; }
+.product-section:not(.is-collapsed) .product-more { display: none; }
+.product-more { font-size: 0.875rem; }
+
 /* 3列のうち狭いとき(タブレット)は、文字も少し小さく */
 @media (min-width: 540px) and (max-width: 768px) {
   .product-grid .soft-card > div { padding: 0.75rem; }

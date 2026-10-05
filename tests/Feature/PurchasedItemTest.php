@@ -239,6 +239,60 @@ class PurchasedItemTest extends TestCase
             ->assertDontSee('販売ページを見る');
     }
 
+    private function addItems(Farm $farm, int $count): void
+    {
+        foreach (range(1, $count) as $n) {
+            PurchasedItem::create(['farm_id' => $farm->id, 'item_name' => "商品{$n}", 'item_image' => "/uploads/purchased_item_images/{$n}.jpg"]);
+        }
+    }
+
+    public function test_products_page_first_shows_only_the_newest_four_items_of_a_farm(): void
+    {
+        $farm = $this->makeFarm('鈴木牧場');
+        $this->addItems($farm, 6);
+
+        $html = $this->get(route('products.index'))->assertOk()
+            ->assertSee('この牧場の商品をすべて見る(6件)')
+            // 全件を出す先は牧場ページ(JS が動かないとき)
+            ->assertSee('href="' . route('farm.show', $farm->id) . '#products"', false)
+            ->getContent();
+
+        // 隠すのは古いほうの2件(商品1・商品2)。新しい4件はそのまま見える
+        $hidden = [];
+        foreach (array_slice(explode('<article', $html), 1) as $card) {
+            if (str_contains(strtok($card, '>'), 'product-extra')) {
+                preg_match('/商品\d/u', $card, $m);
+                $hidden[] = $m[0];
+            }
+        }
+        $this->assertSame(['商品1', '商品2'], $hidden);
+    }
+
+    public function test_products_page_shows_everything_when_a_farm_has_four_items_or_fewer(): void
+    {
+        $this->addItems($this->makeFarm('鈴木牧場'), 4);
+
+        $this->get(route('products.index'))->assertOk()
+            ->assertDontSee('すべて見る')
+            ->assertDontSee('product-extra', false);
+    }
+
+    public function test_products_page_has_farm_filter_buttons_only_with_two_or_more_farms(): void
+    {
+        $suzuki = $this->makeFarm('鈴木牧場');
+        $this->addItems($suzuki, 1);
+
+        $this->get(route('products.index'))->assertOk()->assertDontSee('data-farm-chips', false);
+
+        $sasaki = $this->makeFarm('SASAKI FARM');
+        $this->addItems($sasaki, 2);
+
+        $this->get(route('products.index'))->assertOk()
+            ->assertSee('data-farm-chips', false)
+            ->assertSee('data-farm="' . $suzuki->id . '"', false)
+            ->assertSee('data-farm="' . $sasaki->id . '"', false);
+    }
+
     public function test_products_page_shows_a_placeholder_when_nothing_is_registered(): void
     {
         $this->makeFarm('鈴木牧場');

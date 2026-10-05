@@ -3,7 +3,7 @@
 @props(['item', 'showFarm' => false])
 @php($images = $item->images())
 
-<article class="soft-card flex flex-col"
+<article {{ $attributes->class(['soft-card', 'flex', 'flex-col']) }}
          @if (count($images) > 1) x-data="{ shown: 0, images: @js($images) }" @endif>
     <img src="{{ $images[0] }}" alt="{{ $item->item_name }}" loading="lazy" class="w-full aspect-square object-cover"
          @if (count($images) > 1) x-bind:src="images[shown]" @endif>
