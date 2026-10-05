@@ -1,10 +1,16 @@
 {{-- 購入した商品のカード。showFarm を付けると牧場名(牧場ページへのリンク)も出す。
-     写真が2枚以上あれば、下の小さい写真を押すと大きい写真が切り替わる(Alpine) --}}
-@props(['item', 'showFarm' => false])
+     写真が2枚以上あれば、下の小さい写真を押すと大きい写真が切り替わる(Alpine)。
+     tile を付けると、スマホではタイルになり、押すと全部入りのカードをポップアップで開く(お取り寄せページ) --}}
+@props(['item', 'showFarm' => false, 'tile' => false])
 @php($images = $item->images())
 
 <article {{ $attributes->class(['soft-card', 'flex', 'flex-col']) }}
          @if (count($images) > 1) x-data="{ shown: 0, images: @js($images) }" @endif>
+    @if ($tile)
+        {{-- スマホでは、カードが小さなタイルになる。タイル全体がこのリンク(CSS でスマホだけ表示) --}}
+        <a href="{{ route('farm.show', $item->farm_id) }}#products" class="item-tile-link" data-item-open
+           aria-label="{{ $item->item_name }}の写真と感想を見る"></a>
+    @endif
     <img src="{{ $images[0] }}" alt="{{ $item->item_name }}" loading="lazy" class="w-full aspect-square object-cover"
          @if (count($images) > 1) x-bind:src="images[shown]" @endif>
     <div class="p-5 flex flex-col flex-1">

@@ -293,12 +293,30 @@ class PurchasedItemTest extends TestCase
             ->assertSee('data-farm="' . $sasaki->id . '"', false);
     }
 
+    public function test_products_page_tiles_open_a_detail_dialog_and_fall_back_to_the_farm_page(): void
+    {
+        $farm = $this->makeFarm('鈴木牧場');
+        PurchasedItem::create(['farm_id' => $farm->id, 'item_name' => 'A2ミルク', 'item_comment' => 'おいしい', 'item_image' => '/uploads/purchased_item_images/a.jpg']);
+
+        // スマホではタイルを押すとポップアップで詳細を開く。JS が使えないときのリンク先は牧場ページ
+        $this->get(route('products.index'))->assertOk()
+            ->assertSee('data-item-open', false)
+            ->assertSee('href="' . route('farm.show', $farm->id) . '#products"', false)
+            ->assertSee('data-item-dialog', false)
+            // 感想と販売ページへのボタンは、ページの中に残る(広い画面ではそのまま見える)
+            ->assertSee('おいしい');
+
+        // 牧場ページの「買ってみた」は、今までどおり(タイルにしない)
+        $this->get(route('farm.show', $farm->id))->assertOk()->assertDontSee('data-item-open', false);
+    }
+
     public function test_products_page_shows_a_placeholder_when_nothing_is_registered(): void
     {
         $this->makeFarm('鈴木牧場');
 
         $this->get(route('products.index'))
             ->assertOk()
-            ->assertSee('ただいま準備中');
+            ->assertSee('ただいま準備中')
+            ->assertDontSee('data-item-dialog', false);
     }
 }

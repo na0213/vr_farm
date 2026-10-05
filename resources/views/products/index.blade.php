@@ -2,7 +2,7 @@
     <x-slot name="title">お取り寄せ</x-slot>
     <x-slot name="metaDescription">運営者が自分で買って撮影した、牧場の商品を牧場ごとに紹介します。食べた感想と、販売ページへのリンクつき。</x-slot>
 
-    <div class="container mx-auto px-4 py-12 max-w-5xl">
+    <div class="container mx-auto px-4 py-12 max-w-5xl" data-products>
         <div class="note-title">
             <p class="wavy-underline">お取り寄せ</p>
         </div>
@@ -40,7 +40,7 @@
                     </h2>
                     <div class="grid product-grid grid-stagger">
                         @foreach ($items as $item)
-                            <x-purchased-item-card :item="$item" :class="$loop->index < $extra ? 'product-extra' : ''" />
+                            <x-purchased-item-card :item="$item" tile :class="$loop->index < $extra ? 'product-extra' : ''" />
                         @endforeach
                     </div>
                     <div class="mt-6 flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
@@ -60,6 +60,39 @@
         </div>
     </div>
 
+    @if ($farms->isNotEmpty())
+    {{-- スマホでタイルを押したときに、全部入りのカード(写真・感想・販売ページ)を開く --}}
+    <dialog class="item-dialog" data-item-dialog aria-label="商品の詳細">
+        <button type="button" class="item-dialog-close" data-item-close aria-label="閉じる">&times;</button>
+        <div data-item-dialog-body></div>
+    </dialog>
+    <script>
+        (function () {
+            const dialog = document.querySelector('[data-item-dialog]');
+            const body = dialog.querySelector('[data-item-dialog-body]');
+            const phone = window.matchMedia('(max-width: 539px)');
+
+            document.querySelectorAll('[data-item-open]').forEach(function (link) {
+                link.addEventListener('click', function (event) {
+                    // 広い画面や、dialog が使えないブラウザでは、そのままリンク先(牧場ページ)へ
+                    if (!phone.matches || typeof dialog.showModal !== 'function') return;
+                    event.preventDefault();
+                    const card = link.closest('article').cloneNode(true);
+                    card.querySelector('[data-item-open]').remove();
+                    body.replaceChildren(card);
+                    dialog.setAttribute('aria-label', card.querySelector('h3').textContent.trim());
+                    dialog.showModal();
+                    dialog.scrollTop = 0;
+                });
+            });
+            dialog.querySelector('[data-item-close]').addEventListener('click', function () { dialog.close(); });
+            // 外側(暗い部分)を押したら閉じる
+            dialog.addEventListener('click', function (event) { if (event.target === dialog) dialog.close(); });
+            dialog.addEventListener('close', function () { body.replaceChildren(); });
+        })();
+    </script>
+    @endif
+
     @if ($farms->count() > 1)
     <script>
         // 牧場名のボタンで絞り込む。1つ選ぶと、その牧場の商品を全件出す(?farm=… の URL も有効)
@@ -67,6 +100,7 @@
             const chips = document.querySelector('[data-farm-chips]');
             if (!chips) return;
             const buttons = Array.from(chips.querySelectorAll('.farm-chip'));
+            const root = document.querySelector('[data-products]');
             const sections = Array.from(document.querySelectorAll('[data-farm-section]'));
             const ids = buttons.map(function (button) { return button.dataset.farm; });
             const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -75,6 +109,7 @@
                 buttons.forEach(function (button) {
                     button.setAttribute('aria-pressed', button.dataset.farm === id ? 'true' : 'false');
                 });
+                root.classList.toggle('is-farm-view', id !== '');
                 sections.forEach(function (section) {
                     section.hidden = id !== '' && section.dataset.farmSection !== id;
                     section.classList.toggle('is-collapsed', id === '' && Number(section.dataset.extra) > 0);

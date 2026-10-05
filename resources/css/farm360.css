@@ -792,6 +792,86 @@ button:focus-visible {
 .product-section:not(.is-collapsed) .product-more { display: none; }
 .product-more { font-size: 0.875rem; }
 
+/* スマホ(540px未満): 商品は小さなタイルにして、牧場ごとに横にスライドする(ポケットマルシェのような見え方)。
+   写真と商品名だけを見せ、感想・小さい写真・販売ページのボタンは、タイルを押すと開くポップアップで見せる。
+   牧場を1つ選んだとき(.is-farm-view)は、その牧場の全件を2列で縦に並べる */
+.item-tile-link { display: none; }
+@media (max-width: 539px) {
+  .grid.product-grid {
+    display: flex;
+    gap: 0.75rem;
+    margin: 0 -1rem;
+    padding: 0.25rem 1rem 1rem; /* カードの影が切れないように */
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1rem;
+    scrollbar-width: none;
+  }
+  .grid.product-grid::-webkit-scrollbar { display: none; }
+  .product-grid > .soft-card { position: relative; flex: 0 0 42%; scroll-snap-align: start; }
+  .product-grid .soft-card > div { padding: 0.625rem 0.75rem 0.875rem; }
+  .product-grid .item-thumbs,
+  .product-grid .soft-card p,
+  .product-grid .item-link { display: none; }
+  .product-grid .soft-card h3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    font-size: 0.875rem;
+    line-height: 1.45;
+  }
+  .item-tile-link { display: block; position: absolute; inset: 0; z-index: 2; border-radius: inherit; }
+  .item-tile-link:focus-visible { outline: 2px solid var(--butter-deep); outline-offset: 2px; }
+
+  .is-farm-view .grid.product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0;
+    padding: 0.25rem 0 1rem;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+}
+
+/* タイルを押したときのポップアップ(スマホ): 下から出る */
+.item-dialog {
+  width: 100%;
+  max-width: 32rem;
+  max-height: 90vh;
+  margin: auto auto 0;
+  padding: 0;
+  border: 0;
+  border-radius: 1.25rem 1.25rem 0 0;
+  background: var(--milk);
+  color: var(--ink-900);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  box-shadow: 0 -12px 40px rgba(59, 47, 38, 0.25);
+}
+.item-dialog::backdrop { background: rgba(59, 47, 38, 0.5); }
+html:has(.item-dialog[open]) { overflow: hidden; }
+.item-dialog-close {
+  position: sticky;
+  top: 0.5rem;
+  z-index: 3;
+  display: flex;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: 0.5rem 0.5rem -3.25rem auto; /* 写真の右上に重ねる */
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: rgba(255, 253, 248, 0.92);
+  color: var(--ink-900);
+  font-size: 1.75rem;
+  line-height: 1;
+  box-shadow: 0 4px 12px rgba(59, 47, 38, 0.2);
+}
+.item-dialog-close:focus-visible { outline: 2px solid var(--butter-deep); outline-offset: 2px; }
+.item-dialog .soft-card { border: 0; border-radius: 0; box-shadow: none; transform: none; }
+.item-dialog .soft-card > div { padding: 1.25rem 1.25rem 1.75rem; }
+
 /* 3列のうち狭いとき(タブレット)は、文字も少し小さく */
 @media (min-width: 540px) and (max-width: 768px) {
   .product-grid .soft-card > div { padding: 0.75rem; }
