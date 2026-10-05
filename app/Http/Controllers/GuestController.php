@@ -57,9 +57,12 @@ class GuestController extends Controller
         $prefectures = Farm::published()->distinct()->pluck('prefecture');
         $keywords = Keyword::all();
         $kinds = Kind::all();
-    
+
+        // 日本地図に色をつける、都道府県ごとの牧場の数
+        $prefectureCounts = $farms->countBy('prefecture')->all();
+
         // ビューにデータを渡す
-        return view('farm.map', compact('farms', 'prefectures', 'keywords', 'kinds'));
+        return view('farm.map', compact('farms', 'prefectures', 'keywords', 'kinds', 'prefectureCounts'));
     }
     
     public function show($id)

@@ -733,6 +733,30 @@ button:focus-visible {
 .item-thumb:focus-visible { outline: 2px solid var(--butter-deep); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { .item-thumb { transition: none; } }
 
+/* ---------- 牧場検索の日本地図(<x-japan-map>) ---------- */
+/* 背景(海)は色をつけない。陸はやさしい牧草色、牧場のある都道府県はバター色、選んでいるところは濃いバター色+輪郭 */
+.japan-map { max-width: 22rem; margin: 0 auto 2rem; text-align: center; }
+.japan-map svg { display: block; width: 100%; height: auto; }
+.japan-map .pref { fill: #e4ecd2; stroke: #fffdf8; stroke-width: 1.1; stroke-linejoin: round; paint-order: stroke fill; transition: fill 0.2s ease; }
+.japan-map .pref.has-farm { fill: var(--butter); cursor: pointer; }
+.japan-map .pref.has-farm:hover { fill: #f1c66a; }
+/* 沖縄のはめ込み: 島が細くて見えにくいので、輪郭で少し太らせる */
+.japan-map .pref.is-inset { stroke: #cfdcb4; stroke-width: 2.6; paint-order: normal; }
+.japan-map .pref.has-farm.is-inset { stroke: var(--butter-deep); }
+.japan-map .pref.has-farm.is-selected { fill: var(--butter-deep); stroke: var(--ink-900); stroke-width: 1.6; }
+.japan-map .pref.has-farm:focus { outline: none; }
+.japan-map .pref.has-farm:focus-visible { stroke: var(--ink-900); stroke-width: 2; }
+.japan-map .pin { pointer-events: none; }
+.japan-map .pin circle { fill: #e39a84; stroke: #fffdf8; stroke-width: 2.2; }
+.japan-map .pin text { fill: #fffdf8; font: 700 13px var(--font-heading); text-anchor: middle; dominant-baseline: central; }
+.japan-map-inset { fill: none; stroke: rgba(120, 85, 40, 0.3); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.japan-map-inset-label { fill: var(--ink-500); font: 500 15px var(--font-heading); }
+.japan-map-status { margin-top: 0.75rem; font-size: 0.875rem; line-height: 1.7; color: var(--ink-700); }
+.japan-map-jump { margin-left: 0.5rem; color: var(--pasture-deep); font-weight: 700; text-decoration: underline; }
+.japan-map-reset { display: block; margin: 0.25rem auto 0; padding: 0.25rem 0.75rem; color: var(--ink-500); font-size: 0.8125rem; text-decoration: underline; }
+.japan-map-jump[hidden], .japan-map-reset[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) { .japan-map .pref { transition: none; } }
+
 /* ---------- お取り寄せ ---------- */
 /* 商品を並べるだけのページなので、写真は小さめ(1枚 最大230px ほど)にして列を増やす。
    スマホ1列 → 540px から3列 → 1024px から4列。top.css の .grid の列指定を打ち消す */

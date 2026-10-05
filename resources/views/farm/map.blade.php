@@ -10,7 +10,10 @@
     <div class="wrap">
         <div class="container mx-auto px-4 py-6">
             <h1 class="text-xl font-bold mb-4 with-icon"><span class="wavy-underline">牧場検索</span></h1>
-    
+
+            <!-- 日本地図: 牧場のある都道府県に色がつく。押すと下の「都道府県」と一覧が連動して絞り込まれる -->
+            <x-japan-map :counts="$prefectureCounts" />
+
             <!-- 検索フォーム(絞り込みはページ下のスクリプトで行う。静的サイトなのでサーバーでは検索しない) -->
             <form id="farm-search" action="{{ route('farm.index') }}" method="GET" class="mb-6">
                 <!-- キーワード検索 -->
@@ -133,6 +136,27 @@
             const normalize = (s) => (s || '').normalize('NFKC').toLowerCase();
             const checked = (name) => Array.from(form.querySelectorAll(`input[name="${name}"]:checked`)).map((el) => el.value);
 
+            // 日本地図との連動: チェックの状態を地図に映し、地図を押したらチェックを入れ替えて検索する
+            const map = document.querySelector('[data-japan-map]');
+            const prefectureBoxes = Array.from(form.querySelectorAll('input[name="prefectures[]"]'));
+            const syncMap = (shown) => {
+                if (!map) return;
+                const chosen = prefectureBoxes.filter((el) => el.checked).map((el) => el.value);
+                map.querySelectorAll('path[data-prefecture]').forEach((shape) => {
+                    const on = chosen.includes(shape.dataset.prefecture);
+                    shape.classList.toggle('is-selected', on);
+                    shape.setAttribute('aria-pressed', on ? 'true' : 'false');
+                });
+                const text = map.querySelector('[data-japan-map-text]');
+                if (chosen.length === 0) {
+                    text.textContent = '色のついた都道府県を押すと、その地域の牧場だけに絞り込めます。';
+                } else if (shown !== undefined) {
+                    text.textContent = `${chosen.join('・')}の牧場を表示しています(${shown}件)`;
+                }
+                map.querySelector('[data-japan-map-jump]').hidden = chosen.length === 0;
+                map.querySelector('[data-japan-map-reset]').hidden = chosen.length === 0;
+            };
+
             const apply = () => {
                 const keyword = normalize(form.keyword.value.trim());
                 const prefectures = checked('prefectures[]');
@@ -150,6 +174,7 @@
                     if (match) shown++;
                 });
                 empty.hidden = shown > 0;
+                syncMap(shown);
             };
 
             // URL の条件(?keyword=...&kinds[]=1)をフォームに反映する(共有されたリンクでも同じ結果になるように)
@@ -160,6 +185,30 @@
                 form.querySelectorAll(`input[name="${name}"]`).forEach((el) => { el.checked = values.includes(el.value); });
             });
             apply();
+
+            if (map) {
+                const toggle = (name) => {
+                    const box = prefectureBoxes.find((el) => el.value === name);
+                    if (!box) return;
+                    box.checked = !box.checked;
+                    form.requestSubmit();
+                };
+                map.querySelectorAll('path[data-prefecture]').forEach((shape) => {
+                    shape.addEventListener('click', () => toggle(shape.dataset.prefecture));
+                    shape.addEventListener('keydown', (event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            toggle(shape.dataset.prefecture);
+                        }
+                    });
+                });
+                map.querySelector('[data-japan-map-reset]').addEventListener('click', () => {
+                    prefectureBoxes.forEach((el) => { el.checked = false; });
+                    form.requestSubmit();
+                });
+                // チェックボックスを直接変えたときも、地図の色を合わせる(一覧は「検索」を押したときに変わる)
+                prefectureBoxes.forEach((el) => el.addEventListener('change', () => syncMap()));
+            }
 
             form.addEventListener('submit', (event) => {
                 event.preventDefault();
