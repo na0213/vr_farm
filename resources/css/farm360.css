@@ -445,6 +445,12 @@ button:focus-visible {
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
 }
 .text-container > div img { max-width: 100%; height: auto; border-radius: var(--radius-md); margin: 1.4em auto; display: block; }
+/* 文中の写真とキャプション(noteのように、写真の下に小さく一言) */
+/* エディタが付ける <figure class="image"> が、top.css の古い .image(非表示のスライド用)に隠されないようにする */
+.text-container > div figure.image { display: block; position: static; width: auto; height: auto; }
+.text-container > div figure { margin: 1.8em 0; text-align: center; }
+.text-container > div figure img { margin: 0 auto; }
+.text-container > div figcaption { margin-top: 0.7em; font-size: 0.8rem; line-height: 1.7; color: var(--ink-500); }
 
 /* ---------- フッター ---------- */
 .footer {
