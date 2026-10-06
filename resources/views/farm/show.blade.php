@@ -403,7 +403,7 @@
     </script>
 
     <script>
-        // モーダル用JS（変更なし）
+        // 撮影一覧のモーダル
         function openModal(data) {
             const modal = document.getElementById("modal");
             const modalImage = document.getElementById("modal-image").querySelector("img");
@@ -424,6 +424,14 @@
             modal.classList.add("hidden");
             modal.classList.remove("flex");
         }
+
+        // 暗い背景を押す/Esc でも閉じる
+        document.getElementById("modal").addEventListener("click", function (event) {
+            if (event.target === this) closeModal();
+        });
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") closeModal();
+        });
     </script>      
 </x-top-layout>
 
