@@ -20,9 +20,10 @@ class ProductController extends Controller
 
     public function store(Request $request, $farmId)
     {
+        // 撮影一覧は写真が主役なので、タイトルとコメントは任意
         $request->validate([
-            'product_name' => 'required|string|max:255',
-            'product_info' => 'required|string',
+            'product_name' => 'nullable|string|max:255',
+            'product_info' => 'nullable|string',
             'product_link' => 'nullable|string',
             'product_image' => 'required|image|max:3072', //1MBまで
         ]);
@@ -73,8 +74,8 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'product_name' => 'required|string|max:255',
-            'product_info' => 'required|string',
+            'product_name' => 'nullable|string|max:255',
+            'product_info' => 'nullable|string',
             'product_link' => 'nullable|string',
             'product_image' => 'nullable|image|max:3072', //1MBまで
         ]);
@@ -83,8 +84,8 @@ class ProductController extends Controller
             DB::beginTransaction();
     
             $product = Product::findOrFail($id);
-            $product->product_name = $validated['product_name'];
-            $product->product_info = $validated['product_info'];
+            $product->product_name = $validated['product_name'] ?? null;
+            $product->product_info = $validated['product_info'] ?? null;
             $product->product_link = $validated['product_link'];
 
             if ($request->hasFile('product_image')) {

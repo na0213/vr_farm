@@ -161,20 +161,27 @@
     <div class="container mx-auto px-4 mb-20 max-w-5xl">
         <div class="grid gallery-grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             @foreach ($farm->products as $key => $product)
+                {{-- タイトル・コメントは任意。タイトルが無い写真の代替テキストは牧場名から作る --}}
+                @php
+                    $photoAlt = $product->product_name ?: $farm->farm_name.'の写真';
+                @endphp
                 <div class="group relative aspect-square bg-stone-100 rounded-xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl hover-scale animate-on-scroll"
                      style="transition-delay: {{ $key * 100 }}ms;"
                      onclick="openModal({{ json_encode([
                         'image' => $product->product_image,
+                        'alt' => $photoAlt,
                         'name' => $product->product_name,
                         'info' => nl2br(e($product->product_info))
                     ]) }})">
-                    <img src="{{ $product->product_image }}" alt="{{ $product->product_name }}" 
+                    <img src="{{ $product->product_image }}" alt="{{ $photoAlt }}"
                          class="w-full h-full object-cover">
-                    
-                    <!-- Overlay with Name -->
-                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center h-1/2">
-                        <p class="text-white font-bold text-sm tracking-wide text-center drop-shadow-md">{{ $product->product_name }}</p>
-                    </div>
+
+                    @if ($product->product_name)
+                        <!-- Overlay with Name -->
+                        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center h-1/2">
+                            <p class="text-white font-bold text-sm tracking-wide text-center drop-shadow-md">{{ $product->product_name }}</p>
+                        </div>
+                    @endif
                 </div>
             @endforeach
         </div>
@@ -411,9 +418,12 @@
             const modalInfo = document.getElementById("modal-info");
 
             modalImage.src = data.image || "{{ asset('storage/noimage.jpg') }}";
-            modalImage.alt = data.name || "Product Image";
-            modalTitle.textContent = data.name;
+            modalImage.alt = data.alt;
+            // タイトル・コメントが無い写真では、空の欄を出さない
+            modalTitle.textContent = data.name || "";
+            modalTitle.hidden = !data.name;
             modalInfo.innerHTML = data.info;
+            modalInfo.hidden = !data.info;
 
             modal.classList.remove("hidden");
             modal.classList.add("flex");
