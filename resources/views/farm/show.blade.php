@@ -161,20 +161,25 @@
     <div class="container mx-auto px-4 mb-20 max-w-5xl">
         <div class="grid gallery-grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             @foreach ($farm->products as $key => $product)
-                {{-- タイトル・コメントは任意。タイトルが無い写真の代替テキストは牧場名から作る --}}
+                {{-- タイトル・コメントは任意。タイトルが無い写真の代替テキストは牧場名から作る。
+                     動画は一覧では最初の場面(product_image)を出し、押したときだけモーダルで再生する --}}
                 @php
                     $photoAlt = $product->product_name ?: $farm->farm_name.'の写真';
-                @endphp
-                <div class="group relative aspect-square bg-stone-100 rounded-xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl hover-scale animate-on-scroll"
-                     style="transition-delay: {{ $key * 100 }}ms;"
-                     onclick="openModal({{ json_encode([
+                    $modalData = [
                         'image' => $product->product_image,
                         'alt' => $photoAlt,
                         'name' => $product->product_name,
-                        'info' => nl2br(e($product->product_info))
-                    ]) }})">
-                    <img src="{{ $product->product_image }}" alt="{{ $photoAlt }}"
+                        'info' => nl2br(e($product->product_info)),
+                    ] + ($product->product_video ? ['video' => $product->product_video] : []);
+                @endphp
+                <div class="group relative aspect-square bg-stone-100 rounded-xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl hover-scale animate-on-scroll"
+                     style="transition-delay: {{ $key * 100 }}ms;"
+                     onclick="openModal({{ json_encode($modalData) }})">
+                    <img src="{{ $product->product_image }}" alt="{{ $product->product_video ? $photoAlt.'(動画)' : $photoAlt }}"
                          class="w-full h-full object-cover">
+                    @if ($product->product_video)
+                        <span class="gallery-play" aria-hidden="true"></span>
+                    @endif
 
                     @if ($product->product_name)
                         <!-- Overlay with Name -->
@@ -272,6 +277,8 @@
         <div id="modal-image" class="mb-4 flex-1 flex items-center justify-center overflow-hidden">
             {{-- ↓ 画像の高さを大きくしました（max-h-[75vh]） --}}
             <img src="" alt="Product Image" class="w-full h-auto max-h-[75vh] object-contain mx-auto rounded">
+            {{-- 動画(音なし・15秒まで)。押したときだけ読み込んで再生する --}}
+            <video id="modal-video" class="w-full h-auto max-h-[75vh] object-contain mx-auto rounded" muted playsinline loop controls preload="none" hidden></video>
         </div>
 
         <h2 id="modal-title" class="text-2xl font-bold mb-2 text-center text-gray-800"></h2>
@@ -416,6 +423,19 @@
             const modalImage = document.getElementById("modal-image").querySelector("img");
             const modalTitle = document.getElementById("modal-title");
             const modalInfo = document.getElementById("modal-info");
+            const modalVideo = document.getElementById("modal-video");
+
+            modalImage.hidden = Boolean(data.video);
+            modalVideo.hidden = !data.video;
+            if (data.video) {
+                modalVideo.poster = data.image;
+                modalVideo.src = data.video;
+                modalVideo.setAttribute("aria-label", data.alt);
+                // 動きを減らす設定のときは自動で再生しない(再生ボタンで見られる)
+                if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                    modalVideo.play().catch(function () {});
+                }
+            }
 
             modalImage.src = data.image || "{{ asset('storage/noimage.jpg') }}";
             modalImage.alt = data.alt;
@@ -433,6 +453,12 @@
             const modal = document.getElementById("modal");
             modal.classList.add("hidden");
             modal.classList.remove("flex");
+
+            // 再生と読み込みを止める
+            const modalVideo = document.getElementById("modal-video");
+            modalVideo.pause();
+            modalVideo.removeAttribute("src");
+            modalVideo.load();
         }
 
         // 暗い背景を押す/Esc でも閉じる

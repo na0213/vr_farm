@@ -58,6 +58,14 @@ class ImageStorage
     }
 
     /**
+     * ディスク上のパスを、公開URL(/uploads/...)に変換する。
+     */
+    public static function url(string $key): string
+    {
+        return self::URL_PREFIX.$key;
+    }
+
+    /**
      * 公開URL(/uploads/...)を、ディスク上のパスに変換する。対象外なら null。
      */
     public static function keyFromUrl(?string $url): ?string

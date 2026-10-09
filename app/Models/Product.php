@@ -16,6 +16,7 @@ class Product extends Model
         'product_info',
         'product_link',
         'product_image',
+        'product_video',
     ];
 
     public function farm()

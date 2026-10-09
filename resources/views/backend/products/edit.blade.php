@@ -63,7 +63,24 @@
                         </div>
                     </div>
                 </div>
-                
+
+                <div class="flex-container m-4">
+                    <div class="image-input">
+                        <label for="product_video" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $product->product_video ? '動画を差し替える' : '動画を付ける' }}(任意・MP4 / MOV)</label>
+                        @if ($product->product_video)
+                            <video src="{{ $product->product_video }}" poster="{{ $product->product_image }}" controls muted playsinline preload="metadata" style="width: 200px; height: auto;" class="mb-2"></video>
+                        @endif
+                        <input type="file" name="product_video" id="product_video" accept="video/mp4,video/quicktime" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
+                        <p class="mt-2 text-sm text-gray-600">最初の15秒だけを、音なしの小さな動画にして載せます。画像を選ばなければ、一覧の写真も新しい動画の最初の場面になります。</p>
+                        @if ($product->product_video)
+                            <label class="mt-2 inline-flex items-center gap-2 text-sm text-gray-700">
+                                <input type="checkbox" name="remove_video" value="1">
+                                動画を外す(一覧の写真はそのまま残ります)
+                            </label>
+                        @endif
+                    </div>
+                </div>
+
                 <div class="p-2 w-full flex justify-around mt-4">
                     <button type="submit" class="text-white bg-yellow-500 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-600 rounded text-lg">更新</button>
                 </div>
@@ -75,6 +92,7 @@
                     <button type="submit" onclick="return confirm('本当に削除してよろしいですか？');" class="text-white bg-red-500 border-0 py-2 px-4 focus:outline-none hover:bg-red-600 rounded text-lg">削除</button>
                 </form>
             </div>
+            @include('backend.products.video_submit_script')
         </div>
     </div>
     <script>

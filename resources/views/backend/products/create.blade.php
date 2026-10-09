@@ -35,6 +35,9 @@
                                 <tr class="border-t">
                                     <td class="px-4 py-2">
                                         <img src="{{ $row->product_image ?: asset('storage/noimage.jpg') }}" alt="" class="inline-block w-16 h-16 object-cover rounded">
+                                        @if ($row->product_video)
+                                            <span class="ml-1 text-xs text-gray-500">動画</span>
+                                        @endif
                                     </td>
                                     <td class="px-4 py-2 font-medium text-gray-900">{{ $row->product_name ?: 'ー' }}</td>
                                     <td class="px-4 py-2">{{ Str::limit($row->product_info ?? '', 40) ?: 'ー' }}</td>
@@ -101,10 +104,19 @@
                     </div>
                 </div>
 
+                <div class="flex-container m-5">
+                    <div class="image-input">
+                        <label for="product_video" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">動画(任意・MP4 / MOV)</label>
+                        <input type="file" name="product_video" id="product_video" accept="video/mp4,video/quicktime" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
+                        <p class="mt-2 text-sm text-gray-600">最初の15秒だけを、音なしの小さな動画にして載せます。一覧には動画の最初の場面が出ます(画像も選ぶと、その画像が出ます)。</p>
+                    </div>
+                </div>
+
                 <div class="p-2 w-full flex justify-around mt-4">
                     <button type="submit" class="text-white bg-yellow-500 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-600 rounded text-lg">登録</button>
                 </div>
             </form>
+            @include('backend.products.video_submit_script')
         </div>
     </div>
     <script>
