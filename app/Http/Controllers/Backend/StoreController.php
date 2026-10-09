@@ -11,9 +11,10 @@ use Illuminate\Support\Facades\Log;
 
 class StoreController extends Controller
 {
+    // 登録済みの一覧(編集へのリンク)と、新規登録のフォーム
     public function create($farmId)
     {
-        $farm = Farm::findOrFail($farmId);
+        $farm = Farm::with('stores')->findOrFail($farmId);
         return view('backend.stores.create', compact('farm'));
     }
 

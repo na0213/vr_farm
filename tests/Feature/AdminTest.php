@@ -158,6 +158,26 @@ class AdminTest extends TestCase
         $this->assertNull(Product::find($product->id));
     }
 
+    public function test_store_page_lists_stores_with_edit_links(): void
+    {
+        $farm = $this->makeFarm();
+        $store = Store::create(['farm_id' => $farm->id, 'store_name' => '道の駅', 'store_address' => '北海道', 'store_link' => 'https://example.com/s']);
+
+        $this->actingAs($this->admin, 'admins')
+            ->get(route('admin.backend.stores.create', ['farm' => $farm->id]))
+            ->assertOk()
+            ->assertSee('販売店 — テスト牧場')
+            ->assertSee('道の駅')
+            ->assertSee(route('admin.backend.stores.edit', $store->id));
+
+        // 編集画面の「戻る」は、その牧場の販売店へ
+        $this->actingAs($this->admin, 'admins')
+            ->get(route('admin.backend.stores.edit', $store->id))
+            ->assertOk()
+            ->assertSee('販売店の編集')
+            ->assertSee(route('admin.backend.stores.create', ['farm' => $farm->id]));
+    }
+
     public function test_deleting_a_store_returns_to_the_farm_store_page(): void
     {
         $farm = $this->makeFarm();
