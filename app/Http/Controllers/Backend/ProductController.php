@@ -12,9 +12,10 @@ use App\Services\ImageStorage;
 
 class ProductController extends Controller
 {
+    // 登録済みの一覧(編集へのリンク)と、新規登録のフォーム
     public function create($farmId)
     {
-        $farm = Farm::findOrFail($farmId);
+        $farm = Farm::with('products')->findOrFail($farmId);
         return view('backend.products.create', compact('farm'));
     }
 
@@ -125,6 +126,6 @@ class ProductController extends Controller
         // データベースから削除
         $product->delete();
     
-        return redirect()->route('admin.backend.products.create', ['farm' => $farmId])->with('success', '商品が削除されました。');
+        return redirect()->route('admin.backend.products.create', ['farm' => $farmId])->with('success', '写真を削除しました。');
     }
 }

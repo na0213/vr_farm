@@ -7,13 +7,52 @@
                 </h2>
             </a>
             <h2 class="pl-10 font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                撮影一覧の登録
+                撮影一覧 — {{ $farm->farm_name }}
             </h2>
         </div>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            {{-- 登録済みの写真(牧場ページの撮影一覧に、この順で出る) --}}
+            <div class="w-4/5 mx-auto mb-10 space-y-4">
+                @if (session('success') || session('message'))
+                    <p class="rounded border border-green-200 bg-green-50 p-3 text-sm text-green-800">{{ session('success') ?? session('message') }}</p>
+                @endif
+
+                <div class="bg-white shadow-sm sm:rounded-lg overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-600">
+                        <thead class="text-xs text-gray-700 bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-4 py-3">写真</th>
+                                <th scope="col" class="px-4 py-3">タイトル</th>
+                                <th scope="col" class="px-4 py-3">コメント</th>
+                                <th scope="col" class="px-4 py-3">管理</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($farm->products as $row)
+                                <tr class="border-t">
+                                    <td class="px-4 py-2">
+                                        <img src="{{ $row->product_image ?: asset('storage/noimage.jpg') }}" alt="" class="inline-block w-16 h-16 object-cover rounded">
+                                    </td>
+                                    <td class="px-4 py-2 font-medium text-gray-900">{{ $row->product_name ?: 'ー' }}</td>
+                                    <td class="px-4 py-2">{{ Str::limit($row->product_info ?? '', 40) ?: 'ー' }}</td>
+                                    <td class="px-4 py-2 whitespace-nowrap">
+                                        <a href="{{ route('admin.backend.products.edit', $row->id) }}" class="underline">編集</a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="px-4 py-8 text-center text-gray-500">まだ登録がありません。</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h3 class="w-4/5 mx-auto font-semibold text-gray-800 mb-2">新しく登録する</h3>
             <form action="{{ route('admin.backend.products.store', ['farm' => $farm->id]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @if ($errors->any())

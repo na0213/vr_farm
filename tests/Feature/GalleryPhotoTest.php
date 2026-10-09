@@ -74,6 +74,28 @@ class GalleryPhotoTest extends TestCase
         $this->assertNull($product->fresh()->product_info);
     }
 
+    public function test_registration_page_lists_photos_with_edit_links(): void
+    {
+        $farm = $this->makeFarm();
+        $titled = Product::create(['farm_id' => $farm->id, 'product_name' => '冬も放牧', 'product_info' => '雪にもつよい', 'product_image' => '/uploads/product_images/a.jpg']);
+        $untitled = Product::create(['farm_id' => $farm->id, 'product_name' => null, 'product_info' => null, 'product_image' => '/uploads/product_images/b.jpg']);
+
+        $this->actingAs($this->admin, 'admins')
+            ->get(route('admin.backend.products.create', ['farm' => $farm->id]))
+            ->assertOk()
+            ->assertSee('撮影一覧 — 鈴木牧場')
+            ->assertSee('冬も放牧')
+            ->assertSee('雪にもつよい')
+            ->assertSee(route('admin.backend.products.edit', $titled->id))
+            ->assertSee(route('admin.backend.products.edit', $untitled->id));
+
+        // 編集画面の「戻る」は、その牧場の撮影一覧へ
+        $this->actingAs($this->admin, 'admins')
+            ->get(route('admin.backend.products.edit', $titled->id))
+            ->assertOk()
+            ->assertSee(route('admin.backend.products.create', ['farm' => $farm->id]));
+    }
+
     public function test_farm_page_uses_the_farm_name_for_untitled_photos(): void
     {
         $farm = $this->makeFarm();
