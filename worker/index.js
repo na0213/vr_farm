@@ -1,5 +1,5 @@
 // FARM360 の Cloudflare Worker。
-// 静的ファイル(dist/)の配信は Cloudflare が行い、ここでは /api/contact(お問い合わせの送信)だけを受け取る。
+// 静的ファイル(dist/)の配信は Cloudflare が行い、ここでは /api/contact(お問い合わせの送信)と、撮影一覧の動画だけを受け取る。
 // メールは Cloudflare Email Routing で、登録済みの運営アドレス(MAIL_TO)にだけ送る。送信者への控えは送らない。
 
 import { EmailMessage } from 'cloudflare:email';
@@ -18,9 +18,69 @@ export default {
       return handleContact(request, env);
     }
 
+    if (url.pathname.startsWith('/uploads/product_videos/')) {
+      return serveVideo(request, env);
+    }
+
     return env.ASSETS.fetch(request);
   },
 };
+
+// 撮影一覧の動画。Safari(iPhone)は、一部だけの要求(Range)に 206 で答えないと動画を再生しない。
+// 静的ファイルの配信(env.ASSETS)は Range に答えずファイル全体を返すので、ここで切り出して返す。
+// 動画は変換時に 20MB 以下にしているので、まるごと読んでから切り出す。
+async function serveVideo(request, env) {
+  if (request.method !== 'GET' && request.method !== 'HEAD') {
+    return new Response(null, { status: 405, headers: { Allow: 'GET, HEAD' } });
+  }
+
+  const asset = await env.ASSETS.fetch(new Request(request.url));
+  if (!asset.ok) {
+    return asset;
+  }
+
+  const body = await asset.arrayBuffer();
+  const size = body.byteLength;
+  const headers = new Headers(asset.headers);
+  headers.set('Accept-Ranges', 'bytes');
+  headers.delete('Content-Encoding');
+
+  const range = parseRange(request.headers.get('Range'), size);
+  if (range === 'unsatisfiable') {
+    headers.set('Content-Range', `bytes */${size}`);
+    headers.delete('Content-Length');
+    return new Response(null, { status: 416, headers });
+  }
+
+  const [start, end] = range ?? [0, size - 1];
+  headers.set('Content-Length', String(end - start + 1));
+  if (range) {
+    headers.set('Content-Range', `bytes ${start}-${end}/${size}`);
+  }
+
+  const payload = request.method === 'HEAD' ? null : new Uint8Array(body, start, end - start + 1);
+  return new Response(payload, { status: range ? 206 : 200, headers });
+}
+
+// "bytes=0-1" / "bytes=100-" / "bytes=-500" を [start, end] にする。Range が無い・複数・読めないときは null(全体を返す)。
+function parseRange(header, size) {
+  const match = /^bytes=(\d*)-(\d*)$/.exec((header ?? '').trim());
+  if (!match || (match[1] === '' && match[2] === '')) {
+    return null;
+  }
+
+  let start;
+  let end;
+  if (match[1] === '') {
+    start = Math.max(0, size - Number(match[2]));
+    end = size - 1;
+  } else {
+    start = Number(match[1]);
+    end = match[2] === '' ? size - 1 : Math.min(Number(match[2]), size - 1);
+  }
+
+  return start > end || start >= size ? 'unsatisfiable' : [start, end];
+}
 
 async function handleContact(request, env) {
   let input;

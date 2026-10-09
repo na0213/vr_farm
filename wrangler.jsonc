@@ -16,8 +16,8 @@
     "html_handling": "auto-trailing-slash",
     // 無いページは dist/404.html を 404 で返す
     "not_found_handling": "404-page",
-    // お問い合わせの送信だけ Worker で受け取る
-    "run_worker_first": ["/api/*"]
+    // お問い合わせの送信と、撮影一覧の動画(Range に答えるため。worker/index.js の serveVideo)だけ Worker で受け取る
+    "run_worker_first": ["/api/*", "/uploads/product_videos/*"]
   },
   // お問い合わせは、Email Routing で確認済みの運営アドレスにだけ送れる
   "send_email": [
