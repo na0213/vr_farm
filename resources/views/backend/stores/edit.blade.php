@@ -1,13 +1,13 @@
 <x-admin-layout>
     <x-slot name="header">
         <div class="flex">
-            <a href="{{ route('admin.backend.owners.show', $owner->id) }}">
+            <a href="{{ route('admin.backend.stores.create', ['farm' => $store->farm_id]) }}">
                 <h2 class="text-xl text-gray-600 dark:text-gray-200 leading-tight">
                     戻る
                 </h2>
             </a>
             <h2 class="pl-10 font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                商品編集
+                販売店の編集
             </h2>
         </div>
     </x-slot>

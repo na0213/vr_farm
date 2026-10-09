@@ -38,4 +38,13 @@ class Article extends Model
         return $this->belongsTo(Farm::class);
     }
 
+    /**
+     * 下書きの「ここに書く」目印(<mark>【ここに書く:…】</mark>)が残っているか。
+     * 目印が残ったまま公開サイトに出さないために、書き出しの前に確かめる。
+     */
+    public function hasDraftMarker(): bool
+    {
+        return preg_match('/<mark\b[^>]*>\s*【/u', (string) $this->article_content) === 1;
+    }
+
 }

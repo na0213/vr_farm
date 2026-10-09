@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Farm;
 use App\Models\Article;
 use App\Models\Keyword;
 use App\Models\Kind;
-use App\Models\Product;
+use App\Models\PurchasedItem;
+use App\Services\Prefectures;
 
 class GuestController extends Controller
 {
@@ -18,25 +18,25 @@ class GuestController extends Controller
         ->latest()
         ->paginate(8);
 
-        // ECリンク付きの商品のみトップに表示(未整備なら非表示)
-        $products = Product::listed()
-            ->with('farm:id,farm_name,prefecture')
-            ->latest()
-            ->take(4)
-            ->get();
+        // 商品検索の入口に使う、購入した商品の新しい1件の写真(未登録なら入口ごと非表示)
+        $latestProduct = PurchasedItem::listed()
+            ->latest('id')
+            ->first(['id', 'item_image']);
 
-        return view('home', compact('articles', 'products'));
+        return view('home', compact('articles', 'latestProduct'));
     }
 
-    // お取り寄せ(商品一覧)
+    // お取り寄せ(購入した商品を、牧場ごとに)
     public function products()
     {
-        $products = Product::listed()
-            ->with('farm:id,farm_name,prefecture')
-            ->latest()
+        $farms = Farm::published()
+            ->whereHas('purchasedItems')
+            ->with('purchasedItems')
+            ->select('id', 'farm_name', 'prefecture')
+            ->orderBy('created_at')
             ->get();
 
-        return view('products.index', compact('products'));
+        return view('products.index', compact('farms'));
     }
 
     // 牧場のこだわりと、おいしい理由(入門ページ)
@@ -45,57 +45,26 @@ class GuestController extends Controller
         return view('kodawari');
     }
     
-    public function index(Request $request)
+    public function index()
     {
-        // 基本的なクエリ
-        $query = Farm::published()->with(['kinds', 'keywords', 'farmImages']);
-    
-        // 「キーワード検索」: すべての内容から部分一致を検索
-        if ($request->filled('keyword')) {
-            $keyword = $request->keyword;
-            $query->where(function ($q) use ($keyword) {
-                $q->where('farm_name', 'like', '%' . $keyword . '%') // 牧場名
-                    ->orWhere('catchcopy', 'like', '%' . $keyword . '%') // キャッチコピー
-                    ->orWhere('prefecture', 'like', '%' . $keyword . '%') // 都道府県
-                    ->orWhere('farm_info', 'like', '%' . $keyword . '%') // farm_info を検索対象に追加
-                    ->orWhereHas('keywords', function ($q) use ($keyword) { // キーワード
-                        $q->where('keyword', 'like', '%' . $keyword . '%');
-                    })
-                    ->orWhereHas('kinds', function ($q) use ($keyword) { // 種別
-                        $q->where('kind', 'like', '%' . $keyword . '%');
-                    });
-            });
-        }
-    
-        // 「都道府県検索」
-        if ($request->filled('prefectures')) {
-            $query->whereIn('prefecture', $request->prefectures);
-        }
-    
-        // 「キーワード検索」: キーワードIDで検索
-        if ($request->filled('keywords')) {
-            $query->whereHas('keywords', function ($q) use ($request) {
-                $q->whereIn('keywords.id', $request->keywords);
-            });
-        }
-    
-        // 「種別検索」
-        if ($request->filled('kinds')) {
-            $query->whereHas('kinds', function ($q) use ($request) {
-                $q->whereIn('kinds.id', $request->kinds);
-            });
-        }
-    
-        // 結果を取得(ビューで使う列のみ。farm_info等の大きなテキストは除外)
-        $farms = $query->select('id', 'farm_name', 'catchcopy', 'prefecture')->get();
-    
+        // 公開中の牧場をすべて出し、絞り込みはブラウザ側で行う(静的サイトとして書き出すため)。
+        // theme(牧場の紹介文)はキーワード検索の対象なので含める
+        $farms = Farm::published()
+            ->with(['kinds', 'keywords', 'farmImages'])
+            ->select('id', 'farm_name', 'catchcopy', 'prefecture', 'theme')
+            ->get();
+
         // 検索フォームで利用する選択肢を取得
-        $prefectures = Farm::published()->distinct()->pluck('prefecture');
+        // 都道府県は、登録順ではなく、北海道から沖縄までの一般的な順に並べる
+        $prefectures = Prefectures::sort(Farm::published()->distinct()->pluck('prefecture'));
         $keywords = Keyword::all();
         $kinds = Kind::all();
-    
+
+        // 日本地図に色をつける、都道府県ごとの牧場の数
+        $prefectureCounts = $farms->countBy('prefecture')->all();
+
         // ビューにデータを渡す
-        return view('farm.map', compact('farms', 'prefectures', 'keywords', 'kinds'));
+        return view('farm.map', compact('farms', 'prefectures', 'keywords', 'kinds', 'prefectureCounts'));
     }
     
     public function show($id)
@@ -104,6 +73,7 @@ class GuestController extends Controller
         $farm = Farm::published()->with([
             'animals',
             'products',
+            'purchasedItems',
             'stores',
             'kinds',
             'keywords',

@@ -62,35 +62,6 @@
     </div>
   </div>
 
-  @if ($products->isNotEmpty())
-  <div class="story reveal" data-animate>
-    <p class="mt-20 text-[#e09885] with-icon">PRODUCTS</p>
-  </div>
-  <div class="note-title reveal" data-animate>
-    <p class="wavy-underline">お取り寄せ</p>
-  </div>
-  <div class="note-wrap reveal" data-animate>
-    <div class="note-wrap-in home-note-grid">
-      @foreach ($products as $product)
-        <div class="note-item">
-          <a href="{{ $product->product_link }}" target="_blank" rel="noopener">
-            <div class="pic">
-              <img src="{{ $product->product_image ?: asset('storage/noimage.jpg') }}" alt="{{ $product->product_name }}" loading="lazy">
-            </div>
-            <p>{{ $product->product_name }}</p>
-            @if ($product->farm)
-              <p class="text-sm text-stone-500">{{ $product->farm->prefecture }}・{{ $product->farm->farm_name }}</p>
-            @endif
-          </a>
-        </div>
-      @endforeach
-    </div>
-    <div class="pagination">
-      <a href="{{ route('products.index') }}">お取り寄せ一覧へ →</a>
-    </div>
-  </div>
-  @endif
-
   <div class="story reveal" data-animate>
     <p class="mt-20 text-[#e09885] with-icon">STORY</p>
   </div>
@@ -141,6 +112,26 @@
     </a>
   </div>
 
+  @if ($latestProduct)
+  <div class="story reveal" data-animate>
+    <p class="mt-10 text-[#e09885] with-icon">PRODUCTS</p>
+  </div>
+  <div class="note-title reveal" data-animate>
+    <p class="wavy-underline">商品検索</p>
+  </div>
+  <div class="circle reveal" data-animate>
+    <a href="{{ route('products.index') }}">
+    <div class="concept bg-image-1 concept-accent concept--products">
+        <img class="concept-photo" src="{{ $latestProduct->item_image }}" alt="" loading="lazy">
+        <p class="center-text">
+            <span class="line-1">おいしいものを</span>
+            <span class="line-2">さがそう！</span>
+        </p>
+    </div>
+    </a>
+  </div>
+  @endif
+
   <div class="story reveal" data-animate>
     <p class="mt-20 text-[#e09885] with-icon">ABOUT</p>
   </div>
@@ -153,12 +144,20 @@
     </div>
     <div class="story story-panel">
     <p class="con_text">
-      放牧、平飼い、牧草で育てる。<br>
-      牧場ごとの育て方が、<br>
-      ここでしか出せない味をつくります。<br><br>
-      むずかしいことは抜きにして、<br>
-      まずは5分で読める入門ページからどうぞ。<br><br>
-      <a href="{{ route('kodawari.index') }}" class="btn-link more-link">牧場のこだわりと、おいしい理由 →</a>
+      スーパーで、平飼い卵を<br>
+      見かけることが増えました。<br>
+      「平飼いではない卵と、<br>
+      どう違うんだろう?」<br><br>
+      調べるうちに、平飼いや放牧は<br>
+      生産者さんにとって<br>
+      簡単ではないことも<br>
+      分かってきました。<br><br>
+      それなら、<br>
+      まずは自分の目で見てみよう。<br>
+      そう思って、牧場を訪ね、<br>
+      見たこと、知ったことを<br>
+      伝えています。<br><br>
+      <a href="{{ route('about.index') }}" class="btn-link more-link">このサイトをはじめたきっかけ →</a>
     </p>
     </div>
   </div>

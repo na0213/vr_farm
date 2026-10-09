@@ -8,23 +8,23 @@ use App\Models\Farm;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use App\Services\ImageStorage;
 
 class ProductController extends Controller
 {
+    // 登録済みの一覧(編集へのリンク)と、新規登録のフォーム
     public function create($farmId)
     {
-        $farm = Farm::with('owner')->findOrFail($farmId); // Ownerの情報も一緒に取得
-        $owner = $farm->owner; // $farmに紐づく$ownerを取得
-        return view('backend.products.create', compact('farm', 'owner'));
+        $farm = Farm::with('products')->findOrFail($farmId);
+        return view('backend.products.create', compact('farm'));
     }
 
     public function store(Request $request, $farmId)
     {
+        // 撮影一覧は写真が主役なので、タイトルとコメントは任意
         $request->validate([
-            'product_name' => 'required|string|max:255',
-            'product_info' => 'required|string',
+            'product_name' => 'nullable|string|max:255',
+            'product_info' => 'nullable|string',
             'product_link' => 'nullable|string',
             'product_image' => 'required|image|max:3072', //1MBまで
         ]);
@@ -41,7 +41,7 @@ class ProductController extends Controller
                 // ファイル名を生成
                 $fileName = 'product_images/' . uniqid() . '.jpg';
 
-                // リサイズしてS3に画像を保存
+                // リサイズして画像を保存
                 $url = ImageStorage::storeResized($image, $fileName, maxWidth: 1200);
             }
     
@@ -67,17 +67,16 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $product = Product::with('farm.owner')->findOrFail($id);
-        $owner = optional($product->farm)->owner;
+        $product = Product::findOrFail($id);
     
-        return view('backend.products.edit', compact('product', 'owner'));
+        return view('backend.products.edit', compact('product'));
     }
 
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'product_name' => 'required|string|max:255',
-            'product_info' => 'required|string',
+            'product_name' => 'nullable|string|max:255',
+            'product_info' => 'nullable|string',
             'product_link' => 'nullable|string',
             'product_image' => 'nullable|image|max:3072', //1MBまで
         ]);
@@ -86,18 +85,15 @@ class ProductController extends Controller
             DB::beginTransaction();
     
             $product = Product::findOrFail($id);
-            $product->product_name = $validated['product_name'];
-            $product->product_info = $validated['product_info'];
+            $product->product_name = $validated['product_name'] ?? null;
+            $product->product_info = $validated['product_info'] ?? null;
             $product->product_link = $validated['product_link'];
 
             if ($request->hasFile('product_image')) {
-                // 既存の画像をS3から削除
-                if ($product->product_image) {
-                    $existingImagePath = parse_url($product->product_image, PHP_URL_PATH);
-                    Storage::disk('s3')->delete($existingImagePath);
-                }
-    
-                // 新しい画像をリサイズしてS3にアップロード
+                // 既存の画像を削除
+                ImageStorage::delete($product->product_image);
+
+                // 新しい画像をリサイズして保存
                 $image = $request->file('product_image');
                 $fileName = 'product_images/' . uniqid() . '.jpg';
                 $url = ImageStorage::storeResized($image, $fileName, maxWidth: 1200);
@@ -124,14 +120,12 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $farmId = $product->farm_id;
-        // S3から画像を削除
-        if ($product->product_image) {
-            Storage::disk('s3')->delete(parse_url($product->product_image, PHP_URL_PATH));
-        }
+        // 画像を削除
+        ImageStorage::delete($product->product_image);
     
         // データベースから削除
         $product->delete();
     
-        return redirect()->route('admin.backend.products.create', ['farm' => $farmId])->with('success', '商品が削除されました。');
+        return redirect()->route('admin.backend.products.create', ['farm' => $farmId])->with('success', '写真を削除しました。');
     }
 }

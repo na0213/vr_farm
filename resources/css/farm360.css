@@ -299,7 +299,8 @@ button:focus-visible {
 .story-panel .circ4 { background-color: #f3e3c4; opacity: 0.6; }
 
 /* ---------- 牧場検索の入口(360°の丸) ---------- */
-.concept { margin-left: 0; }
+.concept { margin-left: auto; margin-right: auto; }
+.concept .center-text { white-space: nowrap; }
 .concept-accent {
   border: 6px solid rgba(246, 213, 138, 0.55);
   box-shadow: var(--shadow-soft);
@@ -329,6 +330,31 @@ button:focus-visible {
   background: conic-gradient(from 220deg, var(--butter-deep), var(--butter), var(--butter-deep));
 }
 .concept-badge::after { color: var(--ink-900); }
+
+/* 商品検索の入口: 回る写真のかわりに、購入した商品の新しい写真を丸に敷く */
+.concept--products::after { display: none; }
+.concept-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+/* 写真は暗くせず、文字はクリーム色の札にのせる(どんな写真でも読める) */
+.concept--products::before { background-color: transparent; }
+.concept--products .center-text {
+  padding: 0.9rem 1.5rem 1.1rem;
+  background: rgba(255, 253, 248, 0.92);
+  border-radius: var(--radius-md);
+  box-shadow: 0 6px 18px rgba(59, 47, 38, 0.18);
+}
+.concept--products .center-text .line-1 { color: var(--ink-900); text-shadow: none; }
+.concept--products .center-text .line-2 {
+  -webkit-text-fill-color: var(--ink-900);
+  color: var(--ink-900);
+  text-shadow: none;
+}
 
 /* ---------- カード ---------- */
 .note-item {
@@ -445,6 +471,12 @@ button:focus-visible {
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
 }
 .text-container > div img { max-width: 100%; height: auto; border-radius: var(--radius-md); margin: 1.4em auto; display: block; }
+/* 文中の写真とキャプション(noteのように、写真の下に小さく一言) */
+/* エディタが付ける <figure class="image"> が、top.css の古い .image(非表示のスライド用)に隠されないようにする */
+.text-container > div figure.image { display: block; position: static; width: auto; height: auto; }
+.text-container > div figure { margin: 1.8em 0; text-align: center; }
+.text-container > div figure img { margin: 0 auto; }
+.text-container > div figcaption { margin-top: 0.7em; font-size: 0.8rem; line-height: 1.7; color: var(--ink-500); }
 
 /* ---------- フッター ---------- */
 .footer {
@@ -492,4 +524,479 @@ button:focus-visible {
   .reveal, .reveal.is-visible { transition: none; transform: none; opacity: 1; }
   .feature-photo img { transform: none; transition: none; }
   .note-item, .note-item .pic img, .soft-card, .card, .btn-primary, .btn-butter, .btn-pasture { transition: none; }
+}
+
+/* ---------- てくてく歩く動物(<x-walking-animals>。運営者ページだけ) ---------- */
+:root { --blush-deep: #e39a84; }
+
+.walkers {
+  position: relative;
+  height: 68px;
+  margin: 3.5rem 0 0;
+  overflow: hidden;
+}
+/* 足もとの小さな点線の道 */
+.walkers::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 3px;
+  border-top: 2px dotted rgba(233, 185, 73, 0.55);
+}
+.walker {
+  position: absolute;
+  bottom: 1px;
+  left: -90px;
+  width: 72px;
+  animation: walk-across 34s linear infinite;
+  animation-delay: var(--walk-delay, 0s);
+}
+.walker.chick { width: 58px; }
+
+/* 色: 輪郭(--walker-color)とパステルの塗り(--walker-fill) */
+.walker.cow   { --walker-color: var(--pasture-deep); --walker-fill: var(--milk); --blink-delay: -3s; }
+.walker.pig   { --walker-color: var(--blush-deep);   --walker-fill: #ffd9cc;     --blink-delay: -0.5s; }
+.walker.egg   { --walker-color: var(--butter-deep);  --walker-fill: #fff1cf;     --blink-delay: -2s; }
+.walker.chick { --walker-color: #e0a62f;             --walker-fill: #fbe08a;     --blink-delay: -4s; }
+
+.walker svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  animation: walk-bob 0.6s ease-in-out infinite;
+}
+.walker.chick svg { animation-duration: 0.45s; }
+.walker svg * {
+  fill: none;
+  stroke: var(--walker-color);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.walker .fill   { fill: var(--walker-fill); }
+.walker .dot    { fill: var(--walker-color); stroke: none; }
+.walker.pig .dot { fill: #c9776a; }
+.walker .cheek  { fill: #ffb8a8; stroke: none; opacity: 0.75; }
+.walker .tuft   { fill: var(--walker-color); }
+.walker .spot   { fill: var(--pasture); stroke: none; }
+.walker .horn   { fill: var(--butter); }
+.walker .muzzle { fill: #ffd6c9; }
+.walker .snout  { fill: #ffbfae; }
+.walker .wing   { fill: #f7cf63; }
+.walker .beak   { fill: #f4a94e; stroke: #e8923a; }
+.walker .gloss  { stroke: #fff; stroke-width: 3; opacity: 0.85; }
+.walker .smile  { stroke: var(--ink-900); stroke-width: 1.6; }
+.walker .leg.orange { stroke: #f0a04b; }
+
+/* 大きな丸い目(ときどきまばたき) */
+.walker .eye {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: blink 5s ease-in-out infinite;
+  animation-delay: var(--blink-delay, 0s);
+}
+.walker .eye * { fill: var(--ink-900); stroke: none; }
+.walker .eye .shine { fill: #fff; }
+
+/* 足は付け根を軸に、前後で交互に振る */
+.walker .leg {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: leg-swing 0.6s ease-in-out infinite alternate;
+}
+.walker.chick .leg { animation-duration: 0.45s; }
+.walker .leg.b { animation-direction: alternate-reverse; }
+
+@keyframes walk-across { from { left: -90px; } to { left: 100%; } }
+@keyframes walk-bob {
+  0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+  50% { transform: translateY(-3px) rotate(1.5deg); }
+}
+@keyframes leg-swing {
+  from { transform: rotate(-18deg); }
+  to { transform: rotate(18deg); }
+}
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+
+/* 動きを減らす設定の人には歩かせず、並べて見せる */
+@media (prefers-reduced-motion: reduce) {
+  .walkers { display: flex; justify-content: center; align-items: flex-end; gap: 20px; height: auto; overflow: visible; }
+  .walkers::after { display: none; }
+  .walker { position: static; animation: none; }
+  .walker svg, .walker .leg, .walker .eye { animation: none; }
+}
+
+/* ---------- 牧場ページ ---------- */
+/* 撮影一覧: top.css の .grid は 768px 以下で1列にするので、スマホでは2列に戻す */
+@media (max-width: 768px) {
+  .grid.gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); justify-items: stretch; }
+}
+
+/* 撮影一覧の写真を押したときのモーダル: スマホでは、写真を画面の横幅いっぱいに大きく見せる
+   (白いカードの余白をなくし、背景を暗くして、文字は写真の下に明るい色で出す)。パソコンは今までどおり */
+@media (max-width: 767px) {
+  #modal { background-color: rgba(24, 17, 12, 0.97); }
+  #modal .modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: 100%;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow-y: auto;
+  }
+  #modal #modal-image { flex: 0 0 auto; margin: 0; }
+  #modal #modal-image img { width: 100%; max-height: 76vh; border-radius: 0; }
+  #modal #modal-title { margin: 0; padding: 1rem 1.25rem 0.25rem; color: #fffdf8; font-size: 1.125rem; line-height: 1.5; }
+  #modal #modal-info { max-height: 7rem; padding: 0 1.25rem 1.25rem; color: rgba(255, 253, 248, 0.8); font-size: 0.9375rem; line-height: 1.7; }
+  #modal .modal-content .close {
+    position: fixed;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 70;
+    display: flex;
+    width: 2.75rem;
+    height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: rgba(255, 253, 248, 0.92);
+    color: var(--ink-900);
+    font-size: 1.75rem;
+    font-weight: 400;
+    line-height: 1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+html:has(#modal.flex) { overflow: hidden; }
+
+/* 「買ってみた」: 横にスライド。次のカードを少しのぞかせて、横に動くと分かるようにする */
+.product-slider { position: relative; }
+.product-slider-track {
+  display: flex;
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0.5rem 0.25rem 1.5rem; /* カードの影と、浮き上がりが切れないように */
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 0.25rem; /* 左右の余白の分だけ、吸着の位置をずらす(はじめの位置を0にする) */
+  scrollbar-width: thin;
+  scrollbar-color: var(--butter) transparent;
+}
+.product-slider-track:focus-visible { outline: 2px solid var(--butter-deep); outline-offset: 4px; border-radius: var(--radius-md); }
+.product-slide { display: flex; flex: 0 0 78%; scroll-snap-align: start; }
+/* 枚数が少なくて横に余るときは中央に寄せる(あふれるときは左端から) */
+.product-slide:first-child { margin-left: auto; }
+.product-slide:last-child { margin-right: auto; }
+.product-slide > .soft-card { width: 100%; }
+@media (min-width: 640px) { .product-slide { flex-basis: calc((100% - 1.25rem) / 2.25); } }
+@media (min-width: 1024px) { .product-slide { flex-basis: calc((100% - 2.5rem) / 3.25); } }
+
+.product-slider-btn {
+  position: absolute;
+  top: 38%;
+  z-index: 2;
+  display: none;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: rgba(255, 250, 240, 0.92);
+  color: var(--ink-900);
+  font-size: 1.75rem;
+  line-height: 1;
+  box-shadow: 0 6px 18px rgba(120, 85, 40, 0.18);
+  transition: background 0.2s ease;
+}
+.product-slider-btn:hover { background: var(--butter); }
+.product-slider-btn:focus-visible { outline: 2px solid var(--butter-deep); outline-offset: 2px; }
+.product-slider-btn.is-prev { left: -8px; }
+.product-slider-btn.is-next { right: -8px; }
+/* ボタンはパソコンだけ(スマホは指で動かす)。端に来たら hidden で隠す */
+@media (min-width: 768px) { .product-slider-btn { display: flex; } }
+.product-slider-btn[hidden] { display: none; }
+
+/* トップの「読みもの」: スマホ(768px以下)では横一列にして、指で横にスライドする。
+   次のカードを少しのぞかせて、横に動くと分かるようにする(パソコンは今までどおり並べる) */
+@media (max-width: 768px) {
+  .note-wrap-in.home-note-grid {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+    padding: 0.5rem 1rem 1.5rem; /* カードの影と、浮き上がりが切れないように */
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1rem; /* 左右の余白の分だけ、吸着の位置をずらす */
+    scrollbar-width: thin;
+    scrollbar-color: var(--butter) transparent;
+  }
+  .home-note-grid .note-item {
+    flex: 0 0 72%;
+    max-width: none;
+    margin: 0;
+    scroll-snap-align: start;
+  }
+  /* 枚数が少なくて横に余るときは中央に寄せる(あふれるときは左端から) */
+  .home-note-grid .note-item:first-child { margin-left: auto; }
+  .home-note-grid .note-item:last-child { margin-right: auto; }
+}
+@media (min-width: 540px) and (max-width: 768px) {
+  .home-note-grid .note-item { flex-basis: calc((100% - 2rem - 1rem) / 2.25); }
+}
+
+/* ---------- 購入した商品のカード(<x-purchased-item-card>) ---------- */
+/* 写真が2枚以上のとき: 小さい写真を押すと、上の大きい写真が切り替わる */
+.item-thumbs { display: flex; gap: 0.5rem; margin-bottom: 0.875rem; }
+.item-thumb {
+  width: 2.75rem;
+  aspect-ratio: 1;
+  flex: none;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 0.5rem;
+  opacity: 0.6;
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+.item-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.item-thumb:hover { opacity: 0.9; }
+.item-thumb[aria-pressed="true"] { border-color: var(--butter-deep); opacity: 1; }
+.item-thumb:focus-visible { outline: 2px solid var(--butter-deep); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .item-thumb { transition: none; } }
+
+/* ---------- 牧場検索の日本地図(<x-japan-map>) ---------- */
+/* 背景(海)は色をつけない。陸はやさしい牧草色、牧場のある都道府県はバター色、選んでいるところは濃いバター色+輪郭 */
+.japan-map { max-width: 22rem; margin: 0 auto 2rem; text-align: center; }
+.japan-map svg { display: block; width: 100%; height: auto; }
+.japan-map .pref { fill: #e4ecd2; stroke: #fffdf8; stroke-width: 1.1; stroke-linejoin: round; paint-order: stroke fill; transition: fill 0.2s ease; }
+.japan-map .pref.has-farm { fill: var(--butter); cursor: pointer; }
+.japan-map .pref.has-farm:hover { fill: #f1c66a; }
+/* 沖縄のはめ込み: 島が細くて見えにくいので、輪郭で少し太らせる */
+.japan-map .pref.is-inset { stroke: #cfdcb4; stroke-width: 2.6; paint-order: normal; }
+.japan-map .pref.has-farm.is-inset { stroke: var(--butter-deep); }
+.japan-map .pref.has-farm.is-selected { fill: var(--butter-deep); stroke: var(--ink-900); stroke-width: 1.6; }
+.japan-map .pref.has-farm:focus { outline: none; }
+.japan-map .pref.has-farm:focus-visible { stroke: var(--ink-900); stroke-width: 2; }
+.japan-map .pin { pointer-events: none; }
+.japan-map .pin circle { fill: #e39a84; stroke: #fffdf8; stroke-width: 2.2; }
+.japan-map .pin text { fill: #fffdf8; font: 700 13px var(--font-heading); text-anchor: middle; dominant-baseline: central; }
+.japan-map-inset { fill: none; stroke: rgba(120, 85, 40, 0.3); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.japan-map-inset-label { fill: var(--ink-500); font: 500 15px var(--font-heading); }
+/* 県を押したときに、その県の周りに浮かぶ牧場の写真の丸(Apple Watch の画面のように、小さな丸が順にふわっと出る) */
+.japan-map { position: relative; }
+.japan-bubbles { position: absolute; inset: 0; pointer-events: none; }
+.japan-bubble-set[hidden] { display: none; }
+.japan-bubble {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 3rem;
+  height: 3rem;
+  margin: -1.5rem 0 0 -1.5rem;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid #fffdf8;
+  border-radius: 9999px;
+  background: var(--milk);
+  box-shadow: 0 6px 16px rgba(59, 47, 38, 0.28);
+  pointer-events: auto;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.2);
+  transition: opacity 0.3s ease, transform 0.45s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+.japan-bubble img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.japan-bubble-set.is-open .japan-bubble { opacity: 1; transform: scale(1); }
+.japan-bubble:hover, .japan-bubble:focus-visible { box-shadow: 0 8px 20px rgba(59, 47, 38, 0.36); border-color: var(--butter-deep); }
+.japan-bubble:focus-visible { outline: 2px solid var(--ink-900); outline-offset: 2px; }
+/* 丸を出している間は、ほかの県を少しうすくして、その県を目立たせる */
+.japan-map .pref { transition: fill 0.2s ease, opacity 0.3s ease; }
+.japan-map.has-bubbles .pref:not(.is-active) { opacity: 0.55; }
+.japan-map.has-bubbles .pin { opacity: 0.55; }
+.japan-map .pref.has-farm.is-active { stroke: var(--ink-900); stroke-width: 1.8; }
+@media (prefers-reduced-motion: reduce) { .japan-bubble { transition: none; } }
+
+/* 丸を押したときのポップアップ: 牧場の写真と名前 */
+.farm-dialog {
+  width: calc(100% - 2rem);
+  max-width: 22rem;
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--milk);
+  color: var(--ink-900);
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(59, 47, 38, 0.3);
+}
+.farm-dialog::backdrop { background: rgba(59, 47, 38, 0.5); }
+.farm-dialog img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: var(--brand-surface-a); }
+.farm-dialog-body { padding: 1.25rem 1.25rem 1.5rem; text-align: center; }
+.farm-dialog-pref { font-size: 0.8125rem; color: var(--ink-500); }
+.farm-dialog-body h3 { margin: 0.25rem 0 1rem; font-size: 1.25rem; font-weight: 700; line-height: 1.4; }
+
+.japan-map-status { margin-top: 0.75rem; font-size: 0.875rem; line-height: 1.7; color: var(--ink-700); }
+.japan-map-jump { margin-left: 0.5rem; color: var(--pasture-deep); font-weight: 700; text-decoration: underline; }
+.japan-map-reset { display: block; margin: 0.25rem auto 0; padding: 0.25rem 0.75rem; color: var(--ink-500); font-size: 0.8125rem; text-decoration: underline; }
+.japan-map-jump[hidden], .japan-map-reset[hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) { .japan-map .pref { transition: none; } }
+
+/* ---------- お取り寄せ ---------- */
+/* 商品を並べるだけのページなので、写真は小さめ(1枚 最大230px ほど)にして列を増やす。
+   スマホ1列 → 540px から3列 → 1024px から4列。top.css の .grid の列指定を打ち消す */
+.grid.product-grid { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; justify-items: stretch; }
+@media (min-width: 540px) { .grid.product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; } }
+@media (min-width: 1024px) { .grid.product-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5rem; } }
+/* 3列・4列ではカードが細いので、余白を詰め、ボタンはカード幅いっぱいの小さめにする */
+@media (min-width: 540px) {
+  .product-grid .soft-card > div { padding: 0.875rem; }
+  .product-grid .item-link { padding-top: 0.75rem; }
+  .product-grid .btn-butter {
+    display: block;
+    padding: 0.5rem 0.25rem;
+    font-size: 0.8125rem;
+    letter-spacing: 0.02em;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(233, 185, 73, 0.3);
+  }
+}
+/* 牧場名で絞り込むボタン: スマホは横にスクロール、広い画面は折り返して中央に */
+.farm-chips {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0 -1rem 2rem;
+  padding: 0.25rem 1rem 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-margin-top: 5rem; /* 上に貼り付いたヘッダーに隠れないように */
+}
+.farm-chips::-webkit-scrollbar { display: none; }
+.farm-chips[hidden] { display: none; }
+@media (min-width: 640px) {
+  .farm-chips { flex-wrap: wrap; justify-content: center; margin-inline: 0; padding-inline: 0; overflow: visible; }
+}
+.farm-chip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 9999px;
+  background: var(--milk);
+  color: var(--ink-700);
+  font-size: 0.875rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.farm-chip:hover { background: rgba(246, 213, 138, 0.35); }
+.farm-chip:focus-visible { outline: 2px solid var(--butter-deep); outline-offset: 2px; }
+.farm-chip[aria-pressed="true"] { background: var(--butter); border-color: var(--butter-deep); color: var(--ink-900); font-weight: 700; }
+.farm-chip-count { font-size: 0.75rem; color: var(--ink-500); }
+/* 牧場ごとに、新しい4件だけ見せる(古いぶんは絞り込みで出す) */
+.product-section.is-collapsed .product-extra { display: none; }
+.product-section:not(.is-collapsed) .product-more { display: none; }
+.product-more { font-size: 0.875rem; }
+
+/* スマホ(540px未満): 商品は小さなタイルにして、牧場ごとに横にスライドする(ポケットマルシェのような見え方)。
+   写真と商品名だけを見せ、感想・小さい写真・販売ページのボタンは、タイルを押すと開くポップアップで見せる。
+   牧場を1つ選んだとき(.is-farm-view)は、その牧場の全件を2列で縦に並べる */
+.item-tile-link { display: none; }
+@media (max-width: 539px) {
+  .grid.product-grid {
+    display: flex;
+    gap: 0.75rem;
+    margin: 0 -1rem;
+    padding: 0.25rem 1rem 1rem; /* カードの影が切れないように */
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1rem;
+    scrollbar-width: none;
+  }
+  .grid.product-grid::-webkit-scrollbar { display: none; }
+  .product-grid > .soft-card { position: relative; flex: 0 0 42%; scroll-snap-align: start; }
+  .product-grid .soft-card > div { padding: 0.625rem 0.75rem 0.875rem; }
+  .product-grid .item-thumbs,
+  .product-grid .soft-card p,
+  .product-grid .item-link { display: none; }
+  .product-grid .soft-card h3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    font-size: 0.875rem;
+    line-height: 1.45;
+  }
+  .item-tile-link { display: block; position: absolute; inset: 0; z-index: 2; border-radius: inherit; }
+  .item-tile-link:focus-visible { outline: 2px solid var(--butter-deep); outline-offset: 2px; }
+
+  .is-farm-view .grid.product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0;
+    padding: 0.25rem 0 1rem;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+}
+
+/* タイルを押したときのポップアップ(スマホ): 下から出る */
+.item-dialog {
+  width: 100%;
+  max-width: 32rem;
+  max-height: 90vh;
+  margin: auto auto 0;
+  padding: 0;
+  border: 0;
+  border-radius: 1.25rem 1.25rem 0 0;
+  background: var(--milk);
+  color: var(--ink-900);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  box-shadow: 0 -12px 40px rgba(59, 47, 38, 0.25);
+}
+.item-dialog::backdrop { background: rgba(59, 47, 38, 0.5); }
+html:has(.item-dialog[open]) { overflow: hidden; }
+.item-dialog-close {
+  position: sticky;
+  top: 0.5rem;
+  z-index: 3;
+  display: flex;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: 0.5rem 0.5rem -3.25rem auto; /* 写真の右上に重ねる */
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: rgba(255, 253, 248, 0.92);
+  color: var(--ink-900);
+  font-size: 1.75rem;
+  line-height: 1;
+  box-shadow: 0 4px 12px rgba(59, 47, 38, 0.2);
+}
+.item-dialog-close:focus-visible { outline: 2px solid var(--butter-deep); outline-offset: 2px; }
+.item-dialog .soft-card { border: 0; border-radius: 0; box-shadow: none; transform: none; }
+.item-dialog .soft-card > div { padding: 1.25rem 1.25rem 1.75rem; }
+
+/* 3列のうち狭いとき(タブレット)は、文字も少し小さく */
+@media (min-width: 540px) and (max-width: 768px) {
+  .product-grid .soft-card > div { padding: 0.75rem; }
+  .product-grid h3 { font-size: 0.875rem; }
+  .product-grid p { margin-top: 0.5rem; font-size: 0.75rem; }
+  .product-grid .btn-butter { font-size: 0.75rem; }
 }

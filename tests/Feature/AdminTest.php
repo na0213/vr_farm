@@ -3,15 +3,20 @@
 namespace Tests\Feature;
 
 use App\Models\Admin;
+use App\Models\Animal;
 use App\Models\Farm;
-use App\Models\Owner;
+use App\Models\Keyword;
+use App\Models\Kind;
 use App\Models\Product;
+use App\Models\PurchasedItem;
 use App\Models\Store;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 class AdminTest extends TestCase
@@ -29,8 +34,7 @@ class AdminTest extends TestCase
 
     private function makeFarm(): Farm
     {
-        $owner = Owner::create(['name' => 'owner', 'email' => 'owner@example.com', 'password' => 'secret-pass']);
-        $farm = new Farm(['owner_id' => $owner->id, 'farm_name' => 'テスト牧場', 'catchcopy' => 'c', 'prefecture' => '北海道', 'address' => 'a', 'theme' => 't']);
+        $farm = new Farm(['farm_name' => 'テスト牧場', 'catchcopy' => 'c', 'prefecture' => '北海道', 'address' => 'a', 'theme' => 't']);
         $farm->is_published = true;
         $farm->save();
 
@@ -154,6 +158,26 @@ class AdminTest extends TestCase
         $this->assertNull(Product::find($product->id));
     }
 
+    public function test_store_page_lists_stores_with_edit_links(): void
+    {
+        $farm = $this->makeFarm();
+        $store = Store::create(['farm_id' => $farm->id, 'store_name' => '道の駅', 'store_address' => '北海道', 'store_link' => 'https://example.com/s']);
+
+        $this->actingAs($this->admin, 'admins')
+            ->get(route('admin.backend.stores.create', ['farm' => $farm->id]))
+            ->assertOk()
+            ->assertSee('販売店 — テスト牧場')
+            ->assertSee('道の駅')
+            ->assertSee(route('admin.backend.stores.edit', $store->id));
+
+        // 編集画面の「戻る」は、その牧場の販売店へ
+        $this->actingAs($this->admin, 'admins')
+            ->get(route('admin.backend.stores.edit', $store->id))
+            ->assertOk()
+            ->assertSee('販売店の編集')
+            ->assertSee(route('admin.backend.stores.create', ['farm' => $farm->id]));
+    }
+
     public function test_deleting_a_store_returns_to_the_farm_store_page(): void
     {
         $farm = $this->makeFarm();
@@ -167,10 +191,11 @@ class AdminTest extends TestCase
     public function test_farm_list_shows_publish_status_and_counts(): void
     {
         $open = $this->makeFarm();
-        $closed = new Farm(['owner_id' => $open->owner_id, 'farm_name' => '非公開牧場', 'catchcopy' => 'c', 'prefecture' => '宮崎県', 'address' => 'a', 'theme' => 't']);
+        $closed = new Farm(['farm_name' => '非公開牧場', 'catchcopy' => 'c', 'prefecture' => '宮崎県', 'address' => 'a', 'theme' => 't']);
         $closed->is_published = false;
         $closed->save();
         Product::create(['farm_id' => $open->id, 'product_name' => '卵', 'product_info' => '説明', 'product_link' => null, 'product_image' => null]);
+        PurchasedItem::create(['farm_id' => $open->id, 'item_name' => '牛乳', 'item_image' => '/uploads/purchased_item_images/a.jpg']);
 
         $this->actingAs($this->admin, 'admins')
             ->get(route('admin.backend.farms.index'))
@@ -179,7 +204,8 @@ class AdminTest extends TestCase
             ->assertSee('公開中')
             ->assertSee('非公開牧場')
             ->assertSee('非公開')
-            ->assertSee('商品(1)');
+            ->assertSee('撮影一覧(1)')
+            ->assertSee('購入した商品(1)');
     }
 
     public function test_article_list_marks_drafts_and_links_published_ones(): void
@@ -202,16 +228,79 @@ class AdminTest extends TestCase
             ->assertSee('下書き');
     }
 
-    public function test_owner_registration_is_validated(): void
+    public function test_farm_registration_is_validated(): void
     {
         $this->actingAs($this->admin, 'admins')
-            ->post(route('admin.backend.owners.store'), ['name' => '', 'email' => 'not-an-email', 'password' => 'short'])
-            ->assertSessionHasErrors(['name', 'email', 'password']);
+            ->post(route('admin.backend.farms.store'), ['name' => '', 'prefecture' => '', 'is_published' => '1'])
+            ->assertSessionHasErrors(['name', 'prefecture']);
+
+        $this->assertDatabaseCount('farms', 0);
+    }
+
+    public function test_farm_can_be_registered_without_an_owner(): void
+    {
+        $kind = Kind::create(['kind' => '牛']);
+        $keyword = Keyword::create(['keyword' => '放牧']);
 
         $this->actingAs($this->admin, 'admins')
-            ->post(route('admin.backend.owners.store'), ['name' => '山田', 'email' => 'yamada@example.com', 'password' => 'long-enough-1'])
-            ->assertRedirect(route('admin.backend.owners.index'));
+            ->get(route('admin.backend.farms.create'))
+            ->assertOk()
+            ->assertDontSee('オーナー');
 
-        $this->assertDatabaseHas('owners', ['email' => 'yamada@example.com']);
+        $this->actingAs($this->admin, 'admins')
+            ->post(route('admin.backend.farms.store'), [
+                'name' => '新しい牧場',
+                'prefecture' => '北海道',
+                'catchcopy' => 'キャッチ',
+                'is_published' => '0',
+                'kinds' => [$kind->id],
+                'keywords' => [$keyword->id],
+            ])
+            ->assertRedirect(route('admin.backend.farms.index'))
+            ->assertSessionHas('success');
+
+        $farm = Farm::where('farm_name', '新しい牧場')->firstOrFail();
+        $this->assertFalse((bool) $farm->is_published);
+        $this->assertSame([$kind->id], $farm->kinds->pluck('id')->all());
+        $this->assertSame([$keyword->id], $farm->keywords->pluck('id')->all());
+
+        $this->actingAs($this->admin, 'admins')
+            ->get(route('admin.backend.farms.index'))
+            ->assertSee('牧場を登録')
+            ->assertSee('新しい牧場');
+    }
+
+    public function test_owners_are_gone(): void
+    {
+        $this->assertFalse(Schema::hasTable('owners'));
+        $this->assertFalse(Schema::hasColumn('farms', 'owner_id'));
+        $this->assertFalse(Route::has('admin.backend.owners.index'));
+    }
+
+    public function test_farm_update_goes_back_to_the_farm_list(): void
+    {
+        $farm = $this->makeFarm();
+
+        $this->actingAs($this->admin, 'admins')
+            ->post(route('admin.backend.farms.update_post', $farm->id), [
+                'name' => '改名した牧場',
+                'prefecture' => '北海道',
+                'is_published' => '1',
+            ])
+            ->assertRedirect(route('admin.backend.farms.index'));
+
+        $this->assertSame('改名した牧場', $farm->fresh()->farm_name);
+    }
+
+    public function test_animal_delete_goes_back_to_the_animal_page(): void
+    {
+        $farm = $this->makeFarm();
+        $animal = Animal::create(['farm_id' => $farm->id, 'animal_name' => '花子', 'animal_info' => '説明', 'animal_image' => null, 'is_vr' => false]);
+
+        $this->actingAs($this->admin, 'admins')
+            ->delete(route('admin.backend.animals.destroy', $animal->id))
+            ->assertRedirect(route('admin.backend.animals.create', ['farm' => $farm->id]));
+
+        $this->assertDatabaseMissing('animals', ['id' => $animal->id]);
     }
 }

@@ -1,19 +1,58 @@
 <x-admin-layout>
     <x-slot name="header">
         <div class="flex">
-            <a href="{{ route('admin.backend.owners.show', $owner->id) }}">
+            <a href="{{ route('admin.backend.farms.index') }}">
                 <h2 class="text-xl text-gray-600 dark:text-gray-200 leading-tight">
                     戻る
                 </h2>
             </a>
             <h2 class="pl-10 font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                商品登録
+                撮影一覧 — {{ $farm->farm_name }}
             </h2>
         </div>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            {{-- 登録済みの写真(牧場ページの撮影一覧に、この順で出る) --}}
+            <div class="w-4/5 mx-auto mb-10 space-y-4">
+                @if (session('success') || session('message'))
+                    <p class="rounded border border-green-200 bg-green-50 p-3 text-sm text-green-800">{{ session('success') ?? session('message') }}</p>
+                @endif
+
+                <div class="bg-white shadow-sm sm:rounded-lg overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-600">
+                        <thead class="text-xs text-gray-700 bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-4 py-3">写真</th>
+                                <th scope="col" class="px-4 py-3">タイトル</th>
+                                <th scope="col" class="px-4 py-3">コメント</th>
+                                <th scope="col" class="px-4 py-3">管理</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($farm->products as $row)
+                                <tr class="border-t">
+                                    <td class="px-4 py-2">
+                                        <img src="{{ $row->product_image ?: asset('storage/noimage.jpg') }}" alt="" class="inline-block w-16 h-16 object-cover rounded">
+                                    </td>
+                                    <td class="px-4 py-2 font-medium text-gray-900">{{ $row->product_name ?: 'ー' }}</td>
+                                    <td class="px-4 py-2">{{ Str::limit($row->product_info ?? '', 40) ?: 'ー' }}</td>
+                                    <td class="px-4 py-2 whitespace-nowrap">
+                                        <a href="{{ route('admin.backend.products.edit', $row->id) }}" class="underline">編集</a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="px-4 py-8 text-center text-gray-500">まだ登録がありません。</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h3 class="w-4/5 mx-auto font-semibold text-gray-800 mb-2">新しく登録する</h3>
             <form action="{{ route('admin.backend.products.store', ['farm' => $farm->id]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @if ($errors->any())
@@ -28,8 +67,8 @@
                 <div class="-m-2">
                     <div class="p-2 w-4/5 mx-auto">
                         <div class="relative">
-                        <label for="product_name" class="leading-7 text-sm text-gray-600">商品名等</label>
-                        <input type="text" id="product_name" name="product_name" value="{{ old('product_name')}}" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                        <label for="product_name" class="leading-7 text-sm text-gray-600">タイトル(任意)</label>
+                        <input type="text" id="product_name" name="product_name" value="{{ old('product_name')}}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                         </div>
                     </div>
                 </div>
@@ -37,8 +76,8 @@
                 <div class="-m-2">
                     <div class="p-2 w-4/5 mx-auto">
                         <div class="relative">
-                        <label for="product_info" class="leading-7 text-sm text-gray-600">内容</label>
-                        <textarea name="product_info" id="product_info" cols="30" rows="10" required class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"></textarea>
+                        <label for="product_info" class="leading-7 text-sm text-gray-600">コメント(任意)</label>
+                        <textarea name="product_info" id="product_info" cols="30" rows="10" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-yellow-500 focus:bg-white focus:ring-2 focus:ring-yellow-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">{{ old('product_info') }}</textarea>
                         </div>
                     </div>
                 </div>

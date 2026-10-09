@@ -8,8 +8,8 @@ use App\Models\Article;
 use App\Models\Farm;
 use App\Models\Keyword;
 use App\Models\Kind;
-use App\Models\Owner;
 use App\Models\Product;
+use App\Models\PurchasedItem;
 use App\Models\Store;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -30,8 +30,7 @@ class AdminPagesTest extends TestCase
 
     public function test_admin_pages_render(): void
     {
-        $owner = Owner::create(['name' => 'owner', 'email' => 'owner@example.com', 'password' => 'secret-pass']);
-        $farm = new Farm(['owner_id' => $owner->id, 'farm_name' => 'テスト牧場', 'catchcopy' => 'c', 'prefecture' => '北海道', 'address' => 'a', 'theme' => 't']);
+        $farm = new Farm(['farm_name' => 'テスト牧場', 'catchcopy' => 'c', 'prefecture' => '北海道', 'address' => 'a', 'theme' => 't']);
         $farm->is_published = true;
         $farm->save();
         $kind = Kind::create(['kind' => '牛']);
@@ -39,6 +38,7 @@ class AdminPagesTest extends TestCase
         $animal = Animal::create(['farm_id' => $farm->id, 'animal_name' => '花子', 'animal_info' => '説明', 'animal_image' => null, 'is_vr' => false]);
         $product = Product::create(['farm_id' => $farm->id, 'product_name' => '卵', 'product_info' => '説明', 'product_link' => 'https://example.com', 'product_image' => null]);
         $store = Store::create(['farm_id' => $farm->id, 'store_name' => '販売店', 'store_address' => '住所', 'store_link' => 'https://example.com']);
+        $item = PurchasedItem::create(['farm_id' => $farm->id, 'item_name' => '牛乳', 'item_image' => '/uploads/purchased_item_images/a.jpg']);
         $article = new Article();
         $article->title = '記事';
         $article->article_content = '<p>本文</p>';
@@ -48,12 +48,9 @@ class AdminPagesTest extends TestCase
 
         $pages = [
             'admin.dashboard' => [],
+            'admin.backend.system' => [],
             'admin.password.edit' => [],
-            'admin.backend.owners.index' => [],
-            'admin.backend.owners.create' => [],
-            'admin.backend.owners.show' => ['id' => $owner->id],
-            'admin.backend.owners.edit' => ['id' => $owner->id],
-            'admin.backend.farms.create' => ['owner' => $owner->id],
+            'admin.backend.farms.create' => [],
             'admin.backend.farms.edit' => ['id' => $farm->id],
             'admin.backend.farms.index' => [],
             'admin.admin.backend.farms.editImages' => ['farmId' => $farm->id],
@@ -61,6 +58,8 @@ class AdminPagesTest extends TestCase
             'admin.backend.animals.edit' => ['id' => $animal->id],
             'admin.backend.products.create' => ['farm' => $farm->id],
             'admin.backend.products.edit' => ['id' => $product->id],
+            'admin.backend.purchased-items.create' => ['farm' => $farm->id],
+            'admin.backend.purchased-items.edit' => ['id' => $item->id],
             'admin.backend.stores.create' => ['farm' => $farm->id],
             'admin.backend.stores.edit' => ['id' => $store->id],
             'admin.backend.kinds.index' => [],
