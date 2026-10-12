@@ -14,7 +14,7 @@ use App\Exceptions\VideoClipException;
 
 class ProductController extends Controller
 {
-    // 動画は長くても受け取り、最初の15秒だけ使う(開発サーバーの上限は .claude/php.d/uploads.ini)
+    // 動画は長くても受け取り、最初の15秒だけ使う(開発サーバーの上限は App\Console\Commands\ServeCommand)
     private const VIDEO_RULE = 'nullable|file|mimetypes:video/mp4,video/quicktime|max:204800'; //200MBまで
 
     private const MESSAGES = [

@@ -4,7 +4,7 @@
         {
             "name": "laravel",
             "runtimeExecutable": "sh",
-            "runtimeArgs": ["-c", "PHP_INI_SCAN_DIR=\":$PWD/.claude/php.d\" php artisan serve --port=${PORT:-8123}"],
+            "runtimeArgs": ["-c", "php artisan serve --port=${PORT:-8123}"],
             "port": 8123,
             "autoPort": true
         },
