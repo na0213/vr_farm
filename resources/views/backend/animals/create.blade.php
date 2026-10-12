@@ -1,7 +1,7 @@
 <x-admin-layout>
     <x-slot name="header">
         <div class="flex">
-            <a href="{{ route('admin.backend.owners.show', $owner->id) }}">
+            <a href="{{ route('admin.backend.farms.index') }}">
                 <h2 class="text-xl text-gray-600 dark:text-gray-200 leading-tight">
                     戻る
                 </h2>

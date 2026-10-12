@@ -1,6 +1,7 @@
 <x-top-layout>
     <x-slot name="title">{{ $farm->farm_name }}({{ $farm->prefecture }})</x-slot>
     <x-slot name="metaDescription">{{ $farm->catchcopy ? $farm->catchcopy . ' — ' : '' }}{{ $farm->prefecture }}の{{ $farm->farm_name }}の紹介ページ。飼い方のこだわり、商品、お取り寄せ情報を掲載しています。</x-slot>
+    <x-slot name="jsonLd">{!! \App\Services\StructuredData::json(\App\Services\StructuredData::farm($farm)) !!}</x-slot>
     @if ($farm->farmImages->isNotEmpty())
         <x-slot name="ogImage">{{ $farm->farmImages->first()->image_path }}</x-slot>
     @endif
@@ -39,6 +40,11 @@
         .hover-scale:hover {
             transform: scale(1.05);
             z-index: 10;
+        }
+        /* 撮影一覧の写真: 出るときのふわっと(opacity)と、マウスを乗せたときの拡大(transform)を両方効かせる
+           (.hover-scale の transition が .animate-on-scroll の transition を上書きして、ふわっとが効いていなかった) */
+        .animate-on-scroll.hover-scale {
+            transition: opacity 0.8s ease-out, transform 0.3s ease;
         }
     </style>
     <!-- Session Status -->
@@ -158,22 +164,33 @@
         <p>撮影一覧</p>
     </div>
     <div class="container mx-auto px-4 mb-20 max-w-5xl">
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            @foreach ($farm->products as $key => $product)
-                <div class="group relative aspect-square bg-stone-100 rounded-xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl hover-scale animate-on-scroll"
-                     style="transition-delay: {{ $key * 100 }}ms;"
-                     onclick="openModal({{ json_encode([
+        <div class="grid gallery-grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            @foreach ($farm->products as $product)
+                {{-- タイトル・コメントは任意。タイトルが無い写真の代替テキストは牧場名から作る。
+                     動画は一覧では最初の場面(product_image)を出し、押したときだけモーダルで再生する --}}
+                @php
+                    $photoAlt = $product->product_name ?: $farm->farm_name.'の写真';
+                    $modalData = [
                         'image' => $product->product_image,
+                        'alt' => $photoAlt,
                         'name' => $product->product_name,
-                        'info' => nl2br(e($product->product_info))
-                    ]) }})">
-                    <img src="{{ $product->product_image }}" alt="{{ $product->product_name }}" 
+                        'info' => nl2br(e($product->product_info)),
+                    ] + ($product->product_video ? ['video' => $product->product_video] : []);
+                @endphp
+                <div class="group relative aspect-square bg-stone-100 rounded-xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl hover-scale animate-on-scroll"
+                     onclick="openModal({{ json_encode($modalData) }})">
+                    <img src="{{ $product->product_image }}" alt="{{ $product->product_video ? $photoAlt.'(動画)' : $photoAlt }}"
                          class="w-full h-full object-cover">
-                    
-                    <!-- Overlay with Name -->
-                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center h-1/2">
-                        <p class="text-white font-bold text-sm tracking-wide text-center drop-shadow-md">{{ $product->product_name }}</p>
-                    </div>
+                    @if ($product->product_video)
+                        <span class="gallery-play" aria-hidden="true"></span>
+                    @endif
+
+                    @if ($product->product_name)
+                        <!-- Overlay with Name -->
+                        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center h-1/2">
+                            <p class="text-white font-bold text-sm tracking-wide text-center drop-shadow-md">{{ $product->product_name }}</p>
+                        </div>
+                    @endif
                 </div>
             @endforeach
         </div>
@@ -206,14 +223,17 @@
                         @endforeach
                     </td>
                 </tr>
-                <tr>
-                    <th class="px-4 py-2 bg-gray-200 text-left font-medium text-gray-600">こだわり</th>
-                    <td class="px-4 py-2">
-                        @foreach ($farm->keywords as $keyword)
-                            <span class="text-xs font-semibold px-2 py-1 rounded">#{{ $keyword->keyword }}</span>
-                        @endforeach
-                    </td>
-                </tr>
+                {{-- キーワードが1つも付いていない牧場では、空の欄を出さない --}}
+                @if ($farm->keywords->isNotEmpty())
+                    <tr>
+                        <th class="px-4 py-2 bg-gray-200 text-left font-medium text-gray-600">こだわり</th>
+                        <td class="px-4 py-2">
+                            @foreach ($farm->keywords as $keyword)
+                                <span class="text-xs font-semibold px-2 py-1 rounded">#{{ $keyword->keyword }}</span>
+                            @endforeach
+                        </td>
+                    </tr>
+                @endif
                 <tr>
                     <th class="px-4 py-2 bg-gray-200 text-left font-medium text-gray-600">体験可否</th>
                     <td class="px-4 py-2">
@@ -261,6 +281,8 @@
         <div id="modal-image" class="mb-4 flex-1 flex items-center justify-center overflow-hidden">
             {{-- ↓ 画像の高さを大きくしました（max-h-[75vh]） --}}
             <img src="" alt="Product Image" class="w-full h-auto max-h-[75vh] object-contain mx-auto rounded">
+            {{-- 動画(音なし・15秒まで)。押したときだけ読み込んで再生する --}}
+            <video id="modal-video" class="w-full h-auto max-h-[75vh] object-contain mx-auto rounded" muted playsinline loop controls preload="none" hidden></video>
         </div>
 
         <h2 id="modal-title" class="text-2xl font-bold mb-2 text-center text-gray-800"></h2>
@@ -268,6 +290,28 @@
         <div id="modal-info" class="text-gray-600 text-center overflow-y-auto max-h-32"></div>
     </div>
 </div>
+
+    @if ($farm->purchasedItems->isNotEmpty())
+        <div id="products" class="story">
+            <p class="mt-20 text-[#e0db85]">PRODUCTS</p>
+        </div>
+        <div class="note-title">
+            <p>買ってみた</p>
+        </div>
+        <div class="container mx-auto px-4 mb-10 max-w-5xl">
+            <p class="text-center text-sm text-stone-500 mb-6">運営者が自分で買って、撮影したものです。</p>
+            {{-- 横にスライド(スマホは指で、パソコンは左右のボタンでも動かせる) --}}
+            <div class="product-slider" data-slider>
+                <ul class="product-slider-track" tabindex="0" aria-label="買ってみた商品(横にスクロールできます)">
+                    @foreach ($farm->purchasedItems as $item)
+                        <li class="product-slide"><x-purchased-item-card :item="$item" /></li>
+                    @endforeach
+                </ul>
+                <button type="button" class="product-slider-btn is-prev" data-dir="-1" aria-label="前の商品へ" hidden>&lsaquo;</button>
+                <button type="button" class="product-slider-btn is-next" data-dir="1" aria-label="次の商品へ" hidden>&rsaquo;</button>
+            </div>
+        </div>
+    @endif
 
     <!-- farm_idに一致する記事の内容を表示 -->
     <div class="story">
@@ -322,13 +366,23 @@
         // ▼▼▼ ここを修正しました（何度でも動くバージョン） ▼▼▼
         document.addEventListener('DOMContentLoaded', function() {
             const observer = new IntersectionObserver((entries) => {
+                // 撮影一覧は、一緒に画面に入った同じ行の写真だけを、左から 0.1 秒ずつずらして出す
+                // (全体の何枚目かでずらすと、写真が多い牧場では下の行が数秒待たされるため)
+                const rowIndex = {};
                 entries.forEach(entry => {
+                    const el = entry.target;
                     if (entry.isIntersecting) {
                         // 画面に入った時：クラスを追加してアニメーション開始
-                        entry.target.classList.add('is-visible');
+                        if (el.classList.contains('animate-on-scroll')) {
+                            const top = Math.round(el.offsetTop);
+                            rowIndex[top] = (rowIndex[top] ?? -1) + 1;
+                            el.style.transitionDelay = (rowIndex[top] * 100) + 'ms';
+                        }
+                        el.classList.add('is-visible');
                     } else {
                         // 画面から出た時：クラスを削除してリセット（これで次回も動きます）
-                        entry.target.classList.remove('is-visible');
+                        el.style.transitionDelay = '';
+                        el.classList.remove('is-visible');
                     }
                 });
             }, {
@@ -340,6 +394,10 @@
             const elements = document.querySelectorAll('.animate-on-scroll');
             elements.forEach((el) => {
                 observer.observe(el);
+                // 出終わったら待ち時間を消す(マウスを乗せたときの拡大を待たせない)
+                el.addEventListener('transitionend', (event) => {
+                    if (event.propertyName === 'opacity') el.style.transitionDelay = '';
+                });
             });
 
             // 監視対象2: 雑誌風レイアウトの動物リスト
@@ -351,17 +409,59 @@
     </script>
 
     <script>
-        // モーダル用JS（変更なし）
+        // 購入した商品の横スライド: 左右のボタンで1枚ずつ動かす。端ではボタンを隠す
+        document.querySelectorAll('[data-slider]').forEach(function (slider) {
+            const track = slider.querySelector('.product-slider-track');
+            const buttons = slider.querySelectorAll('.product-slider-btn');
+            const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function update() {
+                const max = track.scrollWidth - track.clientWidth;
+                buttons[0].hidden = track.scrollLeft <= 8;
+                buttons[1].hidden = track.scrollLeft >= max - 8;
+            }
+
+            buttons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    const slide = track.querySelector('.product-slide');
+                    const step = slide.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0);
+                    track.scrollBy({ left: step * Number(button.dataset.dir), behavior: smooth ? 'smooth' : 'auto' });
+                });
+            });
+            track.addEventListener('scroll', update, { passive: true });
+            window.addEventListener('resize', update);
+            update();
+        });
+    </script>
+
+    <script>
+        // 撮影一覧のモーダル
         function openModal(data) {
             const modal = document.getElementById("modal");
             const modalImage = document.getElementById("modal-image").querySelector("img");
             const modalTitle = document.getElementById("modal-title");
             const modalInfo = document.getElementById("modal-info");
+            const modalVideo = document.getElementById("modal-video");
+
+            modalImage.hidden = Boolean(data.video);
+            modalVideo.hidden = !data.video;
+            if (data.video) {
+                modalVideo.poster = data.image;
+                modalVideo.src = data.video;
+                modalVideo.setAttribute("aria-label", data.alt);
+                // 動きを減らす設定のときは自動で再生しない(再生ボタンで見られる)
+                if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                    modalVideo.play().catch(function () {});
+                }
+            }
 
             modalImage.src = data.image || "{{ asset('storage/noimage.jpg') }}";
-            modalImage.alt = data.name || "Product Image";
-            modalTitle.textContent = data.name;
+            modalImage.alt = data.alt;
+            // タイトル・コメントが無い写真では、空の欄を出さない
+            modalTitle.textContent = data.name || "";
+            modalTitle.hidden = !data.name;
             modalInfo.innerHTML = data.info;
+            modalInfo.hidden = !data.info;
 
             modal.classList.remove("hidden");
             modal.classList.add("flex");
@@ -371,7 +471,21 @@
             const modal = document.getElementById("modal");
             modal.classList.add("hidden");
             modal.classList.remove("flex");
+
+            // 再生と読み込みを止める
+            const modalVideo = document.getElementById("modal-video");
+            modalVideo.pause();
+            modalVideo.removeAttribute("src");
+            modalVideo.load();
         }
+
+        // 暗い背景を押す/Esc でも閉じる
+        document.getElementById("modal").addEventListener("click", function (event) {
+            if (event.target === this) closeModal();
+        });
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") closeModal();
+        });
     </script>      
 </x-top-layout>
 

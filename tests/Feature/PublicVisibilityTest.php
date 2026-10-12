@@ -4,8 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Article;
 use App\Models\Farm;
-use App\Models\Owner;
-use App\Models\Product;
+use App\Models\PurchasedItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,10 +14,7 @@ class PublicVisibilityTest extends TestCase
 
     private function makeFarm(string $name, bool $published): Farm
     {
-        $owner = Owner::create(['name' => 'owner', 'email' => $name . '@example.com', 'password' => 'secret-pass']);
-
         $farm = new Farm([
-            'owner_id' => $owner->id,
             'farm_name' => $name,
             'catchcopy' => 'キャッチ',
             'prefecture' => '北海道',
@@ -85,13 +81,12 @@ class PublicVisibilityTest extends TestCase
         $open = $this->makeFarm('公開牧場', true);
         $closed = $this->makeFarm('非公開牧場', false);
 
-        foreach ([[$open, '公開の卵'], [$closed, '非公開の卵']] as [$farm, $name]) {
-            Product::create([
+        foreach ([[$open, '公開の卵', 'open'], [$closed, '非公開の卵', 'closed']] as [$farm, $name, $image]) {
+            PurchasedItem::create([
                 'farm_id' => $farm->id,
-                'product_name' => $name,
-                'product_info' => '説明',
-                'product_link' => 'https://example.com/' . $farm->id,
-                'product_image' => 'https://example.com/a.jpg',
+                'item_name' => $name,
+                'item_link' => 'https://example.com/' . $farm->id,
+                'item_image' => "/uploads/purchased_item_images/{$image}.jpg",
             ]);
         }
 
@@ -99,6 +94,13 @@ class PublicVisibilityTest extends TestCase
             ->assertOk()
             ->assertSee('公開の卵')
             ->assertDontSee('非公開の卵');
+
+        // トップの商品検索の入口に使う写真も、公開中の牧場のものだけ
+        // (非公開の牧場の商品のほうが新しくても、そちらは選ばれない)
+        $this->get(route('index'))
+            ->assertOk()
+            ->assertSee('/uploads/purchased_item_images/open.jpg', false)
+            ->assertDontSee('/uploads/purchased_item_images/closed.jpg', false);
     }
 
     public function test_draft_article_returns_404_but_published_article_is_visible(): void

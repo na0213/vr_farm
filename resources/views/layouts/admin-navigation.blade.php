@@ -21,9 +21,6 @@
                     <x-nav-link :href="route('admin.backend.article.index')" :active="request()->routeIs('admin.backend.article.*')">
                         記事
                     </x-nav-link>
-                    <x-nav-link :href="route('admin.backend.owners.index')" :active="request()->routeIs('admin.backend.owners.*')">
-                        オーナー
-                    </x-nav-link>
                 </div>
             </div>
 
@@ -84,9 +81,6 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('admin.backend.article.index')" :active="request()->routeIs('admin.backend.article.*')">
                 記事
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('admin.backend.owners.index')" :active="request()->routeIs('admin.backend.owners.*')">
-                オーナー
             </x-responsive-nav-link>
         </div>
 

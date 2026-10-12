@@ -65,7 +65,7 @@
                 </div>
             </form>
             <div class="p-2 w-full flex justify-around mt-4">
-                <a href="{{ route('admin.backend.owners.index') }}">
+                <a href="{{ route('admin.backend.article.index') }}">
                 <button type="button" class="text-white bg-gray-500 border-0 py-2 px-8 focus:outline-none hover:bg-gray-600 rounded text-lg">戻る</button>
                 </a>
             </div>

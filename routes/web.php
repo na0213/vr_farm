@@ -26,6 +26,5 @@ Route::get('/article/{id}', [GuestController::class, 'showArticle'])->name('arti
 Route::get('/about', [GuestController::class, 'about'])->name('about.index');
 Route::get('/sitemap.xml', [SitemapController::class, 'index']);
 
+// 送信は Cloudflare の Worker(worker/index.js の /api/contact)が受け取る
 Route::get('contact', [ContactController::class, 'formTop'])->name('contact.form');
-Route::post('contact/confirm', [ContactController::class, 'confirm'])->name('contact.confirm');
-Route::post('contact/send', [ContactController::class, 'SendProcess'])->name('contact.send');

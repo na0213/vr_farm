@@ -7,12 +7,12 @@
 
     @php
         $menus = [
-            ['route' => 'admin.backend.farms.index', 'title' => '牧場一覧', 'text' => '牧場・動物・商品・販売店の登録と編集'],
+            ['route' => 'admin.backend.farms.index', 'title' => '牧場一覧', 'text' => '牧場の新規登録、動物・商品・販売店の登録と編集'],
             ['route' => 'admin.backend.article.index', 'title' => '記事', 'text' => '読みものの登録・編集・公開'],
-            ['route' => 'admin.backend.owners.index', 'title' => 'オーナー管理', 'text' => '牧場の新規登録はここから'],
             ['route' => 'admin.backend.kinds.index', 'title' => '種類', 'text' => '牛・豚・鶏などのカテゴリー'],
             ['route' => 'admin.backend.keywords.index', 'title' => 'キーワード', 'text' => '放牧・平飼いなどの特徴タグ'],
             ['route' => 'admin.password.edit', 'title' => 'パスワード変更', 'text' => 'ログイン用のパスワード'],
+            ['route' => 'admin.backend.system', 'title' => 'サイトのしくみ', 'text' => 'データの置き場所・公開の流れ・ドメインの関係'],
         ];
     @endphp
 

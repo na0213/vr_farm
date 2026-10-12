@@ -4,13 +4,14 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" href="{{ asset('storage/favicon.png') }}" type="image/x-icon">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         @php
             // ページ側から <x-slot name="title"> 等で上書きできる(未指定ならサイト共通の既定値)
             $pageTitle = isset($title) && trim($title) !== '' ? trim($title) . ' | FARM360' : 'FARM360 | しあわせな牧場の、おいしいもの。';
             $pageDescription = isset($metaDescription) && trim($metaDescription) !== '' ? trim($metaDescription) : '放牧卵、放牧豚、グラスフェッド乳製品。こだわりの牧場と、そこで生まれる「おいしい理由」、お取り寄せ情報をお届けします。';
             $pageOgImage = isset($ogImage) && trim($ogImage) !== '' ? trim($ogImage) : asset('storage/sns.jpg');
+            // アップロード画像は /uploads/... で保存しているので、OGP 用に絶対URLにする
+            $pageOgImage = str_starts_with($pageOgImage, '/') ? url($pageOgImage) : $pageOgImage;
         @endphp
         <title>{{ $pageTitle }}</title>
         <meta name="description" content="{{ $pageDescription }}">
@@ -22,19 +23,11 @@
         <link rel="canonical" href="{{ url()->current() }}">
         <meta name="robots" content="index, follow">
         <!-- 構造化データ -->
-        <script type="application/ld+json">
-          {
-              "@@context": "https://schema.org",
-              "@type": "WebSite",
-              "name": "FARM360",
-              "url": "https://www.farm360.jp",
-              "description": "放牧や平飼いなど、こだわりを持って育てる牧場の取り組みと、そこで生まれるおいしいものをお届け！",
-              "publisher": {
-                  "@type": "Organization",
-                  "name": "FARM360運営"
-              }
-          }
-          </script>
+        <script type="application/ld+json">{!! \App\Services\StructuredData::json(\App\Services\StructuredData::website()) !!}</script>
+        {{-- ページ固有の構造化データ(<x-slot name="jsonLd"> に JSON を渡す) --}}
+        @isset($jsonLd)
+        <script type="application/ld+json">{!! $jsonLd !!}</script>
+        @endisset
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />

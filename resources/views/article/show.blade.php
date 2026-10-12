@@ -1,6 +1,7 @@
 <x-top-layout>
 <x-slot name="title">{{ $article->title }}</x-slot>
 <x-slot name="metaDescription">{{ Str::limit(trim(strip_tags($article->article_content)), 110) }}</x-slot>
+<x-slot name="jsonLd">{!! \App\Services\StructuredData::json(\App\Services\StructuredData::article($article)) !!}</x-slot>
 @php
     $images = collect(json_decode($article->article_images, true) ?: [])->filter()->values();
     $firstImage = $images->first();

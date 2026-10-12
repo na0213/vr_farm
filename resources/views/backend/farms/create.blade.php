@@ -1,9 +1,9 @@
 <x-admin-layout>
     <x-slot name="header">
         <div class="flex">
-            <a href="{{ route('admin.backend.owners.show', $owner->id) }}">
-                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    オーナー
+            <a href="{{ route('admin.backend.farms.index') }}">
+                <h2 class="text-xl text-gray-600 dark:text-gray-200 leading-tight">
+                    戻る
                 </h2>
             </a>
             <h2 class="pl-10 font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -14,7 +14,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <form action="{{ route('admin.backend.farms.store', ['owner' => $owner->id]) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.backend.farms.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @if ($errors->any())
                     <div class="alert alert-danger">

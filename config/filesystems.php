@@ -44,6 +44,16 @@ return [
             'throw' => false,
         ],
 
+        // 管理画面からアップロードした画像(App\Services\ImageStorage)。
+        // public/uploads に置き、静的サイトの書き出しにそのまま含める
+        'uploads' => [
+            'driver' => 'local',
+            'root' => public_path('uploads'),
+            'url' => '/uploads',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
