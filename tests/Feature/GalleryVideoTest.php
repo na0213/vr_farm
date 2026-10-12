@@ -145,4 +145,20 @@ class GalleryVideoTest extends TestCase
         $this->assertSame(1, substr_count($html, 'class="gallery-play"'));
         $this->assertSame(1, substr_count($html, '\/uploads\/product_videos\/b.mp4'));
     }
+
+    public function test_videos_come_first_on_the_farm_page_and_in_the_admin_list(): void
+    {
+        $farm = $this->makeFarm();
+        Product::create(['farm_id' => $farm->id, 'product_name' => '写真1', 'product_image' => '/uploads/product_images/a.jpg']);
+        Product::create(['farm_id' => $farm->id, 'product_name' => '動画1', 'product_image' => '/uploads/product_images/b.jpg', 'product_video' => '/uploads/product_videos/b.mp4']);
+        Product::create(['farm_id' => $farm->id, 'product_name' => '写真2', 'product_image' => '/uploads/product_images/c.jpg']);
+        Product::create(['farm_id' => $farm->id, 'product_name' => '動画2', 'product_image' => '/uploads/product_images/d.jpg', 'product_video' => '/uploads/product_videos/d.mp4']);
+
+        $this->get(route('farm.show', $farm->id))
+            ->assertSeeInOrder(['alt="動画1(動画)"', 'alt="動画2(動画)"', 'alt="写真1"', 'alt="写真2"'], false);
+
+        $this->actingAs($this->admin, 'admins')
+            ->get(route('admin.backend.products.create', ['farm' => $farm->id]))
+            ->assertSeeInOrder(['動画1', '動画2', '写真1', '写真2']);
+    }
 }

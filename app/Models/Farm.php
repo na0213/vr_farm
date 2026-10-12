@@ -49,10 +49,10 @@ class Farm extends Model
         return $query->where('is_published', true);
     }
 
-    // 撮影一覧(牧場ページの GALLERY)
+    // 撮影一覧(牧場ページの GALLERY)。動画を先に並べ、動画どうし・写真どうしは登録順
     public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Product::class)->orderByRaw('product_video is null')->orderBy('id');
     }
     // 運営者が購入して撮影した商品(登録順)
     public function purchasedItems()
