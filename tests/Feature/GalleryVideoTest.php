@@ -161,4 +161,17 @@ class GalleryVideoTest extends TestCase
             ->get(route('admin.backend.products.create', ['farm' => $farm->id]))
             ->assertSeeInOrder(['動画1', '動画2', '写真1', '写真2']);
     }
+
+    public function test_gallery_tiles_have_no_delay_that_grows_with_the_number_of_photos(): void
+    {
+        $farm = $this->makeFarm();
+        foreach (range(1, 12) as $i) {
+            Product::create(['farm_id' => $farm->id, 'product_image' => "/uploads/product_images/{$i}.jpg"]);
+        }
+
+        // 待ち時間は、画面に入ったときに行の中の位置で決める(JS)。HTML に並び順の待ち時間は書かない
+        $this->get(route('farm.show', $farm->id))
+            ->assertOk()
+            ->assertDontSee('transition-delay:', false);
+    }
 }

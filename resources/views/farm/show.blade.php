@@ -41,6 +41,11 @@
             transform: scale(1.05);
             z-index: 10;
         }
+        /* 撮影一覧の写真: 出るときのふわっと(opacity)と、マウスを乗せたときの拡大(transform)を両方効かせる
+           (.hover-scale の transition が .animate-on-scroll の transition を上書きして、ふわっとが効いていなかった) */
+        .animate-on-scroll.hover-scale {
+            transition: opacity 0.8s ease-out, transform 0.3s ease;
+        }
     </style>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
@@ -160,7 +165,7 @@
     </div>
     <div class="container mx-auto px-4 mb-20 max-w-5xl">
         <div class="grid gallery-grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            @foreach ($farm->products as $key => $product)
+            @foreach ($farm->products as $product)
                 {{-- タイトル・コメントは任意。タイトルが無い写真の代替テキストは牧場名から作る。
                      動画は一覧では最初の場面(product_image)を出し、押したときだけモーダルで再生する --}}
                 @php
@@ -173,7 +178,6 @@
                     ] + ($product->product_video ? ['video' => $product->product_video] : []);
                 @endphp
                 <div class="group relative aspect-square bg-stone-100 rounded-xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl hover-scale animate-on-scroll"
-                     style="transition-delay: {{ $key * 100 }}ms;"
                      onclick="openModal({{ json_encode($modalData) }})">
                     <img src="{{ $product->product_image }}" alt="{{ $product->product_video ? $photoAlt.'(動画)' : $photoAlt }}"
                          class="w-full h-full object-cover">
@@ -362,13 +366,23 @@
         // ▼▼▼ ここを修正しました（何度でも動くバージョン） ▼▼▼
         document.addEventListener('DOMContentLoaded', function() {
             const observer = new IntersectionObserver((entries) => {
+                // 撮影一覧は、一緒に画面に入った同じ行の写真だけを、左から 0.1 秒ずつずらして出す
+                // (全体の何枚目かでずらすと、写真が多い牧場では下の行が数秒待たされるため)
+                const rowIndex = {};
                 entries.forEach(entry => {
+                    const el = entry.target;
                     if (entry.isIntersecting) {
                         // 画面に入った時：クラスを追加してアニメーション開始
-                        entry.target.classList.add('is-visible');
+                        if (el.classList.contains('animate-on-scroll')) {
+                            const top = Math.round(el.offsetTop);
+                            rowIndex[top] = (rowIndex[top] ?? -1) + 1;
+                            el.style.transitionDelay = (rowIndex[top] * 100) + 'ms';
+                        }
+                        el.classList.add('is-visible');
                     } else {
                         // 画面から出た時：クラスを削除してリセット（これで次回も動きます）
-                        entry.target.classList.remove('is-visible');
+                        el.style.transitionDelay = '';
+                        el.classList.remove('is-visible');
                     }
                 });
             }, {
@@ -380,6 +394,10 @@
             const elements = document.querySelectorAll('.animate-on-scroll');
             elements.forEach((el) => {
                 observer.observe(el);
+                // 出終わったら待ち時間を消す(マウスを乗せたときの拡大を待たせない)
+                el.addEventListener('transitionend', (event) => {
+                    if (event.propertyName === 'opacity') el.style.transitionDelay = '';
+                });
             });
 
             // 監視対象2: 雑誌風レイアウトの動物リスト
